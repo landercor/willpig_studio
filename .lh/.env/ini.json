@@ -1,0 +1,18 @@
+{
+    "sourceFile": ".env/ini",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1760420841751,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1760420841751,
+            "name": "Commit-0",
+            "content": "DB_HOST=localhost\nDB_USER=root\nDB_PASSWORD=tu_contraseña\nDB_NAME=willpigstudio_db\nPORT=3000\n"
+        }
+    ]
+}

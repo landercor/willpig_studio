@@ -1,0 +1,30 @@
+{
+    "sourceFile": ".env/html_backup/style1.css",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1761884585334,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1761884631605,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,14 @@\n /* ====== FORMULARIO DE LOGIN ====== */\n-.login-container {\n+.loginIn-container {\n   display: flex;\n   justify-content: center;\n   align-items: center;\n   height: 100vh;\n   background-color: var(--background-color, #fff);\n }\n \n-.login-card {\n+.loginPin-card {\n   background: #fff;\n   padding: 2.5rem;\n   border-radius: 15px;\n   box-shadow: 0 4px 20px rgba(0,0,0,0.08);\n@@ -90,4 +90,7 @@\n .forgot-password {\n   display: block;\n   margin-bottom: 0.8rem;\n }\n+.register-link {\n+  display: block;\n+}/* ====== FIN FORMULARIO DE LOGIN ====== */\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1761884662051,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,15 +16,15 @@\n   max-width: 420px;\n   text-align: center;\n }\n \n-.login-card h1 {\n+.loginPin-card h1 {\n   font-size: 1.8rem;\n   margin-bottom: 1rem;\n   color: var(--accent-color, #f37335);\n }\n \n-.login-card p {\n+.loginPin-card p {\n   margin-bottom: 2rem;\n   color: #666;\n }\n \n"
+                },
+                {
+                    "date": 1761884842717,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -27,21 +27,21 @@\n   margin-bottom: 2rem;\n   color: #666;\n }\n \n-.login-form .form-group {\n+.loginIn-form .form-group {\n   text-align: left;\n   margin-bottom: 1.2rem;\n }\n \n-.login-form label {\n+.loginIn-form label {\n   display: block;\n   font-size: 0.9rem;\n   color: #444;\n   margin-bottom: 0.3rem;\n }\n \n-.login-form input {\n+.loginIn-form input {\n   width: 100%;\n   padding: 0.8rem;\n   border: 1px solid #ccc;\n   border-radius: 8px;\n@@ -49,14 +49,14 @@\n   outline: none;\n   transition: all 0.2s ease;\n }\n \n-.login-form input:focus {\n+.loginIn-form input:focus {\n   border-color: var(--accent-color, #f37335);\n   box-shadow: 0 0 4px rgba(243,115,53,0.3);\n }\n \n-.btn-login {\n+.btn-loginISi {\n   background-color: var(--accent-color, #f37335);\n   color: white;\n   border: none;\n   width: 100%;\n@@ -66,13 +66,13 @@\n   cursor: pointer;\n   transition: background 0.3s;\n }\n \n-.btn-login:hover {\n+.btn-loginISi:hover {\n   background-color: #e85c1a;\n }\n \n-.login-links {\n+.loginIn-links {\n   margin-top: 1.2rem;\n   font-size: 0.9rem;\n   color: #555;\n }\n@@ -82,13 +82,13 @@\n   text-decoration: none;\n   font-weight: 500;\n }\n \n-.login-links a:hover {\n+.loginIn-links a:hover {\n   text-decoration: underline;\n }\n \n-.forgot-password {\n+.forgotvid-password {\n   display: block;\n   margin-bottom: 0.8rem;\n }\n .register-link {\n"
+                }
+            ],
+            "date": 1761884585334,
+            "name": "Commit-0",
+            "content": "/* ====== FORMULARIO DE LOGIN ====== */\n.login-container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n  background-color: var(--background-color, #fff);\n}\n\n.login-card {\n  background: #fff;\n  padding: 2.5rem;\n  border-radius: 15px;\n  box-shadow: 0 4px 20px rgba(0,0,0,0.08);\n  width: 100%;\n  max-width: 420px;\n  text-align: center;\n}\n\n.login-card h1 {\n  font-size: 1.8rem;\n  margin-bottom: 1rem;\n  color: var(--accent-color, #f37335);\n}\n\n.login-card p {\n  margin-bottom: 2rem;\n  color: #666;\n}\n\n.login-form .form-group {\n  text-align: left;\n  margin-bottom: 1.2rem;\n}\n\n.login-form label {\n  display: block;\n  font-size: 0.9rem;\n  color: #444;\n  margin-bottom: 0.3rem;\n}\n\n.login-form input {\n  width: 100%;\n  padding: 0.8rem;\n  border: 1px solid #ccc;\n  border-radius: 8px;\n  font-size: 1rem;\n  outline: none;\n  transition: all 0.2s ease;\n}\n\n.login-form input:focus {\n  border-color: var(--accent-color, #f37335);\n  box-shadow: 0 0 4px rgba(243,115,53,0.3);\n}\n\n.btn-login {\n  background-color: var(--accent-color, #f37335);\n  color: white;\n  border: none;\n  width: 100%;\n  padding: 0.9rem;\n  font-size: 1rem;\n  border-radius: 10px;\n  cursor: pointer;\n  transition: background 0.3s;\n}\n\n.btn-login:hover {\n  background-color: #e85c1a;\n}\n\n.login-links {\n  margin-top: 1.2rem;\n  font-size: 0.9rem;\n  color: #555;\n}\n\n.login-links a {\n  color: var(--accent-color, #f37335);\n  text-decoration: none;\n  font-weight: 500;\n}\n\n.login-links a:hover {\n  text-decoration: underline;\n}\n\n.forgot-password {\n  display: block;\n  margin-bottom: 0.8rem;\n}\n"
+        }
+    ]
+}

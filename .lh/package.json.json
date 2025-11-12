@@ -1,0 +1,26 @@
+{
+    "sourceFile": "package.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1760419626134,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1760419664240,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,5 @@\n-\"scripts\": {\n-  \"dev\": \"nodemon server.js\"\n-},\n+\n {\n   \"name\": \"willpig_studio\",\n   \"version\": \"1.0.0\",\n   \"main\": \"app.js\",\n@@ -21,4 +19,8 @@\n   \"keywords\": [],\n   \"author\": \"\",\n   \"license\": \"ISC\"\n }\n+\n+\"scripts\": {\n+  \"dev\": \"nodemon server.js\"\n+}\n"
+                },
+                {
+                    "date": 1761613130991,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,6 +21,6 @@\n   \"license\": \"ISC\"\n }\n \n \"scripts\": {\n-  \"dev\": \"nodemon server.js\"\n+  \"dev\": \"nodemon app.js\"\n }\n"
+                }
+            ],
+            "date": 1760419626134,
+            "name": "Commit-0",
+            "content": "\"scripts\": {\n  \"dev\": \"nodemon server.js\"\n},\n{\n  \"name\": \"willpig_studio\",\n  \"version\": \"1.0.0\",\n  \"main\": \"app.js\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"node app.js\"\n  },\n  \"dependencies\": {\n    \"cors\": \"^2.8.5\",\n    \"dotenv\": \"^17.2.3\",\n    \"ejs\": \"^3.1.10\",\n    \"express\": \"^5.1.0\",\n    \"mysql2\": \"^3.15.2\",\n    \"nodemon\": \"^3.1.10\"\n  },\n  \"description\": \"\",\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\"\n}\n"
+        }
+    ]
+}

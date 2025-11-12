@@ -1,0 +1,22 @@
+{
+    "sourceFile": "server.js/js",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1761861779996,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1761880698509,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -2,9 +2,13 @@\n import path from \"path\";\n \n const app = express();\n const __dirname = path.resolve();\n-\n+// Ruta para mostrar el formulario de login\n+app.get(\"/login\", (req, res) => {\n+  res.render(\"auth/login\");\n+});\n+// Configuraciones\n app.set(\"view engine\", \"ejs\");\n app.set(\"views\", path.join(__dirname, \"views\"));\n app.use(express.static(path.join(__dirname, \"public\")));\n app.use(express.urlencoded({ extended: true }));\n@@ -17,4 +21,5 @@\n // Servidor\n app.listen(3000, () => {\n   console.log(\"Servidor corriendo en http://localhost:3000\");\n });\n+\n"
+                }
+            ],
+            "date": 1761861779995,
+            "name": "Commit-0",
+            "content": "import express from \"express\";\nimport path from \"path\";\n\nconst app = express();\nconst __dirname = path.resolve();\n\napp.set(\"view engine\", \"ejs\");\napp.set(\"views\", path.join(__dirname, \"views\"));\napp.use(express.static(path.join(__dirname, \"public\")));\napp.use(express.urlencoded({ extended: true }));\n\n// Ruta para mostrar el formulario\napp.get(\"/register\", (req, res) => {\n  res.render(\"auth/register\");\n});\n\n// Servidor\napp.listen(3000, () => {\n  console.log(\"Servidor corriendo en http://localhost:3000\");\n});\n"
+        }
+    ]
+}

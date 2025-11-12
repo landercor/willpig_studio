@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicia sesión | Willpig Studio</title>
+    <link rel="stylesheet" href="style1.2.css" />
+</head>
+<body>
+
+    <main class="login-pocketIN">
+    <!-- Lado izquierdo con imagen del producto -->
+            <section class="login-visual">
+            <img src="/img/mockup-willpig.png" alt="Vista previa de Willpig Studio" />
+    </section>
+
+    <!-- Lado derecho con formulario -->
+    <section class="login-form-section">
+        <div class="login-box">
+        <h1>Inicia sesión</h1>
+        <p>Ingresa para seguir creando y leyendo historias ilustradas</p>
+
+        <form action="/login" method="POST" class="form-login">
+            <div class="form-group">
+                <label for="correo">Correo o nombre de usuario</label>
+                <input type="text" id="correo" name="correo" placeholder="Ingresa tu correo o nombre de usuario" required />
+            </div>
+
+        <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" placeholder="Tu contraseña" required />
+        </div>
+
+        <!-- Checkbox de “mantener sesión” -->
+        <div class="form-options">
+            <label>
+                <input type="checkbox" name="remember" />
+                Mantener sesión iniciada
+            </label>
+        </div>
+
+
+
+            <button type="submit" class="btn-login-pocket">Iniciar sesión</button>
+        </form>
+
+        <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
+
+        <div class="divider"><span>o continúa con</span></div>
+
+        <div class="social-login">
+            <button class="social-btn google"><img src="google" alt="gg">Continuar con Google</button>
+        </div>
+
+        <p class="register-text">¿Aún no tienes cuenta? <a href="/register">Regístrate</a></p>
+        </div>
+    </section>
+    </main>
+
+</body>
+</html>

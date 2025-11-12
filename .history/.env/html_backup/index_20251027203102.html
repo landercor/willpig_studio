@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Willpig Studio</title>
+  <link rel="stylesheet" href="style1.2.css" />
+  <link rel="icon" href="/public/img/img.ico/logo.ico">
+</head>
+<body>
+
+  <!-- Navbar -->
+<header class="navbar">
+  <div class="logo" onclick="window.location.href='index.html'">
+    <figure class="logo-fig">
+      <img src="/public/img/img.ico/logo.ico" alt="Willpig Studio Logo">
+    </figure>
+    <span class="logo-text">Willpig Studio</span>
+  </div>
+
+  <input type="text" class="search-bar" placeholder="Buscar o escribir una historia...">
+    </div>
+
+    <div class="nav-actions">
+      <div class="dropdown explore">
+        <button class="dropbtn">Escribir </button>
+        <div class="dropdown-content">
+
+          <a href="#">Crea tu historia</a>
+          <a href="#">Mis historias</a>
+
+        </div>
+      </div>
+
+          <div class="nav-actions">
+      <div class="dropdown explore">
+        <button class="dropbtn">Explorar </button>
+        <div class="dropdown-content">
+
+          <a href="#">Ficcion</a>
+          <a href="#">Fantasia</a>
+          <a href="#"> Historias cortas</a>
+          <a href="#">Humor</a>
+          <a href="#">Ciencia Ficción</a>
+          <a href="#">Aventura</a>
+        </div>
+      </div>
+
+      <div class="dropdown profile">
+        <button class="dropbtn">Perfil </button>
+        <div class="dropdown-content">
+          <a href="#">Notificaciones</a>
+          <a href="#">Biblioteca</a>
+          <a href="#">Idioma: Español</a>
+          <a href="#">Ayuda</a>
+          <a href="#">Configuración</a>
+          <a href="#">Cerrar sesión</a>
+        </div>
+      </div>
+    <div>
+      <button class="theme-color" id="theme-toggle">🌙</button>
+    </div>
+  </header>
+
+  <!-- Carrusel principal -->
+  <section class="hero-carousel">
+    <div class="carousel">
+      <div class="slide active">
+        <img src="/public/img/Amigo Oso no puedeg" alt="Historia destacada 1">
+        <div class="caption">
+          <h2>la flor de otoño</h2>
+          <button>Leer ahora</button>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/public/img/adivina-cuanto-te-quiero.banner.jpg" alt="Historia destacada 2">
+        <div class="caption">
+          <h2>adivina cuanto te quiero</h2>
+          <button>Leer ahora</button>
+        </div>
+      </div>
+      <div class="slide">
+        <img src="/public/img/Mi bosque.jpg" alt="Historia destacada 3">
+        <div class="caption">
+          <h2>Mi bosque</h2>
+          <button>Leer ahora</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="prev"> < </button>
+      <button class="next"> > </button>
+    </div>
+  </section>
+
+  <!-- Secciones con scroll horizontal -->
+  <section class="stories-section">
+    <h2>Sigue leyendo</h2>
+    <div class="scroll-container">
+      <div class="story-card"><img src="/public/img/Isla_R.jpg"><p>El guardián del lago</p></div>
+      <div class="story-card"><img src="/public/img/Bosque_m.jpg"><p>Vientos del Norte</p></div>
+      <div class="story-card"><img src="/public/img/Alicia.jpg"><p>Corazones de Cristal</p></div>
+      <div class="story-card"><img src="/public/img/la flor de otoño.jpg "><p>Sombras del Pasado</p></div>
+      <div class="story-card"><img src="/public/img/tapaAquiyalla.jpg"><p>Sombras del Pasado</p></div>
+      <div class="story-card"><img src="/public/img/grandegrandetapa.jpg"><p>Sombras del Pasado</p></div>
+    </div>
+  </section>
+
+  <section class="stories-section">
+    <h2>Recomendaciones para ti</h2>
+    <div class="scroll-container">
+      <div class="story-card"><img src="/public/img/adivina-cuanto-te-quiero.jpg"><p>La Llama y la Flor</p></div>
+      <div class="story-card"><img src="/public/img/debajo_de_la_luna.jpg"><p>Hijos del Viento</p></div>
+      <div class="story-card"><img src="/public/img/el pricipito.jpg"><p>Puertas del Tiempo</p></div>
+      <div class="story-card"><img src="/public/img/cuentos cortos.jpg"><p>Noche Eterna</p></div>
+      <div class="story-card"><img src="/public/img/Si soplo.jpg"><p>Noche Eterna</p></div>
+      <div class="story-card"><img src="/public/img/el que espera.jpg"><p>El que espera</p></div>
+
+    </div>
+  </section>
+
+  
+
+  <!-- Historia destacada -->
+  <section class="featured-story">
+    <img src="/public/img/Amigo Oso no puede dormir.jpg " alt="Historia destacada">
+    <div class="info">
+      <h2>Historia destacada</h2>
+      <p>Una aventura mágica que combina el poder de la imaginación con el misterio de los sueños perdidos.</p>
+      <button class="leer_story">Leer ahora</button>
+    </div>
+  </section>
+
+  <!-- Pie / comunidad -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Willpig-Studio Originals</a>
+      <a href="#">Language</a>
+      <a href="#">Writers</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Accessibility</a>
+      <a href="#">Help</a>
+    </div>
+    <p>© 2025 Willpig Studio</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

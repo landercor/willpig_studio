@@ -1,0 +1,644 @@
+/*============================ Variables CSS ========================*/
+:root {
+  --orange: #94d5e6;
+  --light-gray: #f5f5f5;
+  --text-dark: #333;
+  --text-light: #fff;
+  --hover-bg: #ffe7d6;
+  --transition: all 0.3s ease;
+  --radius: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === General === */
+body {
+  margin: 0;
+  background: var(--light-gray);
+  color: var(--text-dark);
+}
+
+/* 🌞 Modo claro por defecto */
+body {
+  background-color: rgb(22, 22, 22);
+  color: rgb(250, 250, 250);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  color: var(--orange);
+}
+/* === Navbar === */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #99d6e0;
+  padding: 8px 20px;
+  font-family: 'Helvetica Neue', sans-serif;
+  position: relative;
+  top: 0;
+  z-index: 10;
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.logo-fig img {
+  max-height: 58px; /* el logo nunca será más alto que esto */
+  width: auto; /* mantiene proporción */
+  object-fit: contain;
+  margin-right: 1px;
+  display: block; /* elimina efectos de línea base */
+  align-items: left;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0c2147;
+  margin-left: 5px;
+}
+
+.search-bar {
+  border-radius: 3px;
+  padding: 9px 15px;
+  border: none;
+  width: 300px;
+  outline: none;
+  font-size: 14px;
+  margin-right: 60%;
+}
+
+.S1mMa {
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  vertical-align: middle;
+  margin-right: 0.5px;
+  align-items: 14px;
+
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.1px;
+}
+
+/* Dropdown general */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.1px;
+  cursor: pointer;
+}
+
+/* Botones */
+.dropbtn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 6px;
+  color: var(--text-dark);
+  color: #121212;
+}
+
+/* Flechas */
+.S1mMa {
+  width: 12px;
+  height: 12px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+/* Avatar */
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Menú desplegable */
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 100;
+  min-width: 160px;
+}
+
+/* Mostrar al pasar el cursor */
+.dropdown:hover .dropdown-content {
+  display: flex;
+}
+
+/* Contenedor general */
+.dropdown.profile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Avatar */
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Flecha */
+.S1mMa {
+  width: 12px;
+  height: 12px;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+/* Menú desplegable */
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 100;
+  min-width: 160px;
+}
+
+/* Mostrar al pasar el cursor por el avatar o flecha */
+.dropdown.profile:hover .dropdown-content {
+  display: flex;
+}
+
+/* Mostrar al pasar el cursor por el trigger */
+.dropdown:hover .dropdown-content {
+  display: flex;
+}
+
+.modo-btn {
+  background: color(srgb rgb(230, 0, 0));
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.modo-btn:hover {
+  transform: scale(1.2);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropbtn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.1rem 0.5rem;
+  position: static;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 0.6rem 1rem;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {
+  background: var(--hover-bg);
+}
+
+/* === Carrusel === */
+.hero-carousel {
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  overflow: hidden;
+}
+
+.slide {
+  min-width: 100%;
+  position: relative;
+  transform: opacity 5s ease-in-out;
+}
+.slide {
+  display: block;
+}
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+  display: block;
+}
+
+
+
+.slide img {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  bottom: 5cqb;
+  left: 15px;button {
+  border: none;
+  border-radius: 25px; /* 🔸 más redondo */
+  padding: 10px 25px;
+  background-color: #5fa55a;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #88cc50; /* color cálido al pasar el cursor */
+  transform: scale(1.05);
+}
+
+  background: none;
+  color: #f0f0f0;
+  padding: 0.9rem;
+  border-radius: var(--radius);
+
+}
+
+.carousel-controls {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.carousel-controls button {
+  background: rgba(44, 44, 44, 0.5);
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+
+/* === Secciones de historias === */
+.stories-section {
+  margin: 2rem;
+  align-items: center;
+}
+
+.stories-section h2 {
+  margin-bottom: 1rem;
+  margin-left: 260px; /* leve desplazamiento visual para armonía */
+  font-size: 1.5rem;
+}
+
+.stories-section {
+  margin: 3rem auto;
+  max-width: 90%; /* limita el ancho total para que el título y libros estén alineados */
+}
+
+.scroll-container {
+  display: flex;
+  flex-wrap: wrap; /* permite que los libros salten a otra línea si no caben */
+  justify-content: center;
+  gap: 1rem;
+  padding: 10px;
+  overflow-x: auto; /* mantiene el scroll si hay demasiados */
+  box-sizing: border-box;
+  padding: 0.8rem 10px 1rem 10px;
+}
+
+.story-card {
+  flex: 1 1 150px; /*  permite adaptación dinámica */
+  max-width: 180px; /*  evita que crezcan demasiado */
+  min-width: 140px; /*  evita que se deformen en zoom alto */
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: var(--transition);
+  background-color: #f5f5f5;
+  color: #000000;
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1) all 0.3s;
+}
+
+
+.story-card img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius) var(--radius) 0 0;
+  object-fit: cover;
+  color: #000000;
+}
+
+.story-card:hover {
+  transform: scale(1.05);
+}
+
+.story-card img {
+  width: 100%;
+  border-radius: var(--radius) var(--radius) 0 0;
+  height: 220px;
+  object-fit: cover;
+}
+
+.leer_story {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 15px; /* 🔸 más redondo */
+  padding: 10px 25px;
+  background-color: #5fa55a;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.leer_story:hover {
+  background-color: #88cc50; /* color cálido al pasar el cursor */
+  transform: scale(1.05);
+}
+
+.navbar:hover .dropbtn {
+  color: var(--text-bright);
+}
+.story-card h3 {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+  color: #ffffff;
+  transition: all 0.3s ease;
+  background-color: #000000;
+}
+.scroll-btn {
+  position: absolute;
+  top: 35%;
+  background: rgba(255,255,255,0.8);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0.3rem 0.6rem;
+  transition: var(--transition);
+}
+
+.scroll-btn:hover {
+  background: var(--orange);
+  color: rgb(201, 13, 13);
+}
+
+.scroll-btn.left { left: -5px; }
+.scroll-btn.right { right: -5px; }
+
+/* === Historia destacada === */
+.featured-story {
+  display: flex;
+  margin: 3rem 2rem;
+  background: white;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  color: black;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  border: #f0f0f0 1px solid;
+}
+
+.featured-story img {
+  width: 50%;
+  object-fit: cover;
+}
+
+.featured-story .info {
+  padding: 2rem;
+}
+
+/* === Footer === */
+footer {
+  background: #ffffff;
+  text-align: center;
+  padding: 2rem;
+  font-size: 0.9rem;
+  color: #012464;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+
+}
+
+.footer-links a {
+  color: #444;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.scroll-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
+  flex-wrap: wrap;         /* Para que salten de línea si hay muchas */
+  gap: 1.5rem;             /* Espaciado entre tarjetas */
+  padding: 20px;
+}
+
+.theme-color {
+  background: #99d6e0;
+  border: none;
+  color: var(--text-light);
+  font-weight: 100;
+  cursor: pointer;
+}
+
+body {
+  background-color: white;
+  color: black;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+body.dark-mode {
+  background-color: black;
+  color: white;
+}
+body.dark-mode .featured-story {
+  background-color: #1c1c1c;
+  color: #f0f0f0;
+}
+/*=============================================================Final pagina principal==================================================================================*/
+
+/*============================ Ajustes estilo pagina historia==================================================================================*/
+/* ====== FORMULARIO DE REGISTRO ====== */
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--background-color, #fff);
+}
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  background-image: url('/public/img/fondo_register.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.register-card {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.register-card h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--accent-color, #94d5e6);
+}
+
+.register-card p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.register-form .form-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+}
+
+.register-form label {
+  display: block;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.3rem;
+}
+
+.register-form input {
+  width: 00%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.register-form input:focus {
+  border-color: var(--accent-color, #f5f5f5);
+  box-shadow: 0 0 4px rgba(243,115,53,0.3);
+}
+
+.btn-register {
+  background-color: var(--accent-color, #040225);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-register:hover {
+  background-color: #3d3d3d;
+}
+
+.login-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  margin: 8px 0;
+  margin-inline: var(--hover-bg);
+  border: black 1px solid;
+  border-radius: 15px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-link a {
+  color: var(--accent-color, #f37335);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+  margin: auto;
+  /*margin-inline: var(--hover-bg);*/
+  /*border: #000000 1px solid;*/
+}
+
+

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión | Willpig Studio</title>
+    <link rel="stylesheet" href="/public/css/style1.2.css" />
+    <link rel="icon" href="/public/img/img.ico/logo.ico" />
+</head>
+<body>
+
+<main class="loginIn-container">
+    <div class="loginPin-card">
+    <h1>Inicia sesión</h1>
+    <p>Bienvenido de nuevo a Willpig Studio</p>
+
+    <form action="/loginIni" method="POST" class="loginIN-form">
+        <div class="formIN-group">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="correo" placeholder="ejemplo@email.com" required />
+        </div>
+
+        <div class="formIN-group">
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="Tu contraseña" required />
+        </div>
+
+        <button type="submit" class="btn-loginISi">Iniciar sesión</button>
+    </form>
+
+    <div class="loginIN-links">
+        <a href="#" class="forgotvid-password">¿Olvidaste tu contraseña?</a>
+        <p>¿No tienes cuenta? <a href="/register">Regístrate aquí</a></p>
+    </div>
+    </div>
+</main>
+
+</body>
+</html>
