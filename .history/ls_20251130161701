@@ -20,5 +20,5 @@ core.bare=false
 core.logallrefupdates=true
 core.symlinks=false
 core.ignorecase=true
-remote.origin.url=git@github.com:landercor/willpigstudio.git
+remote.origin.url=git@github.com:landercor/mi-primer-repo.git
 remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
