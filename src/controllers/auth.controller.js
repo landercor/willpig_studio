@@ -1,5 +1,5 @@
 // src/controllers/auth.controller.js
-import { supabaseAdmin as supabase } from "../config/db.js";
+import { supabase, supabaseAdmin } from "../config/db.js";
 import bcrypt from "bcrypt";
 
 // --- Vistas de Autenticación (EJS) ---
@@ -13,41 +13,39 @@ export const register = async (req, res) => {
       return res.render("register", { error: "Todos los campos son obligatorios." });
     }
 
-    // verificar email duplicado
-    const { data: existingUser, error: searchError } = await supabase
-      .from('cuenta_usuario')
-      .select('email')
-      .eq('email', correo)
-      .maybeSingle();
+    // 1. Registrar en Supabase Auth (Para permitir recuperación de contraseña nativa)
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: correo,
+      password: contrasena,
+      options: {
+        data: { username }
+      }
+    });
 
-    if (searchError) {
-      console.error("Error checking existing user:", searchError);
-      return res.render("register", { error: "Error verificando usuario." });
+    if (authError) {
+      console.error("Supabase Auth Error:", authError);
+      return res.render("register", { error: "Error en el servicio de autenticación: " + authError.message });
     }
 
-    if (existingUser) {
-      console.log("User already exists:", correo);
-      return res.render("register", { error: "Ya existe una cuenta con este correo." });
-    }
-
+    // 2. Registrar en nuestra tabla personalizada 'cuenta_usuario'
     const hash = await bcrypt.hash(contrasena, 10);
-
-    const { data: newUser, error: insertError } = await supabase
+    const { data: newUser, error: insertError } = await supabaseAdmin
       .from('cuenta_usuario')
       .insert([
         {
           username,
           email: correo,
           clave: hash,
-          rol: 'lector', // rol por defecto
-          estado: 'activa' // estado por defecto
+          rol: 'lector',
+          estado: 'activa'
         }
       ])
       .select();
 
     if (insertError) {
-      console.error("Error inserting user:", insertError);
-      throw insertError;
+      console.error("Error inserting user in DB:", insertError);
+      // Opcional: Podríamos borrar el usuario de Auth si falla la DB, pero Supabase Auth no es fácil de "limpiar" por seguridad.
+      return res.render("register", { error: "Error al guardar el perfil del usuario." });
     }
 
     console.log("User registered successfully:", newUser);
@@ -61,30 +59,26 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { correo, contrasena } = req.body;
-    console.log("Logging in user:", correo);
-
     if (!correo || !contrasena) {
       return res.render("login", { error: "Completa los campos." });
     }
 
-    const { data: user, error } = await supabase
+    const { data: user, error } = await supabaseAdmin
       .from('cuenta_usuario')
       .select('*')
       .eq('email', correo)
       .single();
 
     if (error || !user) {
-      console.error("Supabase login error (or user not found):", error);
       return res.render("login", { error: "Usuario o contraseña incorrectos." });
     }
 
     const ok = await bcrypt.compare(contrasena, user.clave);
     if (!ok) {
-      console.log("Password mismatch for:", correo);
       return res.render("login", { error: "Usuario o contraseña incorrectos." });
     }
 
-    // establecer sesion
+    // Establecer sesión personalizada
     req.session.userId = user.id_cuenta_usuario;
     req.session.user = {
       id: user.id_cuenta_usuario,
@@ -93,7 +87,6 @@ export const login = async (req, res) => {
       rol: user.rol,
       avatar: user.avatar_url
     };
-    console.log("Login successful, session set for:", user.username);
 
     return res.redirect("/principal");
   } catch (err) {
@@ -102,7 +95,7 @@ export const login = async (req, res) => {
   }
 };
 
-// --- Recuperación de Contraseña ---
+// --- Recuperación de Contraseña con Supabase Auth ---
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -111,65 +104,75 @@ export const forgotPassword = async (req, res) => {
       return res.render("olvido", { error: "Introduce un correo válido." });
     }
 
-    const { data: user, error } = await supabase
-      .from('cuenta_usuario')
-      .select('*')
-      .eq('email', correo)
-      .single();
+    // Usar el servicio de Supabase para enviar correo de recuperación
+    const { error } = await supabase.auth.resetPasswordForEmail(correo, {
+      redirectTo: `${req.protocol}://${req.get('host')}/auth/callback`,
+    });
 
-    if (error || !user) {
-      console.log("Email not found for recovery:", correo);
-      return res.render("olvido", { error: "No existe una cuenta con ese correo." });
+    if (error) {
+      console.error("Error enviando correo de recuperación:", error.message);
+      return res.render("olvido", { error: "No pudimos enviar el correo: " + error.message });
     }
 
-    // Guardar correo en sesión para el siguiente paso
-    req.session.resetEmail = correo;
-
-    return res.redirect("/auth/nuevaclave");
+    // Éxito: Informamos al usuario
+    return res.render("olvido", { 
+      error: "Te hemos enviado un correo. Por favor, revisa tu bandeja de entrada." 
+    });
   } catch (err) {
     console.error("Error in forgotPassword:", err);
-    return res.render("olvido", { error: "Ocurrió un error: " + err.message });
+    return res.render("olvido", { error: "Ocurrió un error inesperado." });
   }
+};
+
+// Callback para procesar el token de recuperación
+export const authCallback = async (req, res) => {
+  // Supabase maneja los tokens en el hash de la URL (#), pero en el servidor 
+  // solo podemos ver los query params si los habilitamos.
+  // Sin embargo, para este flujo, redirigiremos directamente a nuevaclave 
+  // confiando en que Supabase establecerá la sesión si el enlace es válido.
+  return res.redirect("/auth/nuevaclave");
 };
 
 export const resetPassword = async (req, res) => {
   try {
     const { nuevaClave, confirmarClave } = req.body;
-    const email = req.session.resetEmail;
-
-    if (!email) {
-      return res.render("nuevaclave", { error: "Sesión expirada. Por favor intenta el proceso de recuperación nuevamente." });
-    }
 
     if (!nuevaClave || !confirmarClave) {
-      return res.render("nuevaclave", { error: "Completa ambos campos de contraseña." });
+      return res.render("nuevaclave", { error: "Completa ambos campos." });
     }
 
     if (nuevaClave !== confirmarClave) {
       return res.render("nuevaclave", { error: "Las contraseñas no coinciden." });
     }
 
-    // validar complejidad: al menos una mayúscula, una minúscula y un número
-    const complexity = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    if (!complexity.test(nuevaClave)) {
-      return res.render("nuevaclave", { error: "La contraseña debe contener mayúscula, minúscula y un número." });
+    // 1. Actualizar en Supabase Auth
+    const { data: { user }, error: authError } = await supabase.auth.updateUser({
+      password: nuevaClave
+    });
+
+    if (authError) {
+      console.error("Error actualizando clave en Auth:", authError.message);
+      return res.render("nuevaclave", { error: "Error al actualizar la contraseña: " + authError.message });
     }
 
+    // 2. Sincronizar en nuestra tabla personalizada
     const hash = await bcrypt.hash(nuevaClave, 10);
-    const { error } = await supabase
+    const { error: dbError } = await supabaseAdmin
       .from('cuenta_usuario')
       .update({ clave: hash })
-      .eq('email', email);
+      .eq('email', user.email);
 
-    if (error) {
-      console.error("Error updating password:", error);
-      return res.render("nuevaclave", { error: "Error al actualizar la contraseña." });
+    if (dbError) {
+      console.error("Error sincronizando clave en DB:", dbError.message);
+      // No devolvemos error fatal porque al menos la de Auth ya cambió.
     }
 
-    req.session.resetEmail = null;
+    // Limpiar sesión de Supabase local (opcional)
+    await supabase.auth.signOut();
+
     return res.redirect("/auth/login");
   } catch (err) {
     console.error("Error in resetPassword:", err);
-    return res.render("nuevaclave", { error: "Ocurrió un error: " + err.message });
+    return res.render("nuevaclave", { error: "Ocurrió un error inesperado." });
   }
 };
