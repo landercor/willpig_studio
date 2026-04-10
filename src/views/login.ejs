@@ -36,10 +36,11 @@
                 <button type="submit" class="btn-login-pocket">Iniciar sesión</button>
             </form>
 
-            <!-- ENLACES -->
+            <!-- redirreción para la recuperación de contraseña-->
             <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
             
-            <!-- si venimos de la página de olvido con mensaje, se muestra -->
+            <!--funciona para dar un mensaje de error al presionar olvidar contraseña -->
+
             <% if (typeof error !== "undefined" && error.startsWith('Se ha enviado')) { %>
                 <p class="text-success"><%= error %></p>
             <% } %>
@@ -54,8 +55,7 @@
 
             <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
 
-            <!-- Mostrar error si existe -->
-
+            <!--funcionalidad mensaje de error, si los datos estan mal --> 
             <% if (typeof error !== "undefined") { %>
                 <p class="text-danger"><%= error %></p>
             <% } %>
@@ -63,7 +63,6 @@
         </div>
     </div>
 </div>
-
     <% include('partials/footer') %>
 </body>
 </html>
