@@ -8,7 +8,8 @@ async function start() {
     // For now, we assume Supabase is ready.
     console.log("Conectado a Supabase (cliente inicializado)");
 
-    app.listen(2000, () => console.log("Servidor corriendo en http://localhost:2000"));
+    const PORT = process.env.PORT || 2000;
+    app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
   } catch (err) {
     console.error("Error arrancando la app:", err);
     process.exit(1);
