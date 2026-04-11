@@ -7,35 +7,76 @@
   --hover-bg: #ffe7d6;
   --transition: all 0.3s ease;
   --radius: 10px;
-  font-family: 'Poppins', sans-serif;
+  --main-font: "Subjectivity", Arial, sans-serif;
+  /* store font-family as a variable */
 }
+
+/*======================= Fonts =======================*/
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Regular.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Regular */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Regular.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Regular.ttf") format("truetype");
+  font-weight: 400;
+  /* normal */
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Bold.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Bold.ttf") format("truetype");
+  font-weight: 700;
+  /* bold */
+  font-style: normal;
+}
+
+/* Italic */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Italic.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/*======================= Usage =======================*/
+body {
+  font-family: var(--main-font);
+}
+
 
 /* === General === */
 body {
   margin: 0;
-  background: var(--light-gray);
-  color: var(--text-dark);
-}
-
-/* 🌞 Modo claro por defecto */
-body {
-  background-color: rgb(22, 22, 22);
-  color: rgb(250, 250, 250);
+  background-color: white;
+  color: black;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-
 body.dark-mode {
-  background-color: #121212;
-  color: #f0f0f0;
+  background-color: black;
+  color: white;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 a:hover {
   color: var(--orange);
 }
+
 /* === Navbar === */
 .navbar {
   display: flex;
@@ -52,11 +93,14 @@ a:hover {
 }
 
 .logo-fig img {
-  max-height: 58px; /* el logo nunca será más alto que esto */
-  width: auto; /* mantiene proporción */
+  max-height: 58px;
+  /* el logo nunca será más alto que esto */
+  width: auto;
+  /* mantiene proporción */
   object-fit: contain;
   margin-right: 1px;
-  display: block; /* elimina efectos de línea base */
+  display: block;
+  /* elimina efectos de línea base */
   align-items: left;
 }
 
@@ -138,24 +182,6 @@ a:hover {
   object-fit: cover;
 }
 
-/* Menú desplegable */
-.dropdown-content {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  display: none;
-  flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  z-index: 100;
-  min-width: 160px;
-}
-
-/* Mostrar al pasar el cursor */
-.dropdown:hover .dropdown-content {
-  display: flex;
-}
-
 /* Contenedor general */
 .dropdown.profile {
   position: relative;
@@ -164,42 +190,23 @@ a:hover {
   cursor: pointer;
 }
 
-/* Avatar */
-.avatar-sm {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-/* Flecha */
-.S1mMa {
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-  vertical-align: middle;
-}
-
 /* Menú desplegable */
 .dropdown-content {
   position: absolute;
   top: 100%;
   right: 0;
   background-color: white;
+  border-radius: var(--radius);
   display: none;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   z-index: 100;
   min-width: 160px;
 }
 
-/* Mostrar al pasar el cursor por el avatar o flecha */
+/* Mostrar al pasar el cursor */
+.dropdown:hover .dropdown-content,
 .dropdown.profile:hover .dropdown-content {
-  display: flex;
-}
-
-/* Mostrar al pasar el cursor por el trigger */
-.dropdown:hover .dropdown-content {
   display: flex;
 }
 
@@ -231,17 +238,7 @@ a:hover {
   position: static;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background: white;
-  border-radius: var(--radius);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
 .dropdown-content a {
   display: block;
@@ -260,26 +257,14 @@ a:hover {
 }
 
 .carousel {
+  position: relative;
+  overflow: hidden;
   display: flex;
-  overflow: hidden;
-}
-
-.slide {
-  min-width: 100%;
-  position: relative;
-  transform: opacity 5s ease-in-out;
-}
-.slide {
-  display: block;
-}
-
-.carousel {
-  position: relative;
-  overflow: hidden;
 }
 
 .slide {
   display: none;
+  min-width: 100%;
   width: 100%;
   transition: opacity 1s ease-in-out;
 }
@@ -297,21 +282,25 @@ a:hover {
 .caption {
   position: absolute;
   bottom: 5cqb;
-  left: 15px;button {
-  border: none;
-  border-radius: 25px; /* 🔸 más redondo */
-  padding: 10px 25px;
-  background-color: #5fa55a;
-  color: rgb(255, 255, 255);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+  left: 15px;
 
-button:hover {
-  background-color: #88cc50; /* color cálido al pasar el cursor */
-  transform: scale(1.05);
-}
+  button {
+    border: none;
+    border-radius: 25px;
+    /* 🔸 más redondo */
+    padding: 10px 25px;
+    background-color: #5fa55a;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    background-color: #88cc50;
+    /* color cálido al pasar el cursor */
+    transform: scale(1.05);
+  }
 
   background: none;
   color: #f0f0f0;
@@ -347,47 +336,43 @@ button:hover {
 
 .stories-section h2 {
   margin-bottom: 1rem;
-  margin-left: 260px; /* leve desplazamiento visual para armonía */
+  margin-left: 260px;
+  /* leve desplazamiento visual para armonía */
   font-size: 1.5rem;
 }
 
 .stories-section {
   margin: 3rem auto;
-  max-width: 90%; /* limita el ancho total para que el título y libros estén alineados */
+  max-width: 90%;
+  /* limita el ancho total para que el título y libros estén alineados */
 }
 
 .scroll-container {
   display: flex;
-  flex-wrap: wrap; /* permite que los libros salten a otra línea si no caben */
+  flex-wrap: wrap;
+  /* permite que los libros salten a otra línea si no caben */
   justify-content: center;
   gap: 1rem;
   padding: 10px;
-  overflow-x: auto; /* mantiene el scroll si hay demasiados */
+  overflow-x: auto;
+  /* mantiene el scroll si hay demasiados */
   box-sizing: border-box;
   padding: 0.8rem 10px 1rem 10px;
 }
 
 .story-card {
-  flex: 1 1 150px; /*  permite adaptación dinámica */
-  max-width: 180px; /*  evita que crezcan demasiado */
-  min-width: 140px; /*  evita que se deformen en zoom alto */
-  background: white;
+  flex: 1 1 150px;
+  /*  permite adaptación dinámica */
+  max-width: 180px;
+  /*  evita que crezcan demasiado */
+  min-width: 140px;
+  /*  evita que se deformen en zoom alto */
   border-radius: var(--radius);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: var(--transition);
   background-color: #f5f5f5;
   color: #000000;
   transition: cubic-bezier(0.075, 0.82, 0.165, 1) all 0.3s;
-}
-
-
-.story-card img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius) var(--radius) 0 0;
-  object-fit: cover;
-  color: #000000;
 }
 
 .story-card:hover {
@@ -396,16 +381,18 @@ button:hover {
 
 .story-card img {
   width: 100%;
-  border-radius: var(--radius) var(--radius) 0 0;
   height: 220px;
+  border-radius: var(--radius) var(--radius) 0 0;
   object-fit: cover;
+  color: #000000;
 }
 
 .leer_story {
   margin-top: 10px;
   margin-bottom: 10px;
   border: none;
-  border-radius: 15px; /* 🔸 más redondo */
+  border-radius: 15px;
+  /* 🔸 más redondo */
   padding: 10px 25px;
   background-color: #5fa55a;
   color: rgb(255, 255, 255);
@@ -413,14 +400,17 @@ button:hover {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
 .leer_story:hover {
-  background-color: #88cc50; /* color cálido al pasar el cursor */
+  background-color: #88cc50;
+  /* color cálido al pasar el cursor */
   transform: scale(1.05);
 }
 
 .navbar:hover .dropbtn {
   color: var(--text-bright);
 }
+
 .story-card h3 {
   margin: 0.5rem 0;
   font-size: 1rem;
@@ -429,10 +419,11 @@ button:hover {
   transition: all 0.3s ease;
   background-color: #000000;
 }
+
 .scroll-btn {
   position: absolute;
   top: 35%;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
@@ -446,8 +437,13 @@ button:hover {
   color: rgb(201, 13, 13);
 }
 
-.scroll-btn.left { left: -5px; }
-.scroll-btn.right { right: -5px; }
+.scroll-btn.left {
+  left: -5px;
+}
+
+.scroll-btn.right {
+  right: -5px;
+}
 
 /* === Historia destacada === */
 .featured-story {
@@ -509,10 +505,14 @@ footer {
 
 .scroll-container {
   display: flex;
-  justify-content: center; /* Centra horizontalmente */
-  align-items: center;     /* Centra verticalmente */
-  flex-wrap: wrap;         /* Para que salten de línea si hay muchas */
-  gap: 1.5rem;             /* Espaciado entre tarjetas */
+  justify-content: center;
+  /* Centra horizontalmente */
+  align-items: center;
+  /* Centra verticalmente */
+  flex-wrap: wrap;
+  /* Para que salten de línea si hay muchas */
+  gap: 1.5rem;
+  /* Espaciado entre tarjetas */
   padding: 20px;
 }
 
@@ -534,14 +534,17 @@ body.dark-mode {
   background-color: black;
   color: white;
 }
+
 body.dark-mode .featured-story {
   background-color: #1c1c1c;
   color: #f0f0f0;
 }
+
 /*=======Final pagina principal======*/
 
 /* ======= FORMULARIO DE REGISTRO ======= */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -558,7 +561,7 @@ html, body {
 
 .logo-LTRA {
   position: absolute;
-  top: 40px ;
+  top: 40px;
   left: 460px;
 }
 
@@ -570,7 +573,7 @@ html, body {
   background: rgba(255, 255, 255, 0.96);
   padding: 2.5rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.20);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20);
   width: 100%;
   max-width: 420px;
   text-align: center;
@@ -589,7 +592,8 @@ html, body {
 }
 
 .register-form input {
-  width: 100%; /* ✅ ya no corta el ancho */
+  width: 100%;
+  /* ✅ ya no corta el ancho */
   padding: 0.8rem;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -598,7 +602,7 @@ html, body {
 
 .register-form input:focus {
   border-color: var(--accent-color, #f39135);
-  box-shadow: 0 0 4px rgba(243,115,53,0.3);
+  box-shadow: 0 0 4px rgba(243, 115, 53, 0.3);
 }
 
 /* Botón */
@@ -631,29 +635,6 @@ html, body {
 
 /* ====== FORMULARIO DE LOGIN ====== */
 
-main.loginIn-container .btn-loginIn {
-  .loginIn-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-}
-.loginPin-card {
-  background: #fff;
-  padding: 2.5rem;
-  border-radius: 15px;
-}
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-  
-
-}
-html, body {
-  margin: 0;
-  padding: 0;
-}
 .register-container {
   display: flex;
   justify-content: center;
@@ -675,7 +656,7 @@ html, body {
   background: #fff;
   padding: 2.5rem;
   border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 420px;
   text-align: center;
@@ -762,7 +743,7 @@ html, body {
 
 .form-login input:focus {
   border-color: var(--accent-color, #f37335);
-  box-shadow: 0 0 5px rgba(243,115,53,0.3);
+  box-shadow: 0 0 5px rgba(243, 115, 53, 0.3);
 }
 
 .btn-login-pocket {
@@ -798,7 +779,8 @@ html, body {
   margin-left: 1rem;
 }
 
-.divider::before, .divider::after {
+.divider::before,
+.divider::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -807,8 +789,13 @@ html, body {
   background-color: #ddd;
 }
 
-.divider::before { left: 0; }
-.divider::after { right: 0; }
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
 
 .social-login {
   display: flex;
@@ -829,7 +816,11 @@ html, body {
   background-color: #f8f8f8;
 }
 
-.google { color: #252525; }
+.google {
+  color: #252525;
+}
+
+/* Adaptar lo de login por lo de olvido de contraseña */
 /*
 .telefono { color: #000; }
 .facebook { color: #e66000; }
@@ -842,6 +833,7 @@ social-btn google img {
   gap: 10px;
   padding: 0.5rem 1rem;
 }
+
 .register-text {
   margin-top: 1.5rem;
   font-size: 0.9rem;
@@ -917,7 +909,8 @@ social-btn google img {
   gap: 1rem;
 }
 
-.btn-canceler, .btn-savever {
+.btn-canceler,
+.btn-savever {
   padding: 0.6rem 1.4rem;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -931,14 +924,18 @@ social-btn google img {
   color: #333;
 }
 
-.btn-canceler:hover { background: #e5e5e5; }
+.btn-canceler:hover {
+  background: #e5e5e5;
+}
 
 .btn-savever {
   background: var(--accent-color, #83e2fa);
   color: white;
 }
 
-.btn-savever:hover { background: #9af1d4; }
+.btn-savever:hover {
+  background: #9af1d4;
+}
 
 /* Layout general */
 .new-storys {
@@ -981,6 +978,7 @@ social-btn google img {
   display: flex;
   justify-content: center;
 }
+
 /*
 .cover-box {
   width: 56%;
@@ -1021,6 +1019,7 @@ social-btn google img {
   left: 0;
   z-index: 1;
 }
+
 .cover-box img {
   width: 200px;
   height: 280px;
@@ -1049,7 +1048,7 @@ social-btn google img {
   background: #fff;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .story-details h3 {
@@ -1202,7 +1201,8 @@ social-btn google img {
 
 /* Cada tarjeta portada de los libros */
 .library-item {
-  width: 140px; /* tamaño similar al de Wattpad */
+  width: 140px;
+  /* tamaño similar al de Wattpad */
   text-align: left;
   color: #333;
   transition: transform 0.25s ease;
@@ -1278,6 +1278,7 @@ social-btn google img {
   .library-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .cover {
     height: 170px;
   }
@@ -1287,4 +1288,275 @@ social-btn google img {
   .library-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================
+   Estilos específicos de la vista story.ejs
+   ============================ */
+
+.story-header-bg {
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  position: relative;
+  margin-bottom: -100px;
+}
+
+.story-header-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
+}
+
+.story-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
+}
+
+.story-info-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.story-cover {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.story-meta {
+  flex: 1;
+  min-width: 300px;
+}
+
+.story-meta h1 {
+  margin-top: 0;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.author-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  color: #666;
+  font-weight: 500;
+}
+
+.author-badge img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.description {
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.btn-read-start {
+  background: #e60023;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s;
+}
+
+.btn-read-start:hover {
+  background: #ad001a;
+}
+
+.chapters-list {
+  margin-top: 40px;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.chapter-item {
+  display: block;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  text-decoration: none;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.chapter-item:hover {
+  background: #f9f9f9;
+  padding-left: 20px;
+}
+
+.chapter-item:last-child {
+  border-bottom: none;
+}
+
+.chapter-date {
+  float: right;
+  color: #999;
+  font-size: 0.8rem;
+}
+
+/* ============================
+   Estilos específicos de la vista read.ejs
+   ============================ */
+
+/* Estilos específicos para el modo lectura */
+body.reading-mode {
+  background-color: #f8f9fa;
+  color: #333;
+  font-family: 'Merriweather', serif;
+  /* Fuente serif para lectura */
+  line-height: 1.8;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.reading-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  min-height: 100vh;
+}
+
+/* Temas */
+body.theme-dark {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+body.theme-dark .reading-container {
+  background-color: #252525;
+  box-shadow: none;
+}
+
+body.theme-sepia {
+  background-color: #f4ecd8;
+  color: #5b4636;
+}
+
+body.theme-sepia .reading-container {
+  background-color: #fdf6e3;
+}
+
+/* Controles flotantes */
+.reading-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 10px;
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+}
+
+body.theme-dark .reading-controls {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.control-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+body.theme-dark .control-btn {
+  color: white;
+}
+
+body.theme-dark .control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chapter-content {
+  font-size: 1.1rem;
+  /* Default size */
+  margin-top: 40px;
+  white-space: pre-wrap;
+  /* Preserve line breaks */
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.nav-btn {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px 20px;
+  border: 1px solid currentColor;
+  border-radius: 5px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.nav-btn:hover {
+  opacity: 1;
+}
+
+.nav-btn.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  border-color: transparent;
+}
+
+/* Tamaños de fuente */
+body.font-small .chapter-content {
+  font-size: 1rem;
+}
+
+body.font-large .chapter-content {
+  font-size: 1.3rem;
+}
+
+body.font-xlarge .chapter-content {
+  font-size: 1.5rem;
 }

@@ -1,0 +1,62 @@
+<header class="navbar">
+
+  <div class="logo" onclick="window.location.href='/'">
+    <figure class="logo-fig">
+      <img src="/img/img.ico/logo.ico" alt="">
+    </figure>
+    <span class="logo-text"></span>
+  </div>
+
+  <input type="text" class="search-bar" placeholder="Buscar...">
+
+  <div class="nav-actions">
+
+    <% if (loggerUser) { %>
+
+      <!-- ESCRIBIR -->
+      <div class="dropdown">
+        <div class="dropdown-trigger">
+          <button class="dropbtn">Escribir</button>
+          <img class="S1mMa" src="/img/img.ico/wp-flecha-abajo.svg">
+        </div>
+        <div class="dropdown-content">
+          <a href="/historias/crear">Crea tu historia</a>
+          <a href="/historias/mis">Mis historias</a>
+        </div>
+      </div>
+
+      <!-- EXPLORAR -->
+      <div class="dropdown">
+        <div class="dropdown-trigger">
+          <button class="dropbtn">Explorar</button>
+          <img class="S1mMa" src="/img/img.ico/wp-flecha-abajo.svg">
+        </div>
+        <div class="dropdown-content">
+          <a href="/categoria/ficcion">Ficción</a>
+          <a href="/categoria/fantasia">Fantasía</a>
+          <a href="/categoria/aventura">Aventura</a>
+        </div>
+      </div>
+
+      <!-- PERFIL -->
+      <div class="dropdown profile">
+        <img src="<%= loggerUser.avatar || '/img/default-avatar.png' %>" class="avatar avatar-sm">
+        <img class="S1mMa" src="/img/img.ico/wp-flecha-abajo.svg">
+        <div class="dropdown-content">
+          <a href="/usuario/perfil">Mi perfil</a>
+          <a href="/principal/biblioteca">Biblioteca</a>
+          <a href="/auth/logout">Cerrar sesión</a>
+        </div>
+      </div>
+
+      <% } else { %>
+
+        <a href="/auth/login" class="btn">Iniciar sesión</a>
+        <a href="/auth/register" class="btn btn-primary">Registrarse</a>
+
+        <% } %>
+
+  </div>
+
+  <button class="theme-color" id="theme-toggle"></button>
+</header>

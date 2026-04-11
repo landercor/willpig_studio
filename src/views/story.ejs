@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= cuento.titulo %> | Willpig Studio
+    </title>
+    <link rel="stylesheet" href="/public/css/style1.2.css">
+    <link rel="icon" href="/img/img.ico/logo.ico">
+</head>
+
+<body>
+    <%- include('partials/navbar', { loggerUser: user }) %> <!-- Assuming user is passed -->
+
+        <% const bgUrl=cuento.portada_url || '/img/default-bg.jpg' ; %>
+            <div class="story-header-bg" <%- `style="background-image: url('${bgUrl}');" ` %>></div>
+
+            <div class="story-container">
+                <div class="story-info-card">
+                    <img src="<%= cuento.portada_url || '/img/default-portada.jpg' %>" alt="Portada"
+                        class="story-cover">
+
+                    <div class="story-meta">
+                        <h1>
+                            <%= cuento.titulo %>
+                        </h1>
+
+                        <div class="author-badge">
+                            <img src="<%= (cuento.cuenta_usuario && cuento.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>"
+                                alt="Avatar">
+                            <span>@<%= (cuento.cuenta_usuario && cuento.cuenta_usuario.username) || 'Autor' %></span>
+                        </div>
+
+                        <div class="stats">
+                            <span>👁️ <%= cuento.vistas || 0 %> Lecturas</span>
+                            <span>🏷️ <%= cuento.categorias ? cuento.categorias.nombre : 'General' %></span>
+                        </div>
+
+                        <p class="description">
+                            <%= cuento.descripcion %>
+                        </p>
+
+                        <% if (cuento.capitulos && cuento.capitulos.length> 0) { %>
+                            <a href="/capitulos/read/<%= cuento.capitulos[0].id_capitulo %>" class="btn-read-start">Leer
+                                Primer Capítulo</a>
+                            <% } else { %>
+                                <button class="btn-read-start" disabled
+                                    style="background:#ccc; cursor:not-allowed;">Próximamente</button>
+                                <% } %>
+                    </div>
+                </div>
+
+                <div class="chapters-list">
+                    <h3>Tabla de Contenidos</h3>
+                    <% if (cuento.capitulos && cuento.capitulos.length> 0) { %>
+                        <% cuento.capitulos.forEach(cap=> { %>
+                            <a href="/capitulos/read/<%= cap.id_capitulo %>" class="chapter-item">
+                                <span>
+                                    <%= cap.titulo %>
+                                </span>
+                                <span class="chapter-date">
+                                    <%= new Date(cap.created_at).toLocaleDateString() %>
+                                </span>
+                            </a>
+                            <% }) %>
+                                <% } else { %>
+                                    <p style="color:#777; text-align:center;">El autor aún no ha publicado capítulos.
+                                    </p>
+                                    <% } %>
+                </div>
+            </div>
+
+            <%- include('partials/footer') %>
+</body>
+
+</html>

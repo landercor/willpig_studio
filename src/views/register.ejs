@@ -25,7 +25,13 @@
 
       <!-- Mostrar error si existe -->
       <% if (typeof error !== "undefined") { %>
-        <p style="color:red; text-align:center; margin-bottom:10px;"><%= error %></p>
+        <p style="color:red; text-align:center; margin-bottom:10px;">
+          <%= error %></p>
+      <% } %>
+
+      <% if (typeof success !== "undefined") { %>
+      <div class="success-message">
+        <%= success %></div>
       <% } %>
 
       <form action="/auth/register" method="POST" class="register-form">
@@ -53,19 +59,7 @@
     </div>
   </main>
 
-  <footer>
-    <div class="footer-links">
-      <a href="#">Willpig-Studio Originals</a>
-      <a href="#">Idioma</a>
-      <a href="#">Escritores</a>
-      <a href="#">Términos</a>
-      <span>|</span>
-      <a href="#">Privacidad</a>
-      <a href="#">Accesibilidad</a>
-      <a href="#">Ayuda</a>
-    </div>
-    <p>© 2025 Willpig Studio</p>
-  </footer>
+  <%- include('partials/footer') %>
 
 </body>
 </html>

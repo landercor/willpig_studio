@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= capitulo.titulo %> | Willpig Studio
+    </title>
+    <link rel="stylesheet" href="/public/css/style1.2.css">
+    <link rel="icon" href="/img/img.ico/logo.ico">
+
+</head>
+
+<body class="reading-mode">
+
+    <!-- Controles -->
+    <div class="reading-controls">
+        <a href="/principal" class="control-btn" title="Volver">Inicio</a>
+        <button class="control-btn" onclick="toggleTheme()" title="Cambiar Tema">Cambiar Tema</button>
+        <button class="control-btn" onclick="changeFontSize()" title="Tamaño Letra">Aa</button>
+    </div>
+
+    <div class="reading-container">
+        <header>
+            <h4 style="opacity: 0.6; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                <%= cuento.titulo %>
+            </h4>
+            <h1>
+                <%= capitulo.titulo %>
+            </h1>
+        </header>
+
+        <div class="chapter-content">
+            <%= capitulo.contenido %>
+        </div>
+
+        <div class="chapter-nav">
+            <% if (prevId) { %>
+                <a href="/capitulos/read/<%= prevId %>" class="nav-btn">← Anterior</a>
+                <% } else { %>
+                    <span class="nav-btn disabled">← Anterior</span>
+                    <% } %>
+
+                        <% if (nextId) { %>
+                            <a href="/capitulos/read/<%= nextId %>" class="nav-btn">Siguiente →</a>
+                            <% } else { %>
+                                <span class="nav-btn disabled">Siguiente →</span>
+                                <% } %>
+        </div>
+    </div>
+
+    <script>
+        // Gestión de Temas
+        const themes = ['', 'theme-sepia', 'theme-dark'];
+        let currentThemeIndex = 0;
+
+        // Cargar preferencias guardadas
+        const savedTheme = localStorage.getItem('readingTheme');
+        if (savedTheme) {
+            document.body.classList.add(savedTheme);
+            currentThemeIndex = themes.indexOf(savedTheme);
+        }
+
+        function toggleTheme() {
+            // Quitar clase actual
+            if (themes[currentThemeIndex]) {
+                document.body.classList.remove(themes[currentThemeIndex]);
+            }
+            // Avanzar índice
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            // Añadir nueva clase
+            if (themes[currentThemeIndex]) {
+                document.body.classList.add(themes[currentThemeIndex]);
+                localStorage.setItem('readingTheme', themes[currentThemeIndex]);
+            } else {
+                localStorage.removeItem('readingTheme'); // Default
+            }
+        }
+
+        // Gestión de Tamaño de Fuente
+        const fontSizes = ['', 'font-small', 'font-large', 'font-xlarge'];
+        let currentFontIndex = 0;
+
+        const savedFont = localStorage.getItem('readingFont');
+        if (savedFont) {
+            document.body.classList.add(savedFont);
+            currentFontIndex = fontSizes.indexOf(savedFont);
+        }
+
+        function changeFontSize() {
+            if (fontSizes[currentFontIndex]) {
+                document.body.classList.remove(fontSizes[currentFontIndex]);
+            }
+            currentFontIndex = (currentFontIndex + 1) % fontSizes.length;
+            if (fontSizes[currentFontIndex]) {
+                document.body.classList.add(fontSizes[currentFontIndex]);
+                localStorage.setItem('readingFont', fontSizes[currentFontIndex]);
+            } else {
+                localStorage.removeItem('readingFont');
+            }
+        }
+    </script>
+</body>
+
+</html>

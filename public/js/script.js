@@ -31,9 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
       currentSlide = (currentSlide - 1 + slides.length) % slides.length;
       showSlide(currentSlide);
     });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+      } else if (e.key === 'ArrowRight') {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+      }
+    });
   }
 
-  // 📜 Scroll horizontal (opcional si agregas botones)
+  // Scroll horizontal (opcional si agregas botones)
   const scrollWrappers = document.querySelectorAll('.scroll-wrapper');
   scrollWrappers.forEach(wrapper => {
     const container = wrapper.querySelector('.scroll-container');

@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../controllers/auth.controller.js";
+import { register, login, forgotPassword } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -14,5 +14,12 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", login);
+
+// new routes for password recovery
+router.get("/olvido", (req, res) => {
+  res.render("olvido");
+});
+
+router.post("/olvido", forgotPassword);
 
 export default router;

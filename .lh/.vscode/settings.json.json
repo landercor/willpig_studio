@@ -1,0 +1,26 @@
+{
+    "sourceFile": ".vscode/settings.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1771341751491,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1771341790853,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,18 @@\n+{\n+    \"sqltools.connections\": [{\n+        \"mysqlOptions\": {\n+            \"authProtocol\": \"default\",\n+            \"enableSsl\": \"Disabled\"\n+        },\n+        \"ssh\": \"Disabled\",\n+        \"previewLimit\": 50,\n+        \"server\": \"localhost\",\n+        \"port\": 3306,\n+        \"driver\": \"MySQL\",\n+        \"name\": \"root\",\n+        \"database\": \"willpigstudio\",\n+        \"username\": \"root\"\n+    }],\n+    \"docwriter.style\": \"JSDoc\",\n+    \"docwriter.progress.trackFunctions\": false\n+}\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1771341796923,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,6 +14,7 @@\n         \"username\": \"root\"\n     }],\n     \"docwriter.style\": \"JSDoc\",\n     \"docwriter.progress.trackFunctions\": true,\n-    \"docwriter.progress.trackClasses\": true\n+    \"docwriter.progress.trackClasses\": true,\n+    \"docwriter.progress.trackTypes\": true\n }\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1771341751491,
+            "name": "Commit-0",
+            "content": "{\n    \"sqltools.connections\": [{\n        \"mysqlOptions\": {\n            \"authProtocol\": \"default\",\n            \"enableSsl\": \"Disabled\"\n        },\n        \"ssh\": \"Disabled\",\n        \"previewLimit\": 50,\n        \"server\": \"localhost\",\n        \"port\": 3306,\n        \"driver\": \"MySQL\",\n        \"name\": \"root\",\n        \"database\": \"willpigstudio\",\n        \"username\": \"root\"\n    }],\n    \"docwriter.style\": \"JSDoc\"\n}"
+        }
+    ]
+}

@@ -1,7 +1,7 @@
-// src/controllers/main.controller.js
+
 export const renderHome = (req, res) => {
-    console.log("➡️ Renderizando pagprincipal.ejs");
-    res.render("pagprincipal");
+    console.log(" Renderizando principal.ejs");
+    res.render("principal");
 };
 
 
@@ -22,5 +22,5 @@ export const renderNewStorys = (req, res) => {
 };
 
 export const renderPrincipal = (req, res) => {
-  res.render("pagprincipal");
+  res.render("principal");
 };

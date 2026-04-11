@@ -1,4 +1,4 @@
-import pool from "../config/bd.js";
+import { supabaseAdmin as supabase } from "../config/db.js";
 import bcrypt from "bcrypt";
 
 // Registro
@@ -8,13 +8,27 @@ export const registerUser = async (req, res) => {
   try {
     const hashedPass = await bcrypt.hash(clave, 10);
 
-    const [result] = await pool.query(
-      `INSERT INTO Cuenta_usuario (username, email, clave)
-       VALUES (?, ?, ?)`,
-      [username, email, hashedPass]
-    );
+    const { data, error } = await supabase
+      .from('cuenta_usuario')
+      .insert([
+        { username, email, clave: hashedPass }
+      ])
+      .select();
 
-    res.status(201).json({ message: "Usuario registrado", id: result.insertId });
+    if (error) throw error;
+
+    const newUser = data[0];
+
+    // Set session
+    req.session.user = {
+      id: newUser.id_cuenta_usuario,
+      username: newUser.username,
+      email: newUser.email,
+      rol: newUser.rol,
+      avatar: newUser.avatar_url
+    };
+
+    res.status(201).json({ message: "Usuario registrado", id: newUser.id_cuenta_usuario });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Error al registrar usuario" });
@@ -26,10 +40,12 @@ export const loginUser = async (req, res) => {
   const { email, clave } = req.body;
 
   try {
-    const [rows] = await pool.query(
-      `SELECT * FROM Cuenta_usuario WHERE email = ?`,
-      [email]
-    );
+    const { data: rows, error } = await supabase
+      .from('cuenta_usuario')
+      .select('*')
+      .eq('email', email);
+
+    if (error) throw error;
 
     if (rows.length === 0) {
       return res.status(401).json({ error: "Usuario no encontrado" });
@@ -40,14 +56,20 @@ export const loginUser = async (req, res) => {
 
     if (!valid) return res.status(401).json({ error: "Clave incorrecta" });
 
+    const userData = {
+      id: user.id_cuenta_usuario,
+      username: user.username,
+      email: user.email,
+      rol: user.rol,
+      avatar: user.avatar_url
+    };
+
+    // Set session
+    req.session.user = userData;
+
     res.json({
       message: "Inicio de sesión exitoso",
-      user: {
-        id: user.idCuenta_usuario,
-        username: user.username,
-        email: user.email,
-        rol: user.rol,
-      }
+      user: userData
     });
 
   } catch (error) {
@@ -61,11 +83,12 @@ export const getProfile = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const [rows] = await pool.query(
-      `SELECT username, email, biografia, avatar_url, rol
-       FROM Cuenta_usuario WHERE idCuenta_usuario = ?`,
-      [id]
-    );
+    const { data: rows, error } = await supabase
+      .from('cuenta_usuario')
+      .select('username, email, biografia, avatar_url, rol')
+      .eq('id_cuenta_usuario', id);
+
+    if (error) throw error;
 
     if (rows.length === 0) {
       return res.status(404).json({ error: "Usuario no encontrado" });
@@ -82,12 +105,12 @@ export const updateProfile = async (req, res) => {
   const { username, biografia, avatar_url } = req.body;
 
   try {
-    await pool.query(
-      `UPDATE Cuenta_usuario
-       SET username = ?, biografia = ?, avatar_url = ?
-       WHERE idCuenta_usuario = ?`,
-      [username, biografia, avatar_url, id]
-    );
+    const { error } = await supabase
+      .from('cuenta_usuario')
+      .update({ username, biografia, avatar_url })
+      .eq('id_cuenta_usuario', id);
+
+    if (error) throw error;
 
     res.json({ message: "Perfil actualizado" });
   } catch (error) {

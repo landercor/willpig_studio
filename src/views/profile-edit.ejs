@@ -1,0 +1,26 @@
+<%- include('partials/navbar', { loggedUser: loggedUser }) %>
+
+<form action="/profile/edit" method="POST" enctype="multipart/form-data" class="edit-profile-form">
+
+    <label>Cambiar imagen de portada</label>
+        <input type="file" name="coverImage">
+
+    <label>Cambiar foto de perfil</label>
+        <input type="file" name="avatar">
+
+    <label>Pronombres</label>
+    <select name="pronouns">
+        <option value="Él/Él">Él/Él</option>
+        <option value="Ella/Ella">Ella/Ella</option>
+        <option value="Elle/Elle">Elle/Elle</option>
+    </select>
+
+    <label>Acerca de</label>
+        <textarea name="bio" maxlength="2000"></textarea>
+
+    <div class="actions">
+    <button type="submit" class="save-btn">Guardar cambios</button>
+    <a href="/profile" class="cancel-btn">Cancelar</a>
+    </div>
+</form>
+<%- include('partials/footer') %>
