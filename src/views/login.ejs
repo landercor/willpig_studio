@@ -38,8 +38,19 @@
                     <button type="submit" class="btn-login-pocket">Iniciar sesión</button>
                 </form>
 
+<<<<<<< HEAD
                 <!-- ENLACES -->
                 <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
+=======
+            <!-- redirreción para la recuperación de contraseña-->
+            <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
+            
+            <!--funciona para dar un mensaje de error al presionar olvidar contraseña -->
+
+            <% if (typeof error !== "undefined" && error.startsWith('Se ha enviado')) { %>
+                <p class="text-success"><%= error %></p>
+            <% } %>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
                 <!-- si venimos de la página de olvido con mensaje, se muestra -->
                 <% if (typeof error !=="undefined" && error.startsWith('Se ha enviado')) { %>
@@ -67,9 +78,23 @@
                             <% } %>
 
             </div>
+<<<<<<< HEAD
         </div>
     </div>
 
+=======
+
+            <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
+
+            <!--funcionalidad mensaje de error, si los datos estan mal --> 
+            <% if (typeof error !== "undefined") { %>
+                <p class="text-danger"><%= error %></p>
+            <% } %>
+
+        </div>
+    </div>
+</div>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
     <% include('partials/footer') %>
 </body>
 

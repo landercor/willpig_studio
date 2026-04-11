@@ -17,8 +17,12 @@
     "express": "^4.19.2",
     "express-session": "^1.18.2",
     "multer": "^2.1.0",
+<<<<<<< HEAD
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.19.0"
+=======
+    "passport-google-oauth20": "^2.0.0"
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

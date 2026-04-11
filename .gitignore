@@ -3,3 +3,14 @@ node_modules
 
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
+<<<<<<< HEAD
+=======
+
+# Sensitive files
+.env
+
+# VS Code
+.history/
+.lh/
+.vscode/
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8

@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 <%- include('partials/topbar', { loggedUser }) %>
+=======
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
@@ -66,3 +70,115 @@
 </div>
 </body>
 <%- include('partials/footer') %>
+=======
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= profile.title %> | Willpig Studio
+  </title>
+  <link rel="stylesheet" href="/css/style1.2.css">
+  <link rel="icon" href="/img/img.ico/logo.ico">
+
+</head>
+
+<body>
+  <%- include('partials/navbar', { loggerUser }) %>
+
+    <div class="profile-header">
+      <% if (user.coverImage) { %>
+        <img class="cover-img" src="<%= user.coverImage %>" alt="Portada">
+        <% } else { %>
+          <div class="cover-img default-cover"></div>
+          <% } %>
+
+            <% if (loggerUser && loggerUser.id && String(user._id)===String(loggerUser.id)) { %>
+              <button class="add-cover-btn">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"
+                  style="vertical-align: middle; margin-right: 5px;">
+                  <path
+                    d="M4 4h3l2-2h6l2 2h3a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm8 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z" />
+                </svg>
+                Añadir Banner
+              </button>
+              <% } %>
+
+                <div class="profile-info">
+                  <img class="profile-avatar" src="<%= user.avatar || '/img/default-avatar.png' %>" alt="Avatar">
+                  <h2>
+                    <%= user.name %>
+                  </h2>
+                  <span class="username">@<%= user.username %></span>
+                  <div class="profile-stats">
+                    <span>
+                      <%= user.works.length %> Obras
+                    </span>
+                    <span>
+                      <%= user.readingLists.length %> Listas de lectura
+                    </span>
+                    <span>
+                      <%= user.followers.length %> Seguidores
+                    </span>
+                  </div>
+                </div>
+                <% if (loggerUser && loggerUser.id && String(user._id)===String(loggerUser.id)) { %>
+                  <a href="/profile/edit" class="edit-btn">Editar perfil</a>
+                  <% } %>
+    </div>
+
+    <div class="profile-content">
+      <div class="sidebar">
+        <button class="desc-btn">Añadir descripción</button>
+        <p>Se unió el <%= user.joined %>
+        </p>
+
+        <h4>Siguiendo</h4>
+        <div class="following-list">
+          <% user.following.slice(0,4).forEach(f=> { %>
+            <img src="<%= f.avatar %>" alt="">
+            <% }) %>
+              <span>+<%= user.following.length - 4 %></span>
+        </div>
+      </div>
+
+      <div class="main-section">
+        <h3>Listas de lectura</h3>
+        <div class="library-grid mt-1 mb-2">
+          <% if (user.readingLists && user.readingLists.length> 0) { %>
+            <% user.readingLists.forEach(list=> { %>
+              <div class="library-item">
+                <a href="/reading-list/<%= list.id || list._id %>">
+                  <img src="<%= list.thumbnail || '/img/default-portada.jpg' %>" class="cover" alt="Lista">
+                </a>
+                <p class="title mt-05">
+                  <%= list.title || 'Lista de lectura' %>
+                </p>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <p class="empty-text text-muted">No hay listas de lectura públicas aún.</p>
+                  <% } %>
+        </div>
+
+        <h3>Obras creadas</h3>
+        <div class="library-grid mt-1">
+          <% if (user.works && user.works.length> 0) { %>
+            <% user.works.forEach(work=> { %>
+              <div class="library-item">
+                <a href="/historias/<%= work.id || work.id_cuento %>">
+                  <img src="<%= work.cover || work.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                    alt="Obra">
+                </a>
+                <p class="title mt-05">
+                  <%= work.titulo || work.title || 'Historia sin título' %>
+                </p>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <p class="empty-text text-muted">Este usuario aún no ha publicado historias.</p>
+                  <% } %>
+        </div>
+      </div>
+    </div>
+</body>
+<%- include('partials/footer') %>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8

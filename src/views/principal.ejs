@@ -43,10 +43,17 @@
     <section class="library-page">
       <div class="library-header">
         <div class="library-tabs">
+<<<<<<< HEAD
+=======
+          <button class="tab-btn active" data-target="home-tab">Inicio</button>
+          <button class="tab-btn" data-target="new-tab">Nuevas Historias</button>
+          <button class="tab-btn" data-target="trends-tab">Tendencias</button>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
         </div>
       </div>
 
       <div class="library-content">
+<<<<<<< HEAD
         <!-- === Lecturas actuales === -->
         <div id="current-reads" class="tab-content active">
           <div class="section-title"> Nuevas historias </div>
@@ -91,6 +98,145 @@
           <%- include('partials/footer') %>
 
             <script src="script.js"></script>
+=======
+        
+        <!-- === INICIO (Filas Netflix & Destacada) === -->
+        <div id="home-tab" class="tab-content active">
+          
+          <!-- Historia destacada -->
+          <% if (typeof historiaDestacada !== 'undefined' && historiaDestacada) { %>
+            <section class="featured-story mb-3">
+              <img src="<%= historiaDestacada.portada_url || historiaDestacada.portada || '/img/default-portada.jpg' %>" alt="<%= historiaDestacada.titulo %>">
+              <div class="info">
+                <h2>Historia Destacada</h2>
+                <h3 class="mb-05"><%= historiaDestacada.titulo %></h3>
+                <p><%= historiaDestacada.sinopsis || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %></p>
+                <a href="/historias/<%= historiaDestacada.id_cuento %>">
+                  <button class="leer_story mt-1">Leer ahora</button>
+                </a>
+              </div>
+            </section>
+          <% } %>
+
+          <!-- Categorías (Netflix Style) -->
+          <% if (typeof librosPorCategoria !== 'undefined' && Object.keys(librosPorCategoria).length > 0) { %>
+            <% Object.keys(librosPorCategoria).forEach(cat => { %>
+              <div class="category-section mb-2">
+                <h3 class="category-title"><%= cat %></h3>
+                <div class="scroll-wrapper">
+                  <button class="scroll-btn left">&lt;</button>
+                  <div class="scroll-container">
+                    <% librosPorCategoria[cat].forEach(libro => { %>
+                      <div class="carousel-item">
+                        <a href="/historias/<%= libro.id_cuento || '#' %>">
+                          <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
+                        </a>
+                        <p class="title text-truncate mt-05"><%= libro.titulo %></p>
+                        <div class="meta text-start">
+                          <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span><%= libro.vistas || 0 %></span>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </div>
+                  <button class="scroll-btn right">&gt;</button>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="empty-state text-center p-2 text-muted">
+              <p>Aún no hay categorías para mostrar.</p>
+            </div>
+          <% } %>
+
+        </div>
+
+        <!-- === NUEVAS HISTORIAS === -->
+        <div id="new-tab" class="tab-content">
+          <div class="section-title"> Nuevas historias </div>
+
+          <div class="library-grid">
+            <% if (libros && libros.length > 0) { %>
+              <% libros.forEach(libro=> { %>
+                <div class="library-item">
+                  <a href="/historias/<%= libro.id_cuento || '#' %>">
+                    <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
+                  </a>
+                  <p class="title"><%= libro.titulo %></p>
+                  <div class="author">
+                    <img src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
+                    <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                  </div>
+                  <div class="meta">
+                    <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= libro.vistas || 0 %>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="empty-state text-center p-2 text-muted col-full">
+                <p>No hay historias nuevas en este momento.</p>
+                <a href="/nuevahistoria"><button class="btn btn-primary mt-1">¡Escribe la primera!</button></a>
+              </div>
+            <% } %>
+          </div>
+
+          <% if (libros && libros.length >= 10) { %>
+            <div class="text-center my-2">
+              <a href="/principal/biblioteca"><button class="btn-outline-primary">Ver más historias</button></a>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- === TENDENCIAS === -->
+        <div id="trends-tab" class="tab-content">
+          <div class="section-title"> Tendencias Mundiales </div>
+
+          <div class="library-grid">
+            <% if (typeof tendencias !== 'undefined' && tendencias.length > 0) { %>
+              <% tendencias.forEach(libro=> { %>
+                <div class="library-item">
+                  <a href="/historias/<%= libro.id_cuento || '#' %>">
+                    <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
+                  </a>
+                  <p class="title"><%= libro.titulo %></p>
+                  <div class="author">
+                    <img src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
+                    <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                  </div>
+                  <div class="meta">
+                    <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= libro.vistas || 0 %>
+                  </div>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="empty-state text-center p-2 text-muted col-full">
+                <p>No hay historias en tendencia aún.</p>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Tabs logic for principal page
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(btn => btn.classList.remove('active'));
+          contents.forEach(content => content.classList.remove('active'));
+
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.target).classList.add('active');
+        });
+      });
+    </script>
+    <script src="/js/script.js"></script>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
   </body>
 
 </html>
