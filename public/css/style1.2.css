@@ -1,4 +1,4 @@
-/*============================ Variables CSS ========================*/
+/*======================= Variables CSS =======================*/
 :root {
   --orange: #94d5e6;
   --light-gray: #f5f5f5;
@@ -7,8 +7,25 @@
   --hover-bg: #ffe7d6;
   --transition: all 0.3s ease;
   --radius: 10px;
-  font-family: 'Poppins', sans-serif;
+  --main-font: "Subjectivity", Arial, sans-serif;
+  /* store font-family as a variable */
 }
+
+/*======================= Fuentes =======================*/
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Regular.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*======================= Usage =======================*/
+body {
+  font-family: var(--main-font);
+}
+
+
 
 /* === General === */
 body {
