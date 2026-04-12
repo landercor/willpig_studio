@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get("/principal", renderHome)
+router.get("/", renderHome)
 router.get("/login", renderLogin);
 router.get("/register", renderRegister);
 router.get("/biblioteca", renderBiblioteca);
