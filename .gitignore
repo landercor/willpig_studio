@@ -11,3 +11,14 @@ node_modules
 .history/
 .lh/
 .vscode/
+
+# Documents
+Documentos/
+.scratch/
+.claude/
+cambios de styles.md
+Cambios redundantes en el proyecto.md
+implementation_plan-Change in the reforces css.md
+
+
+

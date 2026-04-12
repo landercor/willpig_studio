@@ -1,14 +1,12 @@
 import multer from 'multer';
 
-// Configure storage (Memory storage is best for serverless/Supabase uploads)
 const storage = multer.memoryStorage();
 
-// File filter (Optional but recommended)
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
+    if (file.mimetype.startsWith('image/')) { //detecta si es una imagen y el tipo de archivo
         cb(null, true);
     } else {
-        cb(new Error('No es una imagen. Por favor, sube una imagen.'), false);
+        cb(new Error('No es una imagen. Por favor, sube una imagen.'), false); //error si no es una imagen
     }
 };
 
