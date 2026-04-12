@@ -11,6 +11,7 @@ node_modules
 .history/
 .lh/
 .vscode/
+.gitignore
 
 # Documents
 Documentos/
@@ -19,6 +20,7 @@ Documentos/
 cambios de styles.md
 Cambios redundantes en el proyecto.md
 implementation_plan-Change in the reforces css.md
+test_env.js
 
 
 
