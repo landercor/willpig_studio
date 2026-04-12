@@ -76,13 +76,13 @@ export const getProfile = async (req, res) => {
     // 2. Obtener obras creadas por el usuario
     // Si el usuario logueado es el dueño del perfil, mostrar todo. Si no, solo lo publicado.
     const isOwner = req.session && req.session.user && (String(req.session.user.id) === String(id));
-    
+
     let query = supabase
       .from('cuentos')
       .select('id_cuento, titulo, portada_url, vistas, estado')
       .eq('cuenta_usuario_id', id);
 
-    if (!isOwner) {
+    if (!isOwner) { /*Filtro para que los libro sin publicar nunca se muestren la pantalla principal. si no como borrador en perfil de user*/
       query = query.eq('estado', 'publicado');
     }
 
