@@ -4,7 +4,8 @@ import {
   createStory,
   getStories,
   getStoriesByCategory,
-  getStoryById
+  getStoryById,
+  getMyStories
 } from '../controllers/story.controller.js'
 
 import upload from '../middlewares/upload.js'
@@ -15,14 +16,7 @@ router.get('/crear', (req, res) => {
   res.render('newstorys', { loggerUser: req.session.user });
 });
 
-router.get('/mis', (req, res) => {
-  // Check if user is logged in
-  if (!req.session.user) return res.redirect('/auth/login');
-
-  // TODO: Implement actual 'My Stories' view
-  // For now redirect to library or show a message
-  res.redirect('/principal/biblioteca');
-});
+router.get('/mis', getMyStories);
 
 router.post('/new', upload.single('portada'), createStory)
 router.get('/', getStories)

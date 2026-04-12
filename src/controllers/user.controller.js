@@ -59,7 +59,7 @@ export const getProfile = async (req, res) => {
   try {
     console.log("Fetching profile for ID:", id);
 
-    // 1. Obtener datos del usuario (Sin created_at porque la tabla no lo tiene)
+    // 1. Obtener datos del usuario
     const { data: userData, error: userError } = await supabase
       .from('cuenta_usuario')
       .select('username, email, biografia, avatar_url, rol')
@@ -73,21 +73,29 @@ export const getProfile = async (req, res) => {
       return res.status(404).render('404', { message: "Usuario no encontrado" });
     }
 
-    // 2. Obtener obras creadas por el usuario (publicadas)
-    const { data: userWorks } = await supabase
+    // 2. Obtener obras creadas por el usuario
+    // Si el usuario logueado es el dueño del perfil, mostrar todo. Si no, solo lo publicado.
+    const isOwner = req.session && req.session.user && (String(req.session.user.id) === String(id));
+    
+    let query = supabase
       .from('cuentos')
-      .select('id_cuento, titulo, portada_url, vistas')
-      .eq('cuenta_usuario_id', id)
-      .eq('estado', 'publicado');
+      .select('id_cuento, titulo, portada_url, vistas, estado')
+      .eq('cuenta_usuario_id', id);
+
+    if (!isOwner) {
+      query = query.eq('estado', 'publicado');
+    }
+
+    const { data: userWorks } = await query;
 
     // Mapear los datos al formato que espera profile.ejs
     const userProfile = {
       _id: id,
-      name: userData.username, // Suponiendo que usas username como nombre a mostrar
+      name: userData.username,
       username: userData.username,
       avatar: userData.avatar_url,
-      coverImage: '/img/default-cover.jpg', // No hay coverImage en DB aún
-      joined: 'Recientemente', // Fallback, ya que no existe created_at en la DB
+      coverImage: '/img/default-cover.jpg',
+      joined: 'Recientemente',
       works: userWorks || [],
       readingLists: [], // Pendiente de implementar listas de lectura en BD
       followers: [],    // Pendiente de implementar seguidores en BD
@@ -122,4 +130,4 @@ export const updateProfile = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Error al actualizar perfil" });
   }
-};
+}; 0

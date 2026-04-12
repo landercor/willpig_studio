@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import authRoutes from "./routes/auth.routes.js";
-import homeRoutes from "./routes/homeroutes.js"; // Importar rutas de home
+import homeRoutes from "./routes/home.routes.js"; // Importar rutas de home
 import chapterRoutes from "./routes/chapter.routes.js"; // Importar rutas de capítulos
 import sesion from "express-session"; // Importar express-session
 
@@ -36,5 +36,8 @@ app.use("/principal", homeRoutes);
 app.use("/capitulos", chapterRoutes);
 app.use("/historias", storyRoutes);
 app.use("/usuario", userRoutes); // Montar rutas de usuario
+app.use("/uploads", express.static("uploads"));
+/*app.use("/")*/
+
 
 export default app;

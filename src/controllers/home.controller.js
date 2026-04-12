@@ -9,6 +9,7 @@ export const verBiblioteca = async (req, res) => {
         *,
         cuenta_usuario ( username, avatar_url )
       `)
+            .eq('estado', 'publicado') // Agrega un filtro para que los libro publicados se muestren
             .order('created_at', { ascending: false });
 
         if (error) throw error;
@@ -37,8 +38,9 @@ export const verPrincipal = async (req, res) => {
                 cuenta_usuario ( username, avatar_url ),
                 categorias ( nombre )
             `)
-            .order('created_at', { ascending: false }) // Se muestran los mas recientes
-            .limit(50); // Get more to group them
+            .eq('estado', 'publicado') // Agrega un filtro para que los libro publicados nunca se muestren la pantalla principal siendo un borrador  
+            .order('created_at', { ascending: false })
+            .limit(40);
 
         if (error) throw error;
 
@@ -46,6 +48,7 @@ export const verPrincipal = async (req, res) => {
         const { data: cuentoDestacado } = await supabase
             .from('cuentos')
             .select(`*`)
+            .eq('estado', 'publicado')
             .order('vistas', { ascending: false })
             .limit(1)
             .maybeSingle();
@@ -54,6 +57,7 @@ export const verPrincipal = async (req, res) => {
         const { data: tendenciasData } = await supabase
             .from('cuentos')
             .select(`*, cuenta_usuario ( username, avatar_url )`)
+            .eq('estado', 'publicado')
             .order('vistas', { ascending: false })
             .limit(10);
 
@@ -66,7 +70,7 @@ export const verPrincipal = async (req, res) => {
                 librosPorCategoria[catName].push(c);
             });
         }
-        
+
         // Los últimos 10 para la pestaña de "Nuevas Historias"
         const ultimosCuentos = cuentos ? cuentos.slice(0, 10) : [];
 
@@ -128,7 +132,7 @@ export const verBusqueda = async (req, res) => {
             `)
             .ilike('titulo', `%${q}%`)
             .order('created_at', { ascending: false });
-            
+
         res.render('busqueda', {
             tituloPagina: `Resultados para: ${q} | Willpig Studio`,
             resultados: resultados || [],

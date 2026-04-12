@@ -133,20 +133,20 @@ export const createStory = async (req, res) => {
         titulo,
         descripcion,
         portada_url,
-        audiencia,
+        audiencia: audiencia || 'general',
         idioma,
-        derechos,
+        derechos: derechos || 'todos',
         clasificacion,
-        categoria_id: categoria_id || null, // Handle potential empty category
+        categoria_id: parseInt(categoria_id) || 1,
         cuenta_usuario_id,
-        estado: 'publicado', // Default to published for now
-        visibilidad: visibilidad || 'publica' // Save visibility from form, default to public
+        estado: req.body.estado || 'borrador', // Por defecto borrador
+        visibilidad: visibilidad || 'publica' // Por defecto publica
       }])
       .select()
 
     if (error) throw error;
 
-    // Redirect to home or library instead of JSON response for better UX
+    // redirige a la pantalla principal
     res.redirect('/principal');
 
   } catch (error) {
@@ -155,5 +155,42 @@ export const createStory = async (req, res) => {
       loggerUser: req.session.user,
       error: "Error al crear la historia: " + error.message
     });
+  }
+}
+
+// GET /historias/mis — Ver mis historias (propias)
+export const getMyStories = async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    const userId = req.session.user.id;
+
+    const { data: stories, error } = await supabase
+      .from('cuentos')
+      .select(`
+        id_cuento,
+        titulo,
+        descripcion,
+        portada_url,
+        estado,
+        vistas,
+        created_at
+      `)
+      .eq('cuenta_usuario_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    res.render('mystories', {
+      tituloPagina: 'Mis Historias | Willpig Studio',
+      stories: stories || [],
+      loggerUser: req.session.user
+    });
+
+  } catch (error) {
+    console.error('Error al obtener mis historias:', error);
+    res.status(500).send("Error al cargar tus historias");
   }
 }

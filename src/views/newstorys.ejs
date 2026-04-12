@@ -57,9 +57,9 @@
             <label for="audiencia">Audiencia</label>
             <select id="audiencia" name="audiencia" required>
               <option value="">Selecciona una audiencia</option>
-              <option value="todo_publico">Todo público</option>
-              <option value="juvenil">Juvenil</option>
-              <option value="adulto">Adulto</option>
+              <option value="general">Todo público</option>
+              <option value="adolescentes">Juvenil</option>
+              <option value="adultos">Adulto</option>
             </select>
           </div>
 
@@ -75,8 +75,8 @@
             <label for="derechos">Derechos de autor</label>
             <select id="derechos" name="derechos" required>
               <option value="todos">Todos los derechos reservados</option>
-              <option value="creative_commons">Privado</option>
-              <option value="dominio_publico">Público</option>
+              <option value="compartido">Compartido</option>
+              <option value="libre">Publico</option>
             </select>
           </div>
 
@@ -102,6 +102,15 @@
             <label>Visibilidad</label>
             <label><input type="radio" name="visibilidad" value="publica" checked> Público</label>
             <label><input type="radio" name="visibilidad" value="privada"> Privado</label>
+          </div>
+
+          <div class="form-group">
+            <label>Estado de la obra</label>
+            <label> <input type="radio" name="estado" value="borrador" checked> Borrador <span hidden>Solo tú lo
+                ves</span>
+            </label>
+            <label> <input type="radio" name="estado" value="publicado"> Publicar ahora
+            </label>
           </div>
 
         </section>

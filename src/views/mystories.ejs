@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%= tituloPagina %>
+  </title>
+  <link rel="stylesheet" href="/css/style1.2.css" />
+  <link rel="icon" href="/img/img.ico/logo.ico">
+</head>
+
+<body>
+
+  <%- include('partials/navbar', { loggerUser }) %>
+
+    <main class="library-page">
+      <header class="library-header"
+        style="justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
+        <h2 style="margin: 0; font-size: 2rem;">Mis Historias</h2>
+        <a href="/historias/crear" class="btn-savever"
+          style="text-decoration: none; display: inline-block; padding: 0.8rem 1.5rem; border-radius: 25px;">+ Nueva
+          Historia</a>
+      </header>
+
+      <div class="library-tabs" style="margin-top: 2rem;">
+        <button class="tab-btn active" data-target="published-tab">Publicadas (<%= stories.filter(s=> s.estado ===
+            'publicado').length %>)</button>
+        <button class="tab-btn" data-target="drafts-tab">Borradores (<%= stories.filter(s=> s.estado ===
+            'borrador').length %>)</button>
+      </div>
+
+      <div class="library-content" style="margin-top: 2rem;">
+
+        <!-- === TAB: PUBLICADAS === -->
+        <div id="published-tab" class="tab-content active">
+          <div class="library-grid">
+            <% const published=stories.filter(s=> s.estado === 'publicado'); %>
+              <% if (published.length> 0) { %>
+                <% published.forEach(libro=> { %>
+                  <div class="library-item" style="position: relative;">
+                    <a href="/historias/<%= libro.id_cuento %>">
+                      <img src="<%= libro.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= libro.titulo %>">
+                    </a>
+                    <p class="title">
+                      <%= libro.titulo %>
+                    </p>
+                    <div class="meta">
+                      <img src="/img/img.ico/vistas-icon.svg" class="icon-eye" style="filter: invert(0.5);">
+                      <%= libro.vistas || 0 %> vistas
+                    </div>
+                    <div style="margin-top: 10px;">
+                      <a href="/historias/editar/<%= libro.id_cuento %>" class="btn-edit-small"
+                        style="font-size: 0.8rem; color: #ff6b6b; text-decoration: none; border: 1px solid #ff6b6b; padding: 3px 8px; border-radius: 5px;">Editar</a>
+                    </div>
+                  </div>
+                  <% }) %>
+                    <% } else { %>
+                      <div class="empty-state" style="text-align: center; padding: 3rem; color: #888;">
+                        <p>Aún no tienes historias publicadas.</p>
+                      </div>
+                      <% } %>
+          </div>
+        </div>
+
+        <!-- === TAB: BORRADORES === -->
+        <div id="drafts-tab" class="tab-content">
+          <div class="library-grid">
+            <% const drafts=stories.filter(s=> s.estado === 'borrador'); %>
+              <% if (drafts.length> 0) { %>
+                <% drafts.forEach(libro=> { %>
+                  <div class="library-item">
+                    <a href="/historias/<%= libro.id_cuento %>">
+                      <img src="<%= libro.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= libro.titulo %>" style="filter: grayscale(0.5);">
+                    </a>
+                    <p class="title">
+                      <%= libro.titulo %>
+                    </p>
+                    <span class="badge"
+                      style="background: #eee; color: #666; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; text-transform: uppercase;">Borrador</span>
+                    <div style="margin-top: 10px;">
+                      <a href="/historias/editar/<%= libro.id_cuento %>" class="btn-edit-small"
+                        style="font-size: 0.8rem; color: #ff6b6b; text-decoration: none; border: 1px solid #ff6b6b; padding: 3px 8px; border-radius: 5px;">Continuar
+                        editando</a>
+                    </div>
+                  </div>
+                  <% }) %>
+                    <% } else { %>
+                      <div class="empty-state" style="text-align: center; padding: 3rem; color: #888;">
+                        <p>No tienes borradores pendientes.</p>
+                      </div>
+                      <% } %>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+
+      <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.target).classList.add('active');
+          });
+        });
+      </script>
+</body>
+
+</html>
