@@ -194,3 +194,122 @@ export const getMyStories = async (req, res) => {
     res.status(500).send("Error al cargar tus historias");
   }
 }
+
+// GET /historias/edit/:id — Cargar formulario de edición
+export const getEditStory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    const { data: story, error } = await supabase
+      .from('cuentos')
+      .select('*')
+      .eq('id_cuento', id)
+      .single();
+
+    if (error || !story) {
+      return res.status(404).render('404', { message: "Historia no encontrada" });
+    }
+
+    // Verificar que el usuario sea el dueño
+    const userId = req.session.user.id;
+    if (story.cuenta_usuario_id !== userId) {
+      return res.status(403).send("No tienes permiso para editar esta historia");
+    }
+
+    res.render('editstory', {
+      loggerUser: req.session.user,
+      cuento: story
+    });
+
+  } catch (error) {
+    console.error('Error al obtener historia para editar:', error);
+    res.status(500).send("Error interno del servidor");
+  }
+}
+
+// POST /historias/edit/:id — Procesar la edición
+export const editStory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      titulo,
+      descripcion,
+      audiencia,
+      idioma,
+      derechos,
+      clasificacion,
+      categoria_id,
+      visibilidad,
+      estado
+    } = req.body;
+
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    // Primero verificar propiedad
+    const { data: existingStory, error: fetchError } = await supabase
+      .from('cuentos')
+      .select('cuenta_usuario_id, portada_url')
+      .eq('id_cuento', id)
+      .single();
+
+    if (fetchError || !existingStory) {
+      return res.status(404).send("Historia no encontrada");
+    }
+
+    if (existingStory.cuenta_usuario_id !== req.session.user.id) {
+      return res.status(403).send("No tienes permiso para editar esta historia");
+    }
+
+    let portada_url = existingStory.portada_url;
+
+    // Manejar nueva portada si se subió una
+    if (req.file) {
+      const fileExt = req.file.originalname.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('portadas')
+        .upload(filePath, req.file.buffer, {
+          contentType: req.file.mimetype
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase.storage
+        .from('portadas')
+        .getPublicUrl(filePath);
+
+      portada_url = publicUrlData.publicUrl;
+    }
+
+    const { error: updateError } = await supabase
+      .from('cuentos')
+      .update({
+        titulo,
+        descripcion,
+        portada_url,
+        audiencia,
+        idioma,
+        derechos,
+        clasificacion,
+        categoria_id: parseInt(categoria_id),
+        visibilidad,
+        estado
+      })
+      .eq('id_cuento', id);
+
+    if (updateError) throw updateError;
+
+    res.redirect('/historias/mis');
+
+  } catch (error) {
+    console.error("Error editing story:", error);
+    res.status(500).send("Error al editar la historia");
+  }
+}

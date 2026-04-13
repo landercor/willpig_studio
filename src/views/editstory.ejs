@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar historia | Willpig Studio</title>
+  <link rel="stylesheet" href="/css/style1.2.css" />
+  <link rel="icon" href="/img/img.ico/logo.ico" />
+</head>
+
+<body>
+
+  <%- include('partials/navbar', { loggerUser }) %>
+
+    <!-- Barra superior -->
+    <header class="story-header">
+      <div class="header-left">
+        <a href="/" class="back-link">← Volver</a>
+        <h2>Agregar información de la historia</h2>
+      </div>
+
+      <div class="header-actions">
+        <a href="/" class="btn-canceler">Cancelar</a>
+        <button type="submit" form="story-form" class="btn-savever">Guardar</button>
+      </div>
+    </header>
+
+    <main class="new-storys">
+
+      <!-- Portada -->
+      <div class="story-cover">
+        <label for="portada" class="cover-box">
+          <% if (cuento.portada_url) { %>
+            <img src="<%= cuento.portada_url %>" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">
+            <% } else { %>
+              <img src="/img/img.ico/image-icon.png" class="cover-icon">
+              <p>Cambiar portada</p>
+              <% } %>
+        </label>
+        <input type="file" id="portada" name="portada" accept="image/*" form="story-form" hidden>
+      </div>
+
+      <!-- Formulario -->
+      <form id="story-form" class="story-form" action="/historias/editar/<%= cuento.id_cuento %>" method="POST"
+        enctype="multipart/form-data">
+
+        <section class="story-details">
+          <h3>Detalles de la historia</h3>
+
+          <div class="form-group">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" name="titulo" value="<%= cuento.titulo %>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion"><%= cuento.descripcion %></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="audiencia">Audiencia</label>
+            <select id="audiencia" name="audiencia" required>
+              <option value="">Selecciona una audiencia</option>
+              <option value="general" <%=cuento.audiencia==='general' ? 'selected' : '' %>>Todo público</option>
+              <option value="adolescentes" <%=cuento.audiencia==='adolescentes' ? 'selected' : '' %>>Juvenil</option>
+              <option value="adultos" <%=cuento.audiencia==='adultos' ? 'selected' : '' %>>Adulto</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="idioma">Idioma</label>
+            <select id="idioma" name="idioma" required>
+              <option value="es" <%=cuento.idioma==='es' ? 'selected' : '' %>>Español</option>
+              <option value="en" <%=cuento.idioma==='en' ? 'selected' : '' %>>Inglés</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="derechos">Derechos de autor</label>
+            <select id="derechos" name="derechos" required>
+              <option value="todos" <%=cuento.derechos==='todos' ? 'selected' : '' %>>Todos los derechos reservados
+              </option>
+              <option value="compartido" <%=cuento.derechos==='compartido' ? 'selected' : '' %>>Compartido</option>
+              <option value="libre" <%=cuento.derechos==='libre' ? 'selected' : '' %>>Publico</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoría</label>
+            <select id="categoria" name="categoria_id" required>
+              <option value="">Selecciona una categoría</option>
+              <option value="1" <%=cuento.categoria_id==1 ? 'selected' : '' %>>Fantasía</option>
+              <option value="2" <%=cuento.categoria_id==2 ? 'selected' : '' %>>Romance</option>
+              <option value="3" <%=cuento.categoria_id==3 ? 'selected' : '' %>>Aventura</option>
+              <option value="4" <%=cuento.categoria_id==4 ? 'selected' : '' %>>Drama</option>
+              <option value="5" <%=cuento.categoria_id==5 ? 'selected' : '' %>>Infantil</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Clasificación</label>
+            <label><input type="radio" name="clasificacion" value="todo" <%=cuento.clasificacion==='todo' ? 'checked'
+                : '' %>> Todo público</label>
+            <label><input type="radio" name="clasificacion" value="maduro" <%=cuento.clasificacion==='maduro'
+                ? 'checked' : '' %>> Maduro</label>
+          </div>
+
+          <div class="form-group">
+            <label>Visibilidad</label>
+            <label><input type="radio" name="visibilidad" value="publica" <%=cuento.visibilidad==='publica' ? 'checked'
+                : '' %>> Público</label>
+            <label><input type="radio" name="visibilidad" value="privada" <%=cuento.visibilidad==='privada' ? 'checked'
+                : '' %>> Privado</label>
+          </div>
+
+          <div class="form-group">
+            <label>Estado de la obra</label>
+            <label> <input type="radio" name="estado" value="borrador" <%=cuento.estado==='borrador' ? 'checked' : ''
+                %>> Borrador <span hidden>Solo tú lo ves</span></label>
+            <label> <input type="radio" name="estado" value="publicado" <%=cuento.estado==='publicado' ? 'checked' : ''
+                %>> Publicar ahora</label>
+          </div>
+
+        </section>
+      </form>
+    </main>
+
+</body>
+
+</html>
+
+
+<%- include('partials/footer') %>
+  </body>
+  <script>
+    const input = document.getElementById("portada");
+    const label = document.querySelector(".cover-box");
+
+    input.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const imgURL = URL.createObjectURL(file);
+        label.innerHTML = `<img src="${imgURL}" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">`;
+      }
+    });
+  </script>
+
+  </html>
