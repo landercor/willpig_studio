@@ -17,8 +17,7 @@
             <header class="manage-header">
                 <img src="<%= cuento.portada_url || '/img/default-portada.jpg' %>" alt="Portada" class="manage-cover">
                 <div class="manage-info">
-                    <span class="badge <%= cuento.estado %>"
-                        style="padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; background: #eee; text-transform: uppercase;">
+                    <span class="badge <%= cuento.estado %>">
                         <%= cuento.estado %>
                     </span>
                     <h1>
@@ -29,15 +28,10 @@
                     </p>
 
                     <div class="action-bar">
-                        <a href="/historias/editar-meta/<%= cuento.id_cuento %>" class="btn-edit-small"
-                            style="padding: 10px 20px; border: 1px solid #ddd; border-radius: 25px;">Editar
-                            Información</a>
-                        <button class="btn-edit-small"
-                            style="padding: 10px 20px; border: 1px solid #ddd; border-radius: 25px;">Cambiar
-                            Portada</button>
+                        <a href="/historias/editar-meta/<%= cuento.id_cuento %>" class="btn-edit-small">Editar Información</a>
+                        <button class="btn-edit-small">Cambiar Portada</button>
                         <% if (cuento.estado==='borrador' ) { %>
-                            <button class="btn-savever" style="padding: 10px 25px; border-radius: 25px;">Publicar
-                                Historia</button>
+                            <button class="btn-savever">Publicar Historia</button>
                             <% } %>
                     </div>
                 </div>
@@ -46,8 +40,7 @@
             <section class="chapters-section">
                 <div class="section-header">
                     <h3>Capítulos (<%= cuento.capitulos ? cuento.capitulos.length : 0 %>)</h3>
-                    <a href="/capitulos/nuevo/<%= cuento.id_cuento %>" class="btn-savever"
-                        style="padding: 10px 20px; border-radius: 25px; text-decoration: none;">+ Escribir Capítulos</a>
+                    <a href="/capitulos/nuevo/<%= cuento.id_cuento %>" class="btn-savever">+ Escribir Capítulos</a>
                 </div>
                 <div class="chapter-list">
                     <% if (cuento.capitulos && cuento.capitulos.length> 0) { %>
@@ -65,13 +58,13 @@
                                         class="btn-small btn-delete">Eliminar</button>
                                 </div>
                             </div>
-                            <% }) %>
-                                <% } else { %>
-                                    <div style="text-align: center; padding: 40px; color: #888;">
-                                        <p>Aún no has escrito ningún capítulo para esta historia.</p>
-                                        <p style="font-size: 0.9rem;">¡Empieza hoy mismo!</p>
-                                    </div>
-                                    <% } %>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="empty-chapters">
+                            <p>Aún no has escrito ningún capítulo para esta historia.</p>
+                            <p class="subtitle">¡Empieza hoy mismo!</p>
+                        </div>
+                    <% } %>
                 </div>
             </section>
         </div>

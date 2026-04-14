@@ -257,3 +257,126 @@ export const getEditStory = async (req, res) => {
     res.status(500).send("Error del servidor");
   }
 }
+
+// GET /historias/editar-meta/:id — Formulario para editar metadatos
+export const getEditStoryMeta = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    const { data: cuento, error } = await supabase
+      .from('cuentos')
+      .select('*')
+      .eq('id_cuento', id)
+      .single();
+
+    if (error || !cuento) {
+      return res.status(404).render('404', { message: "Historia no encontrada" });
+    }
+
+    // Verificar autoría
+    const userId = req.session.userId || req.session.user.id_cuenta_usuario || req.session.user.id;
+    if (String(cuento.cuenta_usuario_id) !== String(userId)) {
+      return res.status(403).render('404', { message: "No tienes permiso para editar esta historia" });
+    }
+
+    res.render('editstory', {
+      cuento,
+      loggerUser: req.session.user
+    });
+
+  } catch (error) {
+    console.error('Error al obtener metadatos de historia:', error);
+    res.status(500).send("Error del servidor");
+  }
+}
+
+// POST /historias/editar/:id — Actualizar metadatos de la historia
+export const editStory = async (req, res) => {
+  const { id } = req.params;
+  const {
+    titulo,
+    descripcion,
+    audiencia,
+    idioma,
+    derechos,
+    clasificacion,
+    categoria_id,
+    visibilidad,
+    estado
+  } = req.body;
+
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'No autorizado' });
+    }
+
+    // Primero verificar autoría
+    const { data: cuento, error: fetchError } = await supabase
+      .from('cuentos')
+      .select('cuenta_usuario_id, portada_url')
+      .eq('id_cuento', id)
+      .single();
+
+    if (fetchError || !cuento) {
+      return res.status(404).json({ error: 'Historia no encontrada' });
+    }
+
+    const userId = req.session.userId || req.session.user.id_cuenta_usuario || req.session.user.id;
+    if (String(cuento.cuenta_usuario_id) !== String(userId)) {
+      return res.status(403).json({ error: 'No tienes permiso' });
+    }
+
+    let updatedPortadaUrl = cuento.portada_url;
+
+    // Si hay una nueva portada, subirla
+    if (req.file) {
+      const fileExt = req.file.originalname.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('portadas')
+        .upload(filePath, req.file.buffer, {
+          contentType: req.file.mimetype
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicUrlData } = supabase.storage
+        .from('portadas')
+        .getPublicUrl(filePath);
+
+      updatedPortadaUrl = publicUrlData.publicUrl;
+    }
+
+    // Actualizar en base de datos
+    const { error: updateError } = await supabase
+      .from('cuentos')
+      .update({
+        titulo,
+        descripcion,
+        audiencia,
+        idioma,
+        derechos,
+        clasificacion,
+        categoria_id: parseInt(categoria_id),
+        visibilidad,
+        estado,
+        portada_url: updatedPortadaUrl
+      })
+      .eq('id_cuento', id);
+
+    if (updateError) throw updateError;
+
+    // Redirigir al panel de gestión
+    res.redirect(`/historias/editar/${id}`);
+
+  } catch (error) {
+    console.error('Error al editar historia:', error);
+    res.status(500).send("Error al actualizar la historia");
+  }
+}

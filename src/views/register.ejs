@@ -7,18 +7,18 @@
   <title>Registrarse | Willpig Studio</title>
   <link rel="stylesheet" href="/css/style1.2.css" />
   <link rel="icon" href="/img/img.ico/logo.ico">
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
 </head>
 
 <body>
-  <header class="Logps-navbar">
-    <div class="logo-LTR" onclick="window.location.href='/'">
-      <figure class="logo-LTRA">
-        <img src="/img/img.ico/LTRA.logo-resol.png" alt="Willpig Studio Logo">
-      </figure>
-      <span class="logo-text"></span>
-    </div>
-    <div class="row"></div>
-  </header>
 
   <main class="register-container-igm">
     <div class="register-card">
