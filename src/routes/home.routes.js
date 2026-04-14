@@ -1,5 +1,5 @@
 import express from 'express';
-import { verBiblioteca, verPrincipal, verBusqueda } from '../controllers/homecontroller.js';
+import { verBiblioteca, verPrincipal, verBusqueda } from '../controllers/home.controller.js';
 
 const router = express.Router();
 

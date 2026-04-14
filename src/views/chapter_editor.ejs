@@ -64,11 +64,11 @@
                 saveBtn.innerText = 'Guardando...';
 
                 try {
-                    let url = '/api/capitulos/new';
+                    let url = '/capitulos/new';
                     let method = 'POST';
 
                     if (chapterId) {
-                        url = `/api/capitulos/update/${chapterId}`;
+                        url = `/capitulos/update/${chapterId}`;
                         method = 'PUT';
                     }
 

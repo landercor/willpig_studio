@@ -82,7 +82,7 @@
                 async function deleteChapter(id) {
                     if (confirm('¿Estás seguro de que quieres eliminar este capítulo? Esta acción no se puede deshacer.')) {
                         try {
-                            const res = await fetch(`/api/capitulos/${id}`, { method: 'DELETE' });
+                            const res = await fetch(`/capitulos/delete/${id}`, { method: 'DELETE' });
                             if (res.ok) {
                                 window.location.reload();
                             } else {
