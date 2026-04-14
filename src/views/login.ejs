@@ -6,9 +6,19 @@
     <title>Iniciar sesión | Willpig Studio</title>
     <link rel="stylesheet" href="/css/style1.2.css" />
     <link rel="icon" href="/img/img.ico/logo.ico" />
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
 </head>
 
 <body>
+
 
 <div class="login-pocketIN">
 
@@ -63,6 +73,6 @@
         </div>
     </div>
 </div>
-    <% include('partials/footer') %>
+    <%- include('partials/footer') %>
 </body>
 </html>
