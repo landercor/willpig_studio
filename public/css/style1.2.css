@@ -781,22 +781,11 @@ body {
   padding: 0;
 }
 
-.register-container-igm {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-image: url('/img/img.ico/fondo_register.jpg');
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-}
+/* Estilos de registro consolidados abajo (línea 1850+) */
 
 .Logps-navbar {
-  /* Navbar absoluto Ocultamiento de nav obsoleta*/
-  z-index: 1;
-  position: absolute;
-  inset: 0;
+  /* Navbar obsoleta oculta para evitar bloqueos */
+  display: none;
 }
 
 .logo-LTRA {
