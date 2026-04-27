@@ -1,5 +1,6 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/957727a9-899e-4c2f-8ed6-b79312262ec8" alt="Description">
+ <img width="581" height="680" alt="GABALI baloo 2 (1)" src="https://github.com/user-attachments/assets/ea87092c-cf3e-4738-a484-0191e77038ab" />
+
 </p>
 
 # Willpig Studio
