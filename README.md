@@ -43,3 +43,17 @@ Controladores: Lógica de negocio en src/controllers/.
 Vistas: Plantillas en src/views/.
 Rutas: Definición de endpoints en src/routes/.
 
+### Falta temas
+---
+### Variables entorno
+---
+
+### Casos de prueba
+Pruebas funcionales
+Pruebas de integración
+Pruebas de seguridad
+Resultados documentados
+
+---
+### El plan de gestion es un documento que esta en proceso a ejecutar.
+---
