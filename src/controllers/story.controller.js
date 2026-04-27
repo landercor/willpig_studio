@@ -194,3 +194,51 @@ export const getMyStories = async (req, res) => {
     res.status(500).send("Error al cargar tus historias");
   }
 }
+
+// GET /historias/editar/:id — Editor de capítulos
+export const getStoryEditor = async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    const { id } = req.params;
+    const userId = req.session.user.id || req.session.user.id_cuenta_usuario || req.session.userId;
+
+    // Fetch story details
+    const { data: story, error: storyError } = await supabase
+      .from('cuentos')
+      .select('id_cuento, titulo, estado, cuenta_usuario_id')
+      .eq('id_cuento', id)
+      .single();
+
+    if (storyError || !story) {
+      return res.status(404).render('404', { message: "Historia no encontrada" });
+    }
+
+    // Check ownership
+    if (story.cuenta_usuario_id !== userId) {
+      return res.status(403).send("No tienes permiso para editar esta historia");
+    }
+
+    // Fetch chapters
+    const { data: chapters, error: chaptersError } = await supabase
+      .from('capitulos')
+      .select('id_capitulo, titulo, created_at')
+      .eq('cuento_id', id)
+      .order('created_at', { ascending: true });
+
+    if (chaptersError) throw chaptersError;
+
+    res.render('editor', {
+      tituloPagina: `Editor: ${story.titulo}`,
+      story,
+      chapters: chapters || [],
+      loggerUser: req.session.user
+    });
+
+  } catch (error) {
+    console.error('Error al obtener editor de historia:', error);
+    res.status(500).send("Error al cargar el editor");
+  }
+}

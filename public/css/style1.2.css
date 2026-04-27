@@ -1921,3 +1921,116 @@ body.font-xlarge .chapter-content {
   grid-column: 1 / -1;
   font-style: italic;
 }
+
+/* ====== EDITOR DE CAPITULOS ====== */
+.editor-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  min-height: 70vh;
+}
+.editor-sidebar {
+  width: 300px;
+  background: #f8f9fa;
+  border-right: 1px solid #eee;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+.editor-sidebar h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #ff6b6b;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+.chapter-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.chapter-list li {
+  margin-bottom: 0.5rem;
+}
+.chapter-list a {
+  display: block;
+  padding: 0.8rem 1rem;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #555;
+  transition: all 0.2s ease;
+}
+.chapter-list a:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  transform: translateX(5px);
+}
+.editor-main {
+  flex-grow: 1;
+  padding: 2rem;
+  background: #fff;
+}
+.editor-header {
+  margin-bottom: 1.5rem;
+}
+.editor-header h2 {
+  margin: 0;
+  color: #222;
+  font-size: 1.8rem;
+}
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+.form-group input:focus, .form-group textarea:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+.form-group textarea {
+  min-height: 400px;
+  resize: vertical;
+  line-height: 1.6;
+}
+.btn-publish {
+  background: linear-gradient(135deg, #ff6b6b, #ff4757);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  align-self: flex-end;
+}
+.btn-publish:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}

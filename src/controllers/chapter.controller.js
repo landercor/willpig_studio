@@ -14,11 +14,12 @@ export const createChapter = async (req, res) => {
 
     if (error) throw error;
 
-    res.status(201).json({ message: "Capítulo creado", id: data[0].id_capitulo });
+    // Redirigir de vuelta al editor para ver el nuevo capítulo y seguir editando
+    res.redirect(`/historias/editar/${cuento_id}`);
 
   } catch (error) {
     console.error("Error creating chapter:", error);
-    res.status(500).json({ error: "Error al crear capítulo" });
+    res.status(500).send("Error al crear capítulo");
   }
 };
 

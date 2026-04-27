@@ -5,7 +5,8 @@ import {
   getStories,
   getStoriesByCategory,
   getStoryById,
-  getMyStories
+  getMyStories,
+  getStoryEditor
 } from '../controllers/story.controller.js'
 
 import upload from '../middlewares/upload.js'
@@ -17,6 +18,7 @@ router.get('/crear', (req, res) => {
 });
 
 router.get('/mis', getMyStories);
+router.get('/editar/:id', getStoryEditor);
 
 router.post('/new', upload.single('portada'), createStory)
 router.get('/', getStories)
