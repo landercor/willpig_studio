@@ -1567,8 +1567,7 @@ body.font-large .chapter-content {
 
 body.font-xlarge .chapter-content {
   font-size: 1.5rem;
-<<<<<<< HEAD
-=======
+
 }
 
 /* ============================
@@ -1967,7 +1966,7 @@ body.font-xlarge .chapter-content {
 .empty-text {
   grid-column: 1 / -1;
   font-style: italic;
-<<<<<<< HEAD
+  <<<<<<< HEAD
 }
 
 /* ====== EDITOR DE CAPITULOS ====== */
@@ -1981,6 +1980,7 @@ body.font-xlarge .chapter-content {
   overflow: hidden;
   min-height: 70vh;
 }
+
 .editor-sidebar {
   width: 300px;
   background: #f8f9fa;
@@ -1989,6 +1989,7 @@ body.font-xlarge .chapter-content {
   display: flex;
   flex-direction: column;
 }
+
 .editor-sidebar h3 {
   margin-top: 0;
   color: #333;
@@ -1997,6 +1998,7 @@ body.font-xlarge .chapter-content {
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
+
 .chapter-list {
   list-style: none;
   padding: 0;
@@ -2004,9 +2006,11 @@ body.font-xlarge .chapter-content {
   flex-grow: 1;
   overflow-y: auto;
 }
+
 .chapter-list li {
   margin-bottom: 0.5rem;
 }
+
 .chapter-list a {
   display: block;
   padding: 0.8rem 1rem;
@@ -2017,36 +2021,44 @@ body.font-xlarge .chapter-content {
   color: #555;
   transition: all 0.2s ease;
 }
+
 .chapter-list a:hover {
   border-color: #ff6b6b;
   color: #ff6b6b;
   transform: translateX(5px);
 }
+
 .editor-main {
   flex-grow: 1;
   padding: 2rem;
   background: #fff;
 }
+
 .editor-header {
   margin-bottom: 1.5rem;
 }
+
 .editor-header h2 {
   margin: 0;
   color: #222;
   font-size: 1.8rem;
 }
+
 .editor-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .form-group label {
   display: block;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: #444;
 }
-.form-group input, .form-group textarea {
+
+.form-group input,
+.form-group textarea {
   width: 100%;
   padding: 1rem;
   border: 1px solid #ddd;
@@ -2056,16 +2068,20 @@ body.font-xlarge .chapter-content {
   transition: border-color 0.3s ease;
   box-sizing: border-box;
 }
-.form-group input:focus, .form-group textarea:focus {
+
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
   border-color: #ff6b6b;
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
 }
+
 .form-group textarea {
   min-height: 400px;
   resize: vertical;
   line-height: 1.6;
 }
+
 .btn-publish {
   background: linear-gradient(135deg, #ff6b6b, #ff4757);
   color: white;
@@ -2078,7 +2094,9 @@ body.font-xlarge .chapter-content {
   transition: transform 0.2s, box-shadow 0.2s;
   align-self: flex-end;
 }
+
 .btn-publish:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+  =======>>>>>>>6ded87912962014a4d6dbfaf430042b1f00462f8>>>>>>>origin/ramita
 }
