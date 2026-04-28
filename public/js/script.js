@@ -42,12 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
         showSlide(currentSlide);
       }
     });
+<<<<<<< HEAD
+=======
 
     // Auto-play (cambia la imagen cada 5 segundos)
     setInterval(() => {
       currentSlide = (currentSlide + 1) % slides.length;
       showSlide(currentSlide);
     }, 5000);
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
   }
 
   // Scroll horizontal (opcional si agregas botones)

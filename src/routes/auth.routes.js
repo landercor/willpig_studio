@@ -1,5 +1,9 @@
 import express from "express";
+<<<<<<< HEAD
+import { register, login, forgotPassword } from "../controllers/auth.controller.js";
+=======
 import { register, login, forgotPassword, resetPassword, authCallback } from "../controllers/auth.controller.js";
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
 const router = express.Router();
 
@@ -13,6 +17,15 @@ router.get("/login", (req, res) => {
 });
 router.post("/login", login);
 
+<<<<<<< HEAD
+// new routes for password recovery
+router.get("/olvido", (req, res) => {
+  res.render("olvido");
+});
+
+router.post("/olvido", forgotPassword);
+
+=======
 // Password recovery routes
 router.get("/olvido", (req, res) => {
   res.render("olvido");
@@ -27,4 +40,5 @@ router.get("/nuevaclave", (req, res) => {
 });
 router.post("/nuevaclave", resetPassword);
 
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 export default router;

@@ -34,6 +34,33 @@ export const verPrincipal = async (req, res) => {
             .from('cuentos')
             .select(`
                 *,
+<<<<<<< HEAD
+                cuenta_usuario ( username, avatar_url )
+            `)
+            .order('created_at', { ascending: false }) // Se muestran los mas recientes
+            .limit(10);
+
+        if (error) throw error;
+
+        // Dummy carousel data (fallback) within dynamic logic
+        let carruselData = [
+            { titulo: 'Bienvenido a Willpig', imagen: '/img/img.ico/fondo_register2.jpg', link: '#' },
+            { titulo: 'Descubre nuevas historias', imagen: '/img/img.ico/fondo_login3.jpg', link: '/principal/biblioteca' }
+        ];
+
+        // 1. Prepare Carousel Data (Top 5 viewed stories)
+        if (cuentos && cuentos.length > 0) {
+            carruselData = cuentos.slice(0, 5).map(c => ({
+                titulo: c.titulo,
+                imagen: c.portada_url || '/img/default-bg.jpg',
+                link: `/historias/${c.id_cuento}`
+            }));
+        }
+
+        // If we have stories, maybe use them in carousel?
+        if (cuentos && cuentos.length > 0) {
+            // Optional: Add logic here to promote specific stories to carousel
+=======
                 cuenta_usuario ( username, avatar_url ),
                 categorias ( nombre )
             `)
@@ -91,16 +118,24 @@ export const verPrincipal = async (req, res) => {
                 { titulo: 'Bienvenido a Willpig', imagen: '/img/img.ico/fondo_register2.jpg', link: '#' },
                 { titulo: 'Descubre nuevas historias', imagen: '/img/img.ico/fondo_login3.jpg', link: '/principal/biblioteca' }
             ];
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
         }
 
         res.render('principal', {
             tituloPagina: 'Inicio | Willpig Studio',
+<<<<<<< HEAD
+            libros: cuentos || [],
+
+            loggerUser: req.session.user, // usuario logueado
+            carrusel: carruselData
+=======
             libros: ultimosCuentos,
             tendencias: tendenciasData || [],
             librosPorCategoria: librosPorCategoria,
             loggerUser: req.session.user, // usuario logueado
             carrusel: carruselData,
             historiaDestacada: cuentoDestacado || null
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
         });
 
     } catch (error) {
@@ -108,6 +143,9 @@ export const verPrincipal = async (req, res) => {
         res.render('principal', {
             tituloPagina: 'Inicio | Willpig Studio',
             libros: [],
+<<<<<<< HEAD
+            carrusel: [],
+=======
             tendencias: [],
             librosPorCategoria: {},
             carrusel: [],
@@ -141,6 +179,7 @@ export const verBusqueda = async (req, res) => {
             tituloPagina: 'Búsqueda | Willpig Studio',
             resultados: [],
             query: q,
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
             loggerUser: req.session.user
         });
     }

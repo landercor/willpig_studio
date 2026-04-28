@@ -43,13 +43,62 @@
     <section class="library-page">
       <div class="library-header">
         <div class="library-tabs">
+<<<<<<< HEAD
+=======
           <button class="tab-btn active" data-target="home-tab">Inicio</button>
           <button class="tab-btn" data-target="new-tab">Nuevas Historias</button>
           <button class="tab-btn" data-target="trends-tab">Tendencias</button>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
         </div>
       </div>
 
       <div class="library-content">
+<<<<<<< HEAD
+        <!-- === Lecturas actuales === -->
+        <div id="current-reads" class="tab-content active">
+          <div class="section-title"> Nuevas historias </div>
+
+          <div class="library-grid">
+            <% libros.forEach(libro=> { %>
+              <div class="library-item">
+                <a href="/historias/<%= libro.id_cuento || '#' %>">
+                  <img src="<%= libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
+                </a>
+
+                <p class="title">
+                  <%= libro.titulo %>
+                </p>
+
+                <div class="author">
+                  <img
+                    src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>"
+                    alt="autor">
+                  <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                </div>
+
+                <div class="meta">
+                  <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
+                  <%= libro.vistas %>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+
+
+          <!-- Historia destacada -->
+          <section class="featured-story">
+            <img src="/img/Amigo Oso no puede dormir.jpg" alt="Historia destacada">
+            <div class="info">
+              <h2>Historia destacada</h2>
+              <p>Una aventura mágica que combina el poder de la imaginación con el misterio de los sueños perdidos.</p>
+              <button class="leer_story">Leer ahora</button>
+            </div>
+          </section>
+
+          <%- include('partials/footer') %>
+
+            <script src="script.js"></script>
+=======
         
         <!-- === INICIO (Filas Netflix & Destacada) === -->
         <div id="home-tab" class="tab-content active">
@@ -187,6 +236,7 @@
       });
     </script>
     <script src="/js/script.js"></script>
+>>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
   </body>
 
 </html>

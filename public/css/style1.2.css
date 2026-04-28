@@ -7,8 +7,53 @@
   --hover-bg: #ffe7d6;
   --transition: all 0.3s ease;
   --radius: 10px;
-  font-family: 'Poppins', sans-serif;
+  --main-font: "Subjectivity", Arial, sans-serif;
+  /* store font-family as a variable */
 }
+
+/*======================= Fonts =======================*/
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Regular.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Regular */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Regular.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Regular.ttf") format("truetype");
+  font-weight: 400;
+  /* normal */
+  font-style: normal;
+}
+
+/* Bold */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Bold.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Bold.ttf") format("truetype");
+  font-weight: 700;
+  /* bold */
+  font-style: normal;
+}
+
+/* Italic */
+@font-face {
+  font-family: "Subjectivity";
+  src: url("/fonts/Subjectivity/Subjectivity-Italic.woff2") format("woff2"),
+    url("/fonts/Subjectivity/Subjectivity-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+/*======================= Usage =======================*/
+body {
+  font-family: var(--main-font);
+}
+
 
 /* === General === */
 body {
@@ -1522,6 +1567,8 @@ body.font-large .chapter-content {
 
 body.font-xlarge .chapter-content {
   font-size: 1.5rem;
+<<<<<<< HEAD
+=======
 }
 
 /* ============================
@@ -1920,6 +1967,7 @@ body.font-xlarge .chapter-content {
 .empty-text {
   grid-column: 1 / -1;
   font-style: italic;
+<<<<<<< HEAD
 }
 
 /* ====== EDITOR DE CAPITULOS ====== */
