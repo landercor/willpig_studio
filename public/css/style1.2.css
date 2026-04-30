@@ -955,7 +955,7 @@ body {
   right: 0;
 }
 
-.social-login {
+.socialLogin {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
@@ -1998,7 +1998,7 @@ body.dark-mode .register-card {
   right: 0;
 }
 
-.social-login {
+.socialLogin {
   margin-bottom: 25px;
 }
 

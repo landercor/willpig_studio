@@ -1,4 +1,5 @@
 // src/config/db.js
+import { supabase } from 'supabaseCleint.js'
 import { createClient } from '@supabase/supabase-js'
 import 'dotenv/config'
 
@@ -15,3 +16,18 @@ const supabaseAdmin = createClient(
 )
 
 export { supabase, supabaseAdmin }
+async function socialLogin() {
+  const { data, error } = await
+  supabase.auth.socialLogin({
+    provider: 'google',
+    options: {
+      scopes: 'email profile'
+    }
+  })
+  const { data: { session } } = await
+  supabase.auth.getSession()
+
+  const googleToken = 
+  session.provider_token
+}
+
