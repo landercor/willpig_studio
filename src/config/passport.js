@@ -16,7 +16,6 @@ passport.use(
     async function (accessToken, refreshToken, profile, cb) {
       try {
         const email = profile.emails && profile.emails[0] ? profile.emails[0].value : null;
-        
         if (!email) {
           return cb(new Error("No email found in Google profile"));
         }
