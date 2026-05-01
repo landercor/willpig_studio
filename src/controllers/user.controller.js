@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // src/controllers/user.controller.js
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 import { supabaseAdmin as supabase } from "../config/db.js";
 import bcrypt from "bcrypt";
 
@@ -16,31 +13,8 @@ export const apiRegister = async (req, res) => {
       .insert([{ username, email, clave: hashedPass }])
       .select();
 
-<<<<<<< HEAD
-    const { data, error } = await supabase
-      .from('cuenta_usuario')
-      .insert([
-        { username, email, clave: hashedPass }
-      ])
-      .select();
-
-    if (error) throw error;
-
-    const newUser = data[0];
-
-    // Set session
-    req.session.user = {
-      id: newUser.id_cuenta_usuario,
-      username: newUser.username,
-      email: newUser.email,
-      rol: newUser.rol,
-      avatar: newUser.avatar_url
-    };
-
-=======
     if (error) throw error;
     const newUser = data[0];
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
     res.status(201).json({ message: "Usuario registrado", id: newUser.id_cuenta_usuario });
   } catch (error) {
     console.error(error);
@@ -55,11 +29,7 @@ export const apiLogin = async (req, res) => {
       .from('cuenta_usuario')
       .select('*')
       .eq('email', email);
-<<<<<<< HEAD
 
-    if (error) throw error;
-=======
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
     if (error) throw error;
     if (rows.length === 0) return res.status(401).json({ error: "Usuario no encontrado" });
@@ -68,28 +38,13 @@ export const apiLogin = async (req, res) => {
     const valid = await bcrypt.compare(clave, user.clave);
     if (!valid) return res.status(401).json({ error: "Clave incorrecta" });
 
-<<<<<<< HEAD
-    const userData = {
-=======
     req.session.user = {
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
       id: user.id_cuenta_usuario,
       username: user.username,
       email: user.email,
       rol: user.rol,
       avatar: user.avatar_url
     };
-<<<<<<< HEAD
-
-    // Set session
-    req.session.user = userData;
-
-    res.json({
-      message: "Inicio de sesión exitoso",
-      user: userData
-    });
-=======
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
     res.json({ message: "Inicio de sesión exitoso", user: req.session.user });
   } catch (error) {
@@ -103,16 +58,7 @@ export const apiLogin = async (req, res) => {
 export const getProfile = async (req, res) => {
   const { id } = req.params;
   try {
-<<<<<<< HEAD
-    const { data: rows, error } = await supabase
-      .from('cuenta_usuario')
-      .select('username, email, biografia, avatar_url, rol')
-      .eq('id_cuenta_usuario', id);
-
-    if (error) throw error;
-=======
     console.log("Fetching profile for ID:", id);
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
     // 1. Obtener datos del usuario
     const { data: userData, error: userError } = await supabase
@@ -178,11 +124,7 @@ export const updateProfile = async (req, res) => {
       .from('cuenta_usuario')
       .update({ username, biografia, avatar_url })
       .eq('id_cuenta_usuario', id);
-<<<<<<< HEAD
 
-    if (error) throw error;
-=======
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
     if (error) throw error;
     res.json({ message: "Perfil actualizado" });

@@ -1,76 +1,9 @@
-<<<<<<< HEAD
-<%- include('partials/topbar', { loggedUser }) %>
-=======
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-<<<<<<< HEAD
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= profile.title %> | Willpig Studio
-    </title>
-    <link rel="stylesheet" href="/public/css/style1.2.css">
-    <link rel="icon" href="/img/img.ico/logo.ico">
 
-</head>
-<body>
-<div class="profile-header">
-  <img class="cover-img" src="<%= user.coverImage || '/img/default-cover.jpg' %>" alt="">
-  <div class="profile-info">
-    <img class="avatar" src="<%= user.avatar || '/img/default-avatar.png' %>" alt="">
-    <h2><%= user.name %></h2>
-    <span class="username">@<%= user.username %></span>
-    <div class="profile-stats">
-      <span><%= user.works.length %> Obras</span>
-      <span><%= user.readingLists.length %> Listas de lectura</span>
-      <span><%= user.followers.length %> Seguidores</span>
-    </div>
-  </div>
-  <% if (user._id.toString() === loggedUser._id.toString()) { %>
-    <a href="/profile/edit" class="edit-btn">Editar perfil</a>
-  <% } %>
-</div>
-
-<div class="profile-content">
-  <div class="sidebar">
-    <button class="desc-btn">Añadir descripción</button>
-    <p>Se unió el <%= user.joined %></p>
-
-    <h4>Siguiendo</h4>
-    <div class="following-list">
-      <% user.following.slice(0,4).forEach(f => { %>
-        <img src="<%= f.avatar %>" alt="">
-      <% }) %>
-      <span>+<%= user.following.length - 4 %></span>
-    </div>
-  </div>
-
-  <div class="main-section">
-    <h3>Listas de lectura</h3>
-    <div class="reading-lists">
-      <% user.readingLists.forEach(list => { %>
-        <a href="/reading-list/<%= list.id %>">
-          <img src="<%= list.thumbnail %>" alt="">
-        </a>
-      <% }) %>
-    </div>
-
-    <h3>Obras creadas</h3>
-    <div class="works">
-      <% user.works.forEach(work => { %>
-        <a href="/work/<%= work.id %>">
-          <img src="<%= work.cover %>" alt="">
-        </a>
-      <% }) %>
-    </div>
-  </div>
-</div>
-</body>
-<%- include('partials/footer') %>
-=======
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
@@ -181,4 +114,4 @@
     </div>
 </body>
 <%- include('partials/footer') %>
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
+

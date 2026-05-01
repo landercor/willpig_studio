@@ -27,6 +27,7 @@ router.get("/nuevaclave", (req, res) => {
 });
 router.post("/nuevaclave", resetPassword);
 
+//Inicio de sesión por medio de Google
 import passport from "../config/passport.js";
 
 // Google OAuth Routes

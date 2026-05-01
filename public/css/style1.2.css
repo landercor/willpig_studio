@@ -1966,7 +1966,6 @@ body.font-xlarge .chapter-content {
 .empty-text {
   grid-column: 1 / -1;
   font-style: italic;
-  <<<<<<< HEAD
 }
 
 /* ====== EDITOR DE CAPITULOS ====== */
@@ -2098,5 +2097,4 @@ body.font-xlarge .chapter-content {
 .btn-publish:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-  =======>>>>>>>6ded87912962014a4d6dbfaf430042b1f00462f8>>>>>>>origin/ramita
 }
