@@ -24,6 +24,9 @@ app.use(
   })
 );
 
+import passport from "./config/passport.js";
+app.use(passport.initialize());
+
 app.get("/", (req, res) => {
   res.redirect("/auth/register");
 });

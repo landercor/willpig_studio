@@ -38,63 +38,33 @@
                     <button type="submit" class="btn-login-pocket">Iniciar sesión</button>
                 </form>
 
-<<<<<<< HEAD
                 <!-- ENLACES -->
                 <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
-=======
-            <!-- redirreción para la recuperación de contraseña-->
-            <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
-            
-            <!--funciona para dar un mensaje de error al presionar olvidar contraseña -->
-
-            <% if (typeof error !== "undefined" && error.startsWith('Se ha enviado')) { %>
-                <p class="text-success"><%= error %></p>
-            <% } %>
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
-
-                <!-- si venimos de la página de olvido con mensaje, se muestra -->
-                <% if (typeof error !=="undefined" && error.startsWith('Se ha enviado')) { %>
-                    <p style="color: green;">
-                        <%= error %>
-                    </p>
-                    <% } %>
+                
+                <% if (typeof error !== "undefined" && error.startsWith('Te hemos enviado')) { %>
+                    <p class="text-success"><%= error %></p>
+                <% } %>
 
                         <div class="divider"> O continúa con </div>
 
                         <div class="social-login">
-                            <button class="social-btn google">
-                                <img src="/img/img.ico/google_login_color.png" width="20"> Continuar con Google
-                            </button>
+                            <a href="/auth/google" style="text-decoration: none;">
+                                <button type="button" class="social-btn google">
+                                    <img src="/img/img.ico/google_login_color.png" width="20"> Continuar con Google
+                                </button>
+                            </a>
                         </div>
 
-                        <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
+                <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
 
-                        <!-- Mostrar error si existe -->
-
-                        <% if (typeof error !=="undefined" ) { %>
-                            <p style="color:rgb(124, 2, 2);">
-                                <%= error %>
-                            </p>
-                            <% } %>
+                <!-- Mostrar error si existe -->
+                <% if (typeof error !== "undefined" && !error.startsWith('Te hemos enviado')) { %>
+                    <p class="text-danger" style="color:rgb(124, 2, 2);"><%= error %></p>
+                <% } %>
 
             </div>
-<<<<<<< HEAD
         </div>
     </div>
-
-=======
-
-            <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
-
-            <!--funcionalidad mensaje de error, si los datos estan mal --> 
-            <% if (typeof error !== "undefined") { %>
-                <p class="text-danger"><%= error %></p>
-            <% } %>
-
-        </div>
-    </div>
-</div>
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
     <% include('partials/footer') %>
 </body>
 

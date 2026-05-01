@@ -1,9 +1,5 @@
 import express from "express";
-<<<<<<< HEAD
-import { register, login, forgotPassword } from "../controllers/auth.controller.js";
-=======
 import { register, login, forgotPassword, resetPassword, authCallback } from "../controllers/auth.controller.js";
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
 
 const router = express.Router();
 
@@ -17,15 +13,6 @@ router.get("/login", (req, res) => {
 });
 router.post("/login", login);
 
-<<<<<<< HEAD
-// new routes for password recovery
-router.get("/olvido", (req, res) => {
-  res.render("olvido");
-});
-
-router.post("/olvido", forgotPassword);
-
-=======
 // Password recovery routes
 router.get("/olvido", (req, res) => {
   res.render("olvido");
@@ -40,5 +27,26 @@ router.get("/nuevaclave", (req, res) => {
 });
 router.post("/nuevaclave", resetPassword);
 
->>>>>>> 6ded87912962014a4d6dbfaf430042b1f00462f8
+import passport from "../config/passport.js";
+
+// Google OAuth Routes
+router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/auth/login", session: false }),
+  (req, res) => {
+    // Autenticación exitosa, el usuario está en req.user gracias a passport
+    req.session.userId = req.user.id_cuenta_usuario;
+    req.session.user = {
+      id: req.user.id_cuenta_usuario,
+      username: req.user.username,
+      email: req.user.email,
+      rol: req.user.rol,
+      avatar: req.user.avatar_url,
+    };
+    res.redirect("/principal");
+  }
+);
+
 export default router;
