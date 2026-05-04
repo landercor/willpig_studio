@@ -159,8 +159,9 @@ export const createStory = async (req, res) => {
 
     if (error) throw error;
 
-    // redirige a la pantalla principal
-    res.redirect('/principal');
+    // Redirige al formulario de edición (metadatos/portada)
+    const newStory = data[0];
+    res.redirect(`/historias/editar-meta/${newStory.id_cuento}`);
 
   } catch (error) {
     console.error("Error creating story:", error);
@@ -254,6 +255,55 @@ export const getEditStory = async (req, res) => {
 
   } catch (error) {
     console.error('Error al obtener gestión de historia:', error);
+    res.status(500).send("Error del servidor");
+  }
+}
+
+// GET /historias/editar-meta/:id — Formulario de edición (Metadatos)
+export const getEditMetadata = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (!req.session.user) {
+      return res.redirect('/auth/login');
+    }
+
+    const { data: cuento, error } = await supabase
+      .from('cuentos')
+      .select(`
+        id_cuento,
+        titulo,
+        descripcion,
+        portada_url,
+        estado,
+        visibilidad,
+        audiencia,
+        idioma,
+        derechos,
+        clasificacion,
+        categoria_id,
+        cuenta_usuario_id
+      `)
+      .eq('id_cuento', id)
+      .single();
+
+    if (error || !cuento) {
+      return res.status(404).render('404', { message: "Historia no encontrada" });
+    }
+
+    // Verificar autoría
+    const userId = req.session.userId || req.session.user.id_cuenta_usuario || req.session.user.id;
+    if (String(cuento.cuenta_usuario_id) !== String(userId)) {
+      return res.status(403).render('404', { message: "No tienes permiso para editar esta historia" });
+    }
+
+    res.render('editstory', {
+      cuento,
+      loggerUser: req.session.user
+    });
+
+  } catch (error) {
+    console.error('Error al obtener formulario de edición:', error);
     res.status(500).send("Error del servidor");
   }
 }

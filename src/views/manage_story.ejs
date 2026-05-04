@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestionar: <%= cuento.titulo %> | Willpig Studio</title>
     <link rel="stylesheet" href="/css/style1.2.css">
-    <link rel="icon" href="/img/img.ico/logo.ico">
+    <link rel="icon" href="/img/img.ico/GABALI baloo.ico">
     <link rel="stylesheet" href="/css/workEdit.css">
 </head>
 
@@ -40,7 +40,7 @@
             <section class="chapters-section">
                 <div class="section-header">
                     <h3>Capítulos (<%= cuento.capitulos ? cuento.capitulos.length : 0 %>)</h3>
-                    <a href="/capitulos/nuevo/<%= cuento.id_cuento %>" class="btn-savever">+ Escribir Capítulos</a>
+                    <a href="/historias/editar/<%= cuento.id_cuento %>/capitulos/nuevo" class="btn-savever">+ Escribir Capítulos</a>
                 </div>
                 <div class="chapter-list">
                     <% if (cuento.capitulos && cuento.capitulos.length> 0) { %>
