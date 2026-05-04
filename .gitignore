@@ -1,5 +1,5 @@
 #Ignore node_modules
-node_modules
+.node_modules/
 
 #Ignore vscode AI rules
 .github\instructions\codacy.instructions.md
@@ -14,7 +14,7 @@ node_modules
 
 # Documents
 Documentos/
-.scratch/
+scratch/
 .claude/
 cambios de styles.md
 Cambios redundantes en el proyecto.md

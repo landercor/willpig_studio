@@ -44,7 +44,7 @@ app.use("/capitulos", chapterRoutes);
 app.use("/historias", storyRoutes);
 app.use("/usuario", userRoutes); // Montar rutas de usuario
 app.use("/uploads", express.static("uploads"));
-/*app.use("/")*/
+app.use("/", homeRoutes);
 
 
 export default app;

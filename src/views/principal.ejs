@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title> Willpig Studio | Principal</title>
   <link rel="stylesheet" href="/css/style1.2.css" />
-  <link rel="icon" href="/img/img.ico/logo.ico">
+  <link rel="icon" href="/img/img.ico/GABALI baloo.ico">
 </head>
 
 <%- include('partials/navbar', { loggerUser }) %>
@@ -14,178 +14,256 @@
   <body>
 
     <!-- Carrusel principal -->
-    <section class="hero-carousel">
+    <section class="hero-carousel animate-fade">
       <div class="carousel">
         <% carrusel.forEach((item, index)=> { %>
           <div class="slide <%= index === 0 ? 'active': '' %>">
-            <img src="<%= item.imagen %>">
+            <div class="hero-image-wrapper">
+              <img src="<%= item.imagen %>" alt="<%= item.titulo %>">
+              <div class="hero-overlay"></div>
+            </div>
             <div class="caption">
-              <h2>
+              <h2 class="animate-scale">
                 <%= item.titulo %>
               </h2>
-              <a href="<%= item.link %>">
-                <button>Leer ahora</button>
-              </a>
+              <p class="hero-subtitle">Descubre historias que te transportarán a nuevos mundos.</p>
+              <div class="hero-actions">
+                <a href="<%= item.link %>">
+                  <button class="btn-primary-pastel">Leer ahora</button>
+                </a>
+                <button class="btn-outline-white">Añadir a lista</button>
+              </div>
             </div>
           </div>
-
           <% }) %>
-
       </div>
 
       <div class="carousel-controls">
-        <button class="prev"> &lt; </button>
-        <button class="next"> &gt; </button>
+        <button class="prev" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="next" aria-label="Siguiente">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
+      <div class="carousel-indicators">
+        <% carrusel.forEach((_, index)=> { %>
+          <div class="indicator <%= index === 0 ? 'active': '' %>"></div>
+          <% }) %>
       </div>
     </section>
 
+
     <!-- Secciones con scroll horizontal -->
     <section class="library-page">
-      <div class="library-header">
+      <div class="library-header reveal-item">
         <div class="library-tabs">
 
           <button class="tab-btn active" data-target="home-tab">Inicio</button>
           <button class="tab-btn" data-target="new-tab">Nuevas Historias</button>
           <button class="tab-btn" data-target="trends-tab">Tendencias</button>
 
-        
+      <div class="library-content">
         <!-- === INICIO (Filas Netflix & Destacada) === -->
         <div id="home-tab" class="tab-content active">
-          
+
           <!-- Historia destacada -->
-          <% if (typeof historiaDestacada !== 'undefined' && historiaDestacada) { %>
-            <section class="featured-story mb-3">
-              <img src="<%= historiaDestacada.portada_url || historiaDestacada.portada || '/img/default-portada.jpg' %>" alt="<%= historiaDestacada.titulo %>">
+          <% if (typeof historiaDestacada !=='undefined' && historiaDestacada) { %>
+            <section class="featured-story mb-3 reveal-item">
+              <div class="featured-image">
+                <img
+                  src="<%= historiaDestacada.portada_url || historiaDestacada.portada || '/img/default-portada.jpg' %>"
+                  alt="<%= historiaDestacada.titulo %>">
+                <div class="featured-badge">Destacada</div>
+              </div>
               <div class="info">
-                <h2>Historia Destacada</h2>
-                <h3 class="mb-05"><%= historiaDestacada.titulo %></h3>
-                <p><%= historiaDestacada.sinopsis || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %></p>
+                <h2>Recomendación del día</h2>
+                <h3 class="mb-05">
+                  <%= historiaDestacada.titulo %>
+                </h3>
+                <p>
+                  <%= historiaDestacada.sinopsis
+                    || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %>
+                </p>
+                <div class="featured-meta">
+                  <div class="meta-item"><img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span>
+                      <%= (historiaDestacada.vistas || 0).toLocaleString() %> lecturas
+                    </span></div>
+                </div>
                 <a href="/historias/<%= historiaDestacada.id_cuento %>">
-                  <button class="leer_story mt-1">Leer ahora</button>
+                  <button class="btn-primary-pastel mt-1">Comenzar lectura</button>
                 </a>
               </div>
             </section>
-          <% } %>
+            <% } %>
 
-          <!-- Categorías (Netflix Style) -->
-          <% if (typeof librosPorCategoria !== 'undefined' && Object.keys(librosPorCategoria).length > 0) { %>
-            <% Object.keys(librosPorCategoria).forEach(cat => { %>
-              <div class="category-section mb-2">
-                <h3 class="category-title"><%= cat %></h3>
-                <div class="scroll-wrapper">
-                  <button class="scroll-btn left">&lt;</button>
-                  <div class="scroll-container">
-                    <% librosPorCategoria[cat].forEach(libro => { %>
-                      <div class="carousel-item">
-                        <a href="/historias/<%= libro.id_cuento || '#' %>">
-                          <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
-                        </a>
-                        <p class="title text-truncate mt-05"><%= libro.titulo %></p>
-                        <div class="meta text-start">
-                          <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span><%= libro.vistas || 0 %></span>
-                        </div>
+              <!-- Categorías (Netflix Style) -->
+              <% if (typeof librosPorCategoria !=='undefined' && Object.keys(librosPorCategoria).length> 0) { %>
+                <% Object.keys(librosPorCategoria).forEach(cat=> { %>
+                  <div class="category-section mb-3 reveal-item">
+                    <div class="section-flex">
+                      <h3 class="category-title">
+                        <%= cat %>
+                      </h3>
+                      <a href="/categoria/<%= cat.toLowerCase() %>" class="view-all">Ver todo</a>
+                    </div>
+                    <div class="scroll-wrapper">
+                      <div class="scroll-container">
+                        <% librosPorCategoria[cat].forEach(libro=> { %>
+                          <div class="carousel-item">
+                            <div class="card-inner">
+                              <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
+                                <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>"
+                                  class="cover" alt="<%= libro.titulo %>">
+                                <div class="card-overlay">
+                                  <span class="btn-play-mini">▶</span>
+                                </div>
+                              </a>
+                              <div class="card-info">
+                                <p class="title text-truncate">
+                                  <%= libro.titulo %>
+                                </p>
+                                <div class="meta text-start">
+                                  <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span>
+                                    <%= (libro.vistas || 0).toLocaleString() %>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <% }) %>
                       </div>
-                    <% }) %>
+                      <button class="scroll-btn left" aria-label="Deslizar izquierda">‹</button>
+                      <button class="scroll-btn right" aria-label="Deslizar derecha">›</button>
+                    </div>
                   </div>
-                  <button class="scroll-btn right">&gt;</button>
-                </div>
-              </div>
-            <% }) %>
-          <% } else { %>
-            <div class="empty-state text-center p-2 text-muted">
-              <p>Aún no hay categorías para mostrar.</p>
-            </div>
-          <% } %>
+                  <% }) %>
+                    <% } else { %>
+                      <div class="empty-state text-center p-2 text-muted reveal-item">
+                        <p>Aún no hay categorías para mostrar.</p>
+                      </div>
+                      <% } %>
 
         </div>
 
         <!-- === NUEVAS HISTORIAS === -->
         <div id="new-tab" class="tab-content">
-          <div class="section-title"> Nuevas historias </div>
+          <div class="section-title reveal-item"> Recién publicadas </div>
 
           <div class="library-grid">
-            <% if (libros && libros.length > 0) { %>
+            <% if (libros && libros.length> 0) { %>
               <% libros.forEach(libro=> { %>
-                <div class="library-item">
-                  <a href="/historias/<%= libro.id_cuento || '#' %>">
-                    <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
-                  </a>
-                  <p class="title"><%= libro.titulo %></p>
-                  <div class="author">
-                    <img src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
-                    <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
-                  </div>
-                  <div class="meta">
-                    <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= libro.vistas || 0 %>
+                <div class="library-item reveal-item">
+                  <div class="card-inner">
+                    <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
+                      <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= libro.titulo %>">
+                      <div class="card-overlay">
+                        <span class="btn-play-mini">▶</span>
+                      </div>
+                    </a>
+                    <div class="card-info">
+                      <p class="title text-truncate">
+                        <%= libro.titulo %>
+                      </p>
+                      <div class="author">
+                        <img
+                          src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>"
+                          alt="autor" class="author-avatar-xs">
+                        <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                      </div>
+                      <div class="meta">
+                        <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
+                        <%= (libro.vistas || 0).toLocaleString() %>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              <% }) %>
-            <% } else { %>
-              <div class="empty-state text-center p-2 text-muted col-full">
-                <p>No hay historias nuevas en este momento.</p>
-                <a href="/nuevahistoria"><button class="btn btn-primary mt-1">¡Escribe la primera!</button></a>
-              </div>
-            <% } %>
+                <% }) %>
+                  <% } else { %>
+                    <div class="empty-state text-center p-2 text-muted col-full reveal-item">
+                      <p>No hay historias nuevas en este momento.</p>
+                      <a href="/historias/crear"><button class="btn-primary-pastel mt-1">¡Escribe la primera!</button></a>
+                    </div>
+                    <% } %>
           </div>
 
-          <% if (libros && libros.length >= 10) { %>
-            <div class="text-center my-2">
+          <% if (libros && libros.length>= 10) { %>
+            <div class="text-center my-3 reveal-item">
               <a href="/principal/biblioteca"><button class="btn-outline-primary">Ver más historias</button></a>
             </div>
-          <% } %>
+            <% } %>
         </div>
 
         <!-- === TENDENCIAS === -->
         <div id="trends-tab" class="tab-content">
-          <div class="section-title"> Tendencias Mundiales </div>
+          <div class="section-title reveal-item"> Lo más leído del mundo </div>
 
           <div class="library-grid">
-            <% if (typeof tendencias !== 'undefined' && tendencias.length > 0) { %>
+            <% if (typeof tendencias !=='undefined' && tendencias.length> 0) { %>
               <% tendencias.forEach(libro=> { %>
-                <div class="library-item">
-                  <a href="/historias/<%= libro.id_cuento || '#' %>">
-                    <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
-                  </a>
-                  <p class="title"><%= libro.titulo %></p>
-                  <div class="author">
-                    <img src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
-                    <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
-                  </div>
-                  <div class="meta">
-                    <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= libro.vistas || 0 %>
+                <div class="library-item reveal-item">
+                  <div class="card-inner">
+                    <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
+                      <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= libro.titulo %>">
+                      <div class="card-overlay">
+                        <span class="btn-play-mini">▶</span>
+                      </div>
+                    </a>
+                    <div class="card-info">
+                      <p class="title text-truncate">
+                        <%= libro.titulo %>
+                      </p>
+                      <div class="author">
+                        <img
+                          src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>"
+                          alt="autor" class="author-avatar-xs">
+                        <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                      </div>
+                      <div class="meta">
+                        <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
+                        <%= (libro.vistas || 0).toLocaleString() %>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              <% }) %>
-            <% } else { %>
-              <div class="empty-state text-center p-2 text-muted col-full">
-                <p>No hay historias en tendencia aún.</p>
-              </div>
-            <% } %>
+                <% }) %>
+                  <% } else { %>
+                    <div class="empty-state text-center p-2 text-muted col-full reveal-item">
+                      <p>No hay historias en tendencia aún.</p>
+                    </div>
+                    <% } %>
           </div>
         </div>
 
       </div>
     </section>
 
+
     <%- include('partials/footer') %>
 
-    <script>
-      // Tabs logic for principal page
-      const tabs = document.querySelectorAll('.tab-btn');
-      const contents = document.querySelectorAll('.tab-content');
+      <script>
+        // Tabs logic for principal page
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
 
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          tabs.forEach(btn => btn.classList.remove('active'));
-          contents.forEach(content => content.classList.remove('active'));
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            tabs.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
 
-          tab.classList.add('active');
-          document.getElementById(tab.dataset.target).classList.add('active');
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.target).classList.add('active');
+          });
         });
-      });
-    </script>
-    <script src="/js/script.js"></script>
-
+      </script>
+      <!-- script removed, now in footer.ejs -->
   </body>
 
 </html>

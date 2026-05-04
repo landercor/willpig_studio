@@ -84,7 +84,7 @@ export const getProfile = async (req, res) => {
       .eq('cuenta_usuario_id', id);
 
     if (!isOwner) { /*Filtro para que los libro sin publicar nunca se muestren la pantalla principal. si no como borrador en perfil de user*/
-      query = query.eq('estado', 'publicado');
+      query = query.eq('estado', 'publicado').eq('visibilidad', 'publica');
     }
 
     const { data: userWorks } = await query;

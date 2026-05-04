@@ -90,3 +90,94 @@ export const readChapter = async (req, res) => {
     res.status(500).send("Error del servidor");
   }
 };
+
+// GET /capitulos/nuevo/:storyId o /capitulos/editar/:id
+export const getChapterEditor = async (req, res) => {
+  const { storyId, id } = req.params; // uno de los dos vendrá definido según la ruta
+
+  try {
+    if (!req.session.user) return res.redirect('/auth/login');
+
+    let chapter = { titulo: '', contenido: '', cuento_id: storyId };
+    let storyTitle = "Nueva Historia";
+
+    if (id) {
+      // Estamos editando un capítulo existente
+      const { data, error } = await supabase
+        .from('capitulos')
+        .select('*, cuentos(titulo, cuento_id, cuenta_usuario_id)')
+        .eq('id_capitulo', id)
+        .single();
+
+      if (error || !data) return res.status(404).render('404', { message: "Capítulo no encontrado" });
+
+      // Verificar autoría
+      if (String(data.cuentos.cuenta_usuario_id) !== String(req.session.user.id)) {
+        return res.status(403).render('404', { message: "No tienes permiso" });
+      }
+
+      chapter = data;
+      storyTitle = data.cuentos.titulo;
+    } else {
+      // Estamos creando uno nuevo, necesitamos el titulo del cuento
+      const { data: storyData } = await supabase
+        .from('cuentos')
+        .select('titulo, cuenta_usuario_id')
+        .eq('id_cuento', storyId)
+        .single();
+      
+      storyTitle = storyData.titulo;
+      
+      if (String(storyData.cuenta_usuario_id) !== String(req.session.user.id)) {
+        return res.status(403).render('404', { message: "No tienes permiso" });
+      }
+    }
+
+    res.render('chapter_editor', {
+      chapter,
+      storyTitle,
+      loggerUser: req.session.user
+    });
+
+  } catch (error) {
+    console.error("Error en editor de capítulos:", error);
+    res.status(500).send("Error del servidor");
+  }
+};
+
+// PUT /api/capitulos/update/:id
+export const updateChapter = async (req, res) => {
+  const { id } = req.params;
+  const { titulo, contenido } = req.body;
+
+  try {
+    const { error } = await supabase
+      .from('capitulos')
+      .update({ titulo, contenido })
+      .eq('id_capitulo', id);
+
+    if (error) throw error;
+    res.json({ message: "Capítulo actualizado correctamente" });
+  } catch (error) {
+    console.error("Error updating chapter:", error);
+    res.status(500).json({ error: "No se pudo actualizar el capítulo" });
+  }
+};
+
+// DELETE /api/capitulos/delete/:id
+export const deleteChapter = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const { error } = await supabase
+      .from('capitulos')
+      .delete()
+      .eq('id_capitulo', id);
+
+    if (error) throw error;
+    res.json({ message: "Capítulo eliminado" });
+  } catch (error) {
+    console.error("Error deleting chapter:", error);
+    res.status(500).json({ error: "No se pudo eliminar el capítulo" });
+  }
+};

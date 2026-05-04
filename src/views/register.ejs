@@ -6,18 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registrarse | Willpig Studio</title>
   <link rel="stylesheet" href="/css/style1.2.css" />
-  <link rel="icon" href="/img/img.ico/logo.ico">
+  <link rel="icon" href="/img/img.ico/GABALI baloo.ico">
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+        document.body.classList.add('dark-mode');
+      }
+    })();
+  </script>
 </head>
 
 <body>
   <header class="Logps-navbar">
-    <div class="logo-LTR" onclick="window.location.href='/'">
-      <figure class="logo-LTRA">
-        <img src="/img/img.ico/LTRA.logo-resol.png" alt="Willpig Studio Logo">
-      </figure>
-      <span class="logo-text"></span>
-    </div>
-    <div class="row"></div>
+    <figure class="logo-LTRA">
+      <img src="/img/img.ico/LTRA.logo-resol.png" alt="Willpig Studio Logo">
+    </figure>
+    <span class="logo-text"></span>
   </header>
 
   <main class="register-container-igm">
@@ -67,7 +73,6 @@
                       </button>
                   </a>
               </div>
-
               <p class="login-link">
                 ¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión</a>
               </p>

@@ -130,6 +130,8 @@ export const verBusqueda = async (req, res) => {
                 *,
                 cuenta_usuario ( username, avatar_url )
             `)
+            .eq('estado', 'publicado')
+            .eq('visibilidad', 'publica')
             .ilike('titulo', `%${q}%`)
             .order('created_at', { ascending: false });
 

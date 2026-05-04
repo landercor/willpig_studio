@@ -6,7 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Iniciar sesión | Willpig Studio</title>
     <link rel="stylesheet" href="/css/style1.2.css" />
-    <link rel="icon" href="/img/img.ico/logo.ico" />
+    <link rel="icon" href="/img/img.ico/GABALI baloo.ico" />
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -62,10 +71,11 @@
                     <p class="text-danger" style="color:rgb(124, 2, 2);"><%= error %></p>
                 <% } %>
 
+
             </div>
         </div>
     </div>
-    <% include('partials/footer') %>
+    <%- include('partials/footer') %>
 </body>
 
 </html>
