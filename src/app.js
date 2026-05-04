@@ -25,7 +25,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.redirect("/auth/register");
+  res.render("landing", { loggerUser: req.session.user });
 });
 
 import storyRoutes from "./routes/story.routes.js"; // Importar rutas de historias
