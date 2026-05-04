@@ -27,12 +27,16 @@ app.use(
 import passport from "./config/passport.js";
 app.use(passport.initialize());
 
-app.get("/", (req, res) => {
-  res.redirect("/auth/register");
-});
-
 import storyRoutes from "./routes/story.routes.js"; // Importar rutas de historias
 import userRoutes from "./routes/user.routes.js"; // Importar rutas de usuario
+
+app.get("/", (req, res) => {
+  if (req.session && req.session.user) {
+    res.redirect("/principal"); // Redirige a la página principal si ya hay sesión
+  } else {
+    res.redirect("/auth/login"); // Redirige al login si no hay sesión iniciada
+  }
+});
 
 app.use("/auth", authRoutes);
 app.use("/principal", homeRoutes);
