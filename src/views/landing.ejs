@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WillPig Studio - Historias que conectan</title>
+    <link rel="stylesheet" href="/css/style1.2.css">
+    <link rel="icon" href="/img/img.ico/logo.ico">
+</head>
+
+<body>
+    <%- include('partials/navbar', { loggerUser: typeof loggerUser !=='undefined' ? loggerUser : null }) %>
+
+        <main>
+            <section class="hero-landing">
+                <div class="hero-content reveal-item">
+                    <h1 class="hero-title">Ven por la historia. <br> Quédate por la conexión.</h1>
+                    <p class="hero-description">
+                        Historias mejores que un streaming y comentarios que superan tus discusiones de grupo. Únete a
+                        la comunidad de WillPig Studio.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="/auth/register" class="hero-btn-main">Comenzar</a>
+                        <div class="hero-login-link">
+                            ¿Ya tienes una cuenta? <a href="/auth/login">Inicia sesión</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-illustration">
+                    <img src="/img/landing_hero.png" alt="Ilustración de comunidad y lectura" class="animate-scale">
+                </div>
+            </section>
+        </main>
+
+        <%- include('partials/footer') %>
+
+            <script>
+                // Reveal animation
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        const revealItems = document.querySelectorAll('.reveal-item');
+                        revealItems.forEach(item => {
+                            item.classList.add('visible');
+                        });
+                    }, 100);
+                });
+            </script>
+</body>
+
+</html>
