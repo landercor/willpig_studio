@@ -31,6 +31,115 @@
                     <img src="/img/landing_hero.png" alt="Ilustración de comunidad y lectura" class="animate-scale">
                 </div>
             </section>
+
+            <!-- About WillPig Section -->
+            <section class="landing-about reveal-item">
+                <div class="about-content">
+                    <h2>Sobre WillPig Studio</h2>
+                    <p>Es un sitio web bajo el nombre de "WillPig". Su propósito principal es que los usuarios con
+                        dificultades para mantener un nivel de atención adecuado, puedan mejorar en este ámbito a través
+                        de libros ilustrados digitales, cuales se encuentran en el aplicativo, libros de múltiples
+                        categorías, infantiles, adolescentes, y adultos.</p>
+                </div>
+            </section>
+
+            <!-- Genres Section -->
+            <section class="landing-genres reveal-item">
+                <div class="genres-header">
+                    <h2>Todos los géneros. Todos los arquetipos. Todos tuyos.</h2>
+                    <p>Encuentra tu próxima lectura favorita, sea cual sea tu estado de ánimo (sin juzgar).</p>
+                </div>
+                <div class="genres-grid">
+                    <a href="/buscar?q=romance" class="genre-card">
+                        <div class="genre-icon">💖</div>
+                        <h3>Romance</h3>
+                    </a>
+                    <a href="/buscar?q=ficcion" class="genre-card">
+                        <div class="genre-icon">🌌</div>
+                        <h3>Ficción general</h3>
+                    </a>
+                    <a href="/buscar?q=aleatorio" class="genre-card">
+                        <div class="genre-icon">🎲</div>
+                        <h3>Aleatorio</h3>
+                    </a>
+                    <a href="/buscar?q=aventura" class="genre-card">
+                        <div class="genre-icon">🗺️</div>
+                        <h3>Aventura</h3>
+                    </a>
+                    <a href="/buscar?q=fanfiction" class="genre-card">
+                        <div class="genre-icon">🎭</div>
+                        <h3>Fanfiction</h3>
+                    </a>
+                    <a href="/buscar?q=adolescentes" class="genre-card">
+                        <div class="genre-icon">🎒</div>
+                        <h3>Adolescentes</h3>
+                    </a>
+                    <a href="/buscar?q=accion" class="genre-card">
+                        <div class="genre-icon">⚔️</div>
+                        <h3>Acción</h3>
+                    </a>
+                    <a href="/buscar?q=infantil" class="genre-card">
+                        <div class="genre-icon">🧸</div>
+                        <h3>Infantil</h3>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Trending Carousel Placeholder -->
+            <section class="landing-trending reveal-item">
+                <div class="trending-header">
+                    <h2>Tendencias actuales</h2>
+                    <a href="/buscar" class="view-all-link">Ver todas <span>→</span></a>
+                </div>
+                <div class="trending-carousel-wrapper">
+                    <div class="trending-carousel">
+                        <!-- Placeholders -->
+                        <div class="trending-card">
+                            <img src="/img/placeholder_cover.png" onerror="this.src='/img/default-book.jpg'"
+                                alt="Portada" class="trending-cover">
+                            <div class="trending-info">
+                                <h4>Bajo cielos clementes</h4>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="/img/placeholder_cover.png" onerror="this.src='/img/default-book.jpg'"
+                                alt="Portada" class="trending-cover">
+                            <div class="trending-info">
+                                <h4>Sobre expuesto</h4>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="/img/placeholder_cover.png" onerror="this.src='/img/default-book.jpg'"
+                                alt="Portada" class="trending-cover">
+                            <div class="trending-info">
+                                <h4>Cenizas de luna</h4>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="/img/placeholder_cover.png" onerror="this.src='/img/default-book.jpg'"
+                                alt="Portada" class="trending-cover">
+                            <div class="trending-info">
+                                <h4>En aguas profundas</h4>
+                            </div>
+                        </div>
+                        <div class="trending-card">
+                            <img src="/img/placeholder_cover.png" onerror="this.src='/img/default-book.jpg'"
+                                alt="Portada" class="trending-cover">
+                            <div class="trending-info">
+                                <h4>Cerca de mí</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Promotional Banner Section -->
+            <section class="landing-banner reveal-item">
+                <div class="banner-content">
+                    <h2>Fanfiction que debes leer sin falta</h2>
+                    <a href="/buscar?q=fanfiction" class="btn-primary-pastel">Explorar ahora</a>
+                </div>
+            </section>
         </main>
 
         <%- include('partials/footer') %>
