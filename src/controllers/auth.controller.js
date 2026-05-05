@@ -47,7 +47,6 @@ export const register = async (req, res) => {
       // Opcional: Podríamos borrar el usuario de Auth si falla la DB, pero Supabase Auth no es fácil de "limpiar" por seguridad.
       return res.render("register", { error: "Error al guardar el perfil del usuario." });
     }
-
     console.log("User registered successfully:", newUser);
     return res.redirect("/auth/login");
   } catch (err) {
@@ -59,6 +58,8 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { correo, contrasena } = req.body;
+    console.log("Logging in user:", correo); // Log del correo recibido (sin contraseña)
+
     if (!correo || !contrasena) {
       return res.render("login", { error: "Completa los campos." });
     }
@@ -69,6 +70,9 @@ export const login = async (req, res) => {
       .eq('email', correo)
       .single();
 
+    if (error) {
+      console.error("Supabase login error (or user not found):", error);
+    }
     if (error || !user) {
       return res.render("login", { error: "Usuario o contraseña incorrectos." });
     }
@@ -96,7 +100,6 @@ export const login = async (req, res) => {
 };
 
 // --- Recuperación de Contraseña con Supabase Auth ---
-
 export const forgotPassword = async (req, res) => {
   try {
     const { correo } = req.body;

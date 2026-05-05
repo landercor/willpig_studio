@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [{
+        "mysqlOptions": {
+            "authProtocol": "default",
+            "enableSsl": "Disabled"
+        },
+        "ssh": "Disabled",
+        "previewLimit": 50,
+        "server": "localhost",
+        "port": 3306,
+        "driver": "MySQL",
+        "name": "root",
+        "database": "willpigstudio",
+        "username": "root"
+    }],
+    "docwriter.style": "JSDoc",
+    "docwriter.progress.trackFunctions": true,
+    "docwriter.progress.trackClasses": true,
+    "docwriter.progress.trackTypes": true
+}

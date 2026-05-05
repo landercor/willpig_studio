@@ -30,6 +30,7 @@ export const apiLogin = async (req, res) => {
       .select('*')
       .eq('email', email);
 
+
     if (error) throw error;
     if (rows.length === 0) return res.status(401).json({ error: "Usuario no encontrado" });
 
@@ -123,6 +124,7 @@ export const updateProfile = async (req, res) => {
       .from('cuenta_usuario')
       .update({ username, biografia, avatar_url })
       .eq('id_cuenta_usuario', id);
+
 
     if (error) throw error;
     res.json({ message: "Perfil actualizado" });
