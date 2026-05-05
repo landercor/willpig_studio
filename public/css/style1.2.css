@@ -151,23 +151,24 @@ a:hover {
 }
 
 /* === Navbar === */
-.navbar {
+header.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
-  height: 75px;
+  padding: 0 50px;
+  height: 85px;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
   margin-bottom: 0;
+  transition: var(--transition-fluid);
 }
 
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   cursor: pointer;
   transition: var(--transition-fast);
 }
@@ -177,23 +178,23 @@ a:hover {
 }
 
 .logo-fig img {
-  height: 42px;
+  height: 48px;
   width: auto;
   border-radius: var(--radius-sm);
 }
 
 .logo-text {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 800;
   color: var(--primary-salmon-dark);
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
 }
 
 /* Search Bar Modernized */
 .search-form {
   flex: 1;
-  max-width: 500px;
-  margin: 0 30px;
+  max-width: 550px;
+  margin: 0 40px;
 }
 
 .search-container {
@@ -202,7 +203,7 @@ a:hover {
   background: var(--bg-light);
   border: 1px solid var(--glass-border);
   border-radius: 50px;
-  padding: 4px 10px 4px 20px;
+  padding: 6px 12px 6px 24px;
   transition: var(--transition-fluid);
   box-shadow: var(--shadow-inner);
 }
@@ -210,16 +211,16 @@ a:hover {
 .search-container:focus-within {
   border-color: var(--primary-salmon);
   box-shadow: 0 0 0 4px rgba(250, 173, 150, 0.1);
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .search-bar {
   border: none;
   background: transparent;
   width: 100%;
-  padding: 10px 0;
+  padding: 12px 0;
   outline: none;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-dark);
 }
 
@@ -227,8 +228,8 @@ a:hover {
   background: var(--salmon-gradient);
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -242,7 +243,7 @@ a:hover {
   box-shadow: 0 4px 15px rgba(235, 139, 113, 0.3);
 }
 
-.navbar-right {
+header.navbar .navbar-right {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -251,7 +252,12 @@ a:hover {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
+}
+
+body.dark-mode .logo-fig img {
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
 }
 
 .nav-link {
@@ -272,21 +278,32 @@ a:hover {
 .dropdown-trigger {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
   transition: var(--transition-fast);
 }
 
 .dropdown-trigger:hover {
-  background: rgba(250, 173, 150, 0.08);
+  background: rgba(250, 173, 150, 0.1);
+}
+
+.dropdown-arrow-svg {
+  opacity: 0.6;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease;
+}
+
+.dropdown:hover .dropdown-arrow-svg {
+  transform: rotate(180deg);
+  opacity: 1;
+  color: var(--primary-salmon-dark);
 }
 
 .dropbtn {
   background: none;
   border: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 15px;
   color: var(--text-dark);
   cursor: pointer;
@@ -3060,7 +3077,7 @@ body.dark-mode .genre-card {
 .genre-card:hover {
   transform: translateY(-8px);
   border-color: var(--primary-salmon);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 }
 
 .genre-icon {
@@ -3113,4 +3130,4 @@ body.dark-mode .landing-banner {
 .banner-content .btn-primary-pastel:hover {
   background: var(--bg-light);
   transform: translateY(-3px);
-}
+}
