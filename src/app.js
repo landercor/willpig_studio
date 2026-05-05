@@ -32,9 +32,9 @@ import userRoutes from "./routes/user.routes.js"; // Importar rutas de usuario
 
 app.get("/", (req, res) => {
   if (req.session && req.session.user) {
-    res.redirect("/principal"); // Redirige a la página principal si ya hay sesión
+    res.render("landing", { loggerUser: req.session.user });
   } else {
-    res.redirect("/auth/login"); // Redirige al login si no hay sesión iniciada
+    res.render("landing", { loggerUser: null });
   }
 });
 
