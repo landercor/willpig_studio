@@ -161,7 +161,7 @@ export const createStory = async (req, res) => {
 
     // Redirige al formulario de edición (metadatos/portada)
     const newStory = data[0];
-    res.redirect(`/historias/editar-meta/${newStory.id_cuento}`);
+    res.redirect(`/historias/editar-meta/${newStory.id_cuento}?success=true`);
 
   } catch (error) {
     console.error("Error creating story:", error);

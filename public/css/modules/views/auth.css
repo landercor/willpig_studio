@@ -1,0 +1,79 @@
+/* === Authentication (Login & Register) === */
+.register-container-igm {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/img.ico/fondo_register2.jpg') no-repeat center center/cover;
+  padding: 40px;
+}
+
+.login-pocketIN {
+  min-height: calc(100vh - 75px);
+  display: flex;
+  background: var(--bg-light);
+}
+
+.login-visual {
+  flex: 1;
+  background: var(--sage-beige);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-box, .register-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--white-pure);
+  padding: 45px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+}
+
+.divider {
+  margin: 30px 0;
+  position: relative;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: var(--glass-border);
+}
+
+.social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--white-pure);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.social-btn:hover {
+  background: var(--bg-light);
+  border-color: var(--primary-salmon);
+}
