@@ -155,10 +155,10 @@
         <div id="new-tab" class="tab-content">
           <div class="section-title reveal-item"> Recién publicadas </div>
 
-          <div class="library-grid">
+          <div class="grid-container reveal-item">
             <% if (libros && libros.length> 0) { %>
               <% libros.forEach(libro=> { %>
-                <div class="library-item reveal-item">
+                <div class="library-item">
                   <div class="card-inner">
                     <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
                       <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
@@ -204,10 +204,10 @@
         <div id="trends-tab" class="tab-content">
           <div class="section-title reveal-item"> Lo más leído del mundo </div>
 
-          <div class="library-grid">
+          <div class="grid-container reveal-item">
             <% if (typeof tendencias !=='undefined' && tendencias.length> 0) { %>
               <% tendencias.forEach(libro=> { %>
-                <div class="library-item reveal-item">
+                <div class="library-item">
                   <div class="card-inner">
                     <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
                       <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
