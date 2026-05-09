@@ -45,6 +45,7 @@ Rutas: Definición de endpoints en src/routes/.
 
 ## Tecnologías
 [![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 
 ### Falta temas
 ---
