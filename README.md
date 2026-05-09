@@ -43,6 +43,9 @@ Controladores: Lógica de negocio en src/controllers/.
 Vistas: Plantillas en src/views/.
 Rutas: Definición de endpoints en src/routes/.
 
+## Tecnologías
+[![HTML](https://img.shields.io/badge/HTML-%23E34F26.svg?logo=html5&logoColor=white)](#)
+
 ### Falta temas
 ---
 ### Variables entorno
