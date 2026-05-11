@@ -16,152 +16,121 @@
             <section class="hero-landing">
                 <div class="hero-content reveal-item">
                     <h1 class="hero-title">Ven por la historia. <br> Quédate por la conexión.</h1>
-                    <p class="hero-description">
-                        Historias mejores que un streaming y comentarios que superan tus discusiones de grupo. Únete a
-                        la comunidad de WillPig Studio.
+                    <p class="hero-description" style="font-size: 1.15rem; color: var(--text-muted); line-height: 1.6;">
+                        Historias mejores que un streaming y comentarios que superan tus discusiones de grupo. Únete a la comunidad de WillPig Studio.
                     </p>
                     <div class="hero-btns">
-                        <a href="/auth/register" class="hero-btn-main">Comenzar</a>
+                        <a href="/auth/register" class="btn btn-primary">Comenzar</a>
                         <div class="hero-login-link">
-                            ¿Ya tienes una cuenta? <a href="/auth/login">Inicia sesión</a>
+                            ¿Ya tienes cuenta? <a href="/auth/login" style="color: var(--primary-salmon-dark); font-weight: 700;">Inicia sesión</a>
                         </div>
                     </div>
                 </div>
                 <div class="hero-illustration">
-                    <img src="/img/default-landing.jpg" alt="Ilustración de comunidad y lectura" class="animate-scale">
+                    <img src="/img/default-landing.jpg" alt="Ilustración" style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft);" class="animate-scale">
                 </div>
             </section>
 
-            <!-- About WillPig Section -->
-            <section class="landing-about reveal-item">
-                <div class="about-content">
-                    <h2>Sobre WillPig Studio</h2>
-                    <p>Su propósito principal es que los usuarios con
-                        dificultades para mantener un nivel de atención adecuado, puedan mejorar en este ámbito a través
-                        de libros ilustrados digitales, cuales se encuentran en el aplicativo, libros de múltiples
-                        categorías, infantiles, adolescentes, y adultos.</p>
+            <!-- About Section -->
+            <section class="section-about reveal-item">
+                <div class="about-container">
+                    <h2 class="section-title">Sobre WillPig Studio</h2>
+                    <p class="section-text">
+                        Su propósito principal es que los usuarios con dificultades para mantener un nivel de atención adecuado, puedan mejorar en este ámbito a través de libros ilustrados digitales. Libros de múltiples categorías, infantiles, adolescentes y adultos.
+                    </p>
                 </div>
             </section>
 
             <!-- Genres Section -->
-            <section class="landing-genres reveal-item">
-                <div class="genres-header">
-                    <h2>Todos los géneros. Todos los arquetipos. Todos tuyos.</h2>
-                    <p>Encuentra tu próxima lectura favorita, sea cual sea tu estado de ánimo (sin juzgar).</p>
+            <section class="landing-features reveal-item">
+                <div class="about-container" style="text-align: center; margin-bottom: 40px;">
+                    <h2 class="section-title-sm">Todos los géneros. Todos los arquetipos. Todos tuyos.</h2>
+                    <p class="section-text">Encuentra tu próxima lectura favorita, sea cual sea tu estado de ánimo.</p>
                 </div>
-                <div class="genres-grid">
-                    <a href="/buscar?q=romance" class="genre-card">
-                        <div class="genre-icon">💖</div>
-                        <h3>Romance</h3>
+                <div class="features-grid">
+                    <a href="/buscar?q=romance" class="feature-card">
+                        <div class="feature-icon">💖</div>
+                        <h3 style="color: var(--text-dark); margin-top: 10px;">Romance</h3>
                     </a>
-                    <a href="/buscar?q=ficcion" class="genre-card">
-                        <div class="genre-icon">🌌</div>
-                        <h3>Ficción general</h3>
+                    <a href="/buscar?q=ficcion" class="feature-card">
+                        <div class="feature-icon">🌌</div>
+                        <h3 style="color: var(--text-dark); margin-top: 10px;">Ficción general</h3>
                     </a>
-                    <a href="/buscar?q=aleatorio" class="genre-card">
-                        <div class="genre-icon">🎲</div>
-                        <h3>Aleatorio</h3>
+                    <a href="/buscar?q=aleatorio" class="feature-card">
+                        <div class="feature-icon">🎲</div>
+                        <h3 style="color: var(--text-dark); margin-top: 10px;">Aleatorio</h3>
                     </a>
-                    <a href="/buscar?q=aventura" class="genre-card">
-                        <div class="genre-icon">🗺️</div>
-                        <h3>Aventura</h3>
-                    </a>
-                    <a href="/buscar?q=fanfiction" class="genre-card">
-                        <div class="genre-icon">🎭</div>
-                        <h3>Fanfiction</h3>
-                    </a>
-                    <a href="/buscar?q=adolescentes" class="genre-card">
-                        <div class="genre-icon">🎒</div>
-                        <h3>Adolescentes</h3>
-                    </a>
-                    <a href="/buscar?q=accion" class="genre-card">
-                        <div class="genre-icon">⚔️</div>
-                        <h3>Acción</h3>
-                    </a>
-                    <a href="/buscar?q=infantil" class="genre-card">
-                        <div class="genre-icon">🧸</div>
-                        <h3>Infantil</h3>
+                    <a href="/buscar?q=aventura" class="feature-card">
+                        <div class="feature-icon">🗺️</div>
+                        <h3 style="color: var(--text-dark); margin-top: 10px;">Aventura</h3>
                     </a>
                 </div>
             </section>
 
-            <!-- Trending Carousel Placeholder -->
-            <section class="landing-trending reveal-item">
-                <div class="trending-header">
-                    <h2>Tendencias actuales</h2>
-                    <a href="/buscar" class="view-all-link">Ver todas <span>→</span></a>
+            <!-- Trending Section -->
+            <section class="category-section reveal-item" style="padding: 60px 8%;">
+                <div class="section-flex">
+                    <h2 class="category-title">Tendencias actuales</h2>
+                    <a href="/buscar" class="view-all">Ver todas →</a>
                 </div>
-                <div class="trending-carousel-wrapper">
-                    <div class="trending-carousel">
-                        <!-- Placeholders -->
-                        <div class="trending-card">
-                            <img src="/img/debajo_de_la_luna.jpg" onerror="this.src='/img/default-book.jpg'"
-                                alt="Portada" class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Bajo cielos clementes</h4>
+                
+                <div class="scroll-wrapper">
+                    <div class="scroll-container">
+                        <!-- Items -->
+                        <a href="#" class="library-item">
+                            <img src="/img/debajo_de_la_luna.jpg" onerror="this.src='/img/default-portada.jpg'" class="cover">
+                            <div class="card-info">
+                                <h4 class="title">Bajo cielos clementes</h4>
                             </div>
-                        </div>
-                        <div class="trending-card">
-                            <img src="/img/Alicia.jpg" onerror="this.src='/img/default-book.jpg'" alt="Portada"
-                                class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Alicia</h4>
+                        </a>
+                        <a href="#" class="library-item">
+                            <img src="/img/Alicia.jpg" onerror="this.src='/img/default-portada.jpg'" class="cover">
+                            <div class="card-info">
+                                <h4 class="title">Alicia</h4>
                             </div>
-                        </div>
-                        <div class="trending-card">
-                            <img src="/img/la flor de otoño.jpg" onerror="this.src='/img/default-book.png'"
-                                alt="Portada" class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Caperucita Roja</h4>
+                        </a>
+                        <a href="#" class="library-item">
+                            <img src="/img/la flor de otoño.jpg" onerror="this.src='/img/default-portada.jpg'" class="cover">
+                            <div class="card-info">
+                                <h4 class="title">La flor de otoño</h4>
                             </div>
-                        </div>
-                        <div class="trending-card">
-                            <img src="/img/placeholder.jpg" onerror="this.src='/img/default-book.jpg'" alt="Portada"
-                                class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Cenicienta</h4>
+                        </a>
+                        <a href="#" class="library-item">
+                            <img src="/img/placeholder.jpg" onerror="this.src='/img/default-portada.jpg'" class="cover">
+                            <div class="card-info">
+                                <h4 class="title">Cenicienta</h4>
                             </div>
-                        </div>
-                        <div class="trending-card">
-                            <img src="/img/placeholder2.jpg" onerror="this.src='/img/default-book.jpg'" alt="Portada"
-                                class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Hombres Lobos</h4>
+                        </a>
+                        <a href="#" class="library-item">
+                            <img src="/img/placeholder1.jpg" onerror="this.src='/img/default-portada.jpg'" class="cover">
+                            <div class="card-info">
+                                <h4 class="title">Hombres Lobos</h4>
                             </div>
-                        </div>
-                        <div class="trending-card">
-                            <img src="/img/placeholder1.jpg" onerror="this.src='/img/default-book.jpg'" alt="Portada"
-                                class="trending-cover">
-                            <div class="trending-info">
-                                <h4>Hombres Lobos</h4>
-                            </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </section>
 
-            <!-- Promotional Banner Section -->
-            <section class="landing-banner reveal-item">
-                <div class="banner-content">
-                    <h2>Fanfiction que debes leer sin falta</h2>
-                    <a href="/buscar?q=fanfiction" class="btn-primary-pastel">Explorar ahora</a>
-                </div>
+            <!-- Banner CTA -->
+            <section class="cta-banner reveal-item">
+                <h2>Fanfiction que debes leer sin falta</h2>
+                <p>Miles de historias de tus personajes favoritos te están esperando.</p>
+                <a href="/buscar?q=fanfiction" class="btn btn-white" style="border-radius: 50px;">Explorar ahora</a>
             </section>
         </main>
 
         <%- include('partials/footer') %>
 
-            <script>
-                // Reveal animation
-                document.addEventListener('DOMContentLoaded', () => {
-                    setTimeout(() => {
-                        const revealItems = document.querySelectorAll('.reveal-item');
-                        revealItems.forEach(item => {
-                            item.classList.add('visible');
-                        });
-                    }, 100);
-                });
-            </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    const revealItems = document.querySelectorAll('.reveal-item');
+                    revealItems.forEach(item => {
+                        item.classList.add('visible');
+                    });
+                }, 100);
+            });
+        </script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 .navbar {
   display: flex;
   align-items: center;
+  /* Ensure all children are centered vertically */
   justify-content: space-between;
   padding: 0 40px;
   height: 75px;
@@ -11,6 +12,15 @@
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-left,
+.navbar-center,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .logo {
@@ -18,6 +28,30 @@
   align-items: center;
   gap: 12px;
   cursor: pointer;
+}
+
+.logo-fig {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 85px;
+  /* Aumentado para que se lea bien el texto de la imagen */
+  width: auto;
+  object-fit: contain;
+  transform: scale(1.8);
+  /* Aumenta visualmente el tamaño un 80% */
+  transform-origin: left center;
+  /* Para que crezca hacia la derecha y no se salga de la pantalla */
+  transition: transform 0.8s ease;
+  margin-left: 10px;
+}
+
+.logo:hover img {
+  transform: scale(1.9);
+  /* Pequeño efecto al pasar el mouse */
 }
 
 .logo-text {
@@ -57,6 +91,26 @@
   gap: 25px;
 }
 
+.nav-link {
+  font-weight: 600;
+  color: var(--text-dark);
+  transition: var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--primary-salmon-dark);
+}
+
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  color: var(--text-dark);
+}
+
 /* === Footer === */
 footer {
   background: var(--bg-light);
@@ -64,4 +118,47 @@ footer {
   text-align: center;
   border-top: 1px solid var(--glass-border);
   margin-top: 60px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.footer-links a {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--primary-salmon-dark);
+}
+
+/* === Responsiveness === */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 15px;
+  }
+
+  .logo-text {
+    display: none;
+    /* Only show icon on mobile */
+  }
+
+  .search-form {
+    display: none;
+    /* Hide search bar to save space */
+  }
+
+  .nav-actions {
+    gap: 15px;
+  }
+
+  footer {
+    padding: 40px 20px;
+  }
 }

@@ -49,10 +49,12 @@
 
                 <!-- ENLACES -->
                 <a href="/auth/olvido" class="forgot">¿Olvidaste tu contraseña?</a>
-                
-                <% if (typeof error !== "undefined" && error.startsWith('Te hemos enviado')) { %>
-                    <p class="text-success"><%= error %></p>
-                <% } %>
+
+                <% if (typeof error !=="undefined" && error.startsWith('Te hemos enviado')) { %>
+                    <p class="text-success">
+                        <%= error %>
+                    </p>
+                    <% } %>
 
                         <div class="divider"> O continúa con </div>
 
@@ -64,12 +66,14 @@
                             </a>
                         </div>
 
-                <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
+                        <p class="register-text">¿No tienes cuenta? <a href="/auth/register">Regístrate aquí</a></p>
 
-                <!-- Mostrar error si existe -->
-                <% if (typeof error !== "undefined" && !error.startsWith('Te hemos enviado')) { %>
-                    <p class="text-danger" style="color:rgb(124, 2, 2);"><%= error %></p>
-                <% } %>
+                        <!-- Mostrar error si existe -->
+                        <% if (typeof error !=="undefined" && !error.startsWith('Te hemos enviado')) { %>
+                            <p class="text-danger" style="color:rgb(124, 2, 2);">
+                                <%= error %>
+                            </p>
+                            <% } %>
 
 
             </div>
