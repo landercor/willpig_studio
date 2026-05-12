@@ -179,3 +179,15 @@ export const resetPassword = async (req, res) => {
     return res.render("nuevaclave", { error: "Ocurrió un error inesperado." });
   }
 };
+export const logout = async (req, res) => {
+  try {
+    await supabase.auth.signOut();
+    req.session.destroy((err) => {
+      if (err) console.error("Error destroying session:", err);
+      res.redirect("/auth/login");
+    });
+  } catch (err) {
+    console.error("Error in logout:", err);
+    res.redirect("/auth/login");
+  }
+};
