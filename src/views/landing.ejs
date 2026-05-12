@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <%- include('partials/navbar', { loggerUser: typeof loggerUser !=='undefined' ? loggerUser : null }) %>
+    <%- if include('partials/navbar', { loggerUser: typeof loggerUser !=='undefined' ? loggerUser : null }) %>
 
         <main>
             <section class="hero-landing">
