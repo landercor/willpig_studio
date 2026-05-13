@@ -1,86 +1,58 @@
-<!DOCTYPE html>
-<html lang="es">
+<%- include('layouts/header', { 
+    title: 'Registrarse | Willpig Studio', 
+    pageId: 'register' 
+}) %>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrarse | Willpig Studio</title>
-  <link rel="stylesheet" href="/css/style1.2.css" />
-  <link rel="icon" href="/img/img.ico/GABALI baloo.ico">
-  <script>
-    (function () {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.documentElement.classList.add('dark-mode');
-        document.body.classList.add('dark-mode');
-      }
-    })();
-  </script>
-</head>
-
-<body>
-  <header class="Logps-navbar">
-    <figure class="logo-LTRA">
-      <img src="/img/img.ico/LTRA.logo-resol.png" alt="Willpig Studio Logo">
-    </figure>
-    <span class="logo-text"></span>
-  </header>
-
-  <main class="register-container-igm">
+<main class="register-container-igm">
     <div class="register-card">
-      <h1>Crear una cuenta</h1>
-      <p>Únete a Willpig Studio y comparte tus historias ilustradas.</p>
+        <h1>Crear una cuenta</h1>
+        <p>Únete a Willpig Studio y comparte tus historias ilustradas.</p>
 
-      <!-- Mostrar error si existe -->
-      <% if (typeof error !=="undefined" ) { %>
-        <p style="color:red; text-align:center; margin-bottom:10px;">
-          <%= error %>
-        </p>
+        <!-- Mostrar error si existe -->
+        <% if (typeof error !=="undefined" ) { %>
+            <p style="color:red; text-align:center; margin-bottom:10px;">
+                <%= error %>
+            </p>
         <% } %>
 
-          <% if (typeof success !=="undefined" ) { %>
+        <% if (typeof success !=="undefined" ) { %>
             <div class="success-message">
-              <%= success %>
+                <%= success %>
             </div>
-            <% } %>
+        <% } %>
 
-              <form action="/auth/register" method="POST" class="register-form">
-                <div class="form-group">
-                  <label for="username">Nombre de usuario</label>
-                  <input type="text" id="username" name="username" placeholder="Tu nombre" required />
-                </div>
+        <form action="/auth/register" method="POST" class="register-form">
+            <div class="form-group">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" placeholder="Tu nombre" required />
+            </div>
 
-                <div class="form-group">
-                  <label for="correo">Correo electrónico</label>
-                  <input type="email" id="correo" name="correo" placeholder="ejemplo@email.com" required />
-                </div>
+            <div class="form-group">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="correo" placeholder="ejemplo@email.com" required />
+            </div>
 
-                <div class="form-group">
-                  <label for="contrasena">Contraseña</label>
-                  <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña segura"
-                    required />
-                </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña segura" required />
+            </div>
 
-                <button type="submit" class="btn-register">Registrarse</button>
-              </form>
+            <button type="submit" class="btn-register">Registrarse</button>
+        </form>
 
-              <div class="divider"> O continúa con </div>
+        <div class="divider"> O continúa con </div>
 
-              <div class="social-login">
-                  <a href="/auth/google" style="text-decoration: none; width: 100%;">
-                      <button type="button" class="social-btn google">
-                          <img src="/img/img.ico/google_login_color.png" width="20" alt="Google logo"> Continuar con Google
-                      </button>
-                  </a>
-              </div>
-              <p class="login-link">
-                ¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión</a>
-              </p>
+        <div class="social-login">
+            <a href="/auth/google" style="text-decoration: none; width: 100%;">
+                <button type="button" class="social-btn google">
+                    <img src="/img/img.ico/google_login_color.png" width="20" alt="Google logo"> Continuar con Google
+                </button>
+            </a>
+        </div>
+        <p class="login-link">
+            ¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión</a>
+        </p>
     </div>
-  </main>
+</main>
 
-  <%- include('partials/footer') %>
-
-</body>
-
-</html>
+<%- include('layouts/footer') %>
