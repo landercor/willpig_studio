@@ -21,4 +21,10 @@ router.get("/read/:id", readChapter);
 router.get("/nuevo/:storyId", getChapterEditor); // Vista para crear nuevo
 router.get("/editar/:id", getChapterEditor);    // Vista para editar existente
 
+/*layout for landing pages*/
+router.get('/landing', (req, res) => {
+    res.render('pages/landing', {
+        layout: 'layouts/landing'
+    });
+});
 export default router;

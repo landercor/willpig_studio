@@ -1,0 +1,15 @@
+
+<!--Controller of the funtion of all Layout-->
+
+<body>
+    <%- include('.. /partials/navbar', { loggerUser: typeof loggerUser !=='undefined' ? loggerUser : null }) %>
+
+    <% if (!hideSearchBar) { %>
+        <%- include('../partials/buscar') %>
+    <% }) %>
+
+    <main>
+        <%- body %>
+    </main>
+
+</body>
