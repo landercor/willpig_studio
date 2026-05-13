@@ -37,21 +37,17 @@
 }
 
 .logo img {
-  height: 85px;
-  /* Aumentado para que se lea bien el texto de la imagen */
+  height: 150px;
+  /* Tamaño equilibrado para la navbar */
   width: auto;
   object-fit: contain;
-  transform: scale(1.8);
-  /* Aumenta visualmente el tamaño un 80% */
-  transform-origin: left center;
-  /* Para que crezca hacia la derecha y no se salga de la pantalla */
-  transition: transform 0.8s ease;
-  margin-left: 10px;
+  margin-left: 0;
+  display: block;
 }
 
 .logo:hover img {
-  transform: scale(1.9);
-  /* Pequeño efecto al pasar el mouse */
+  transform: none;
+  /* Eliminar efecto de crecimiento */
 }
 
 .logo-text {
