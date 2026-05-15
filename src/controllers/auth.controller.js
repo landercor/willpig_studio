@@ -104,7 +104,7 @@ export const forgotPassword = async (req, res) => {
   try {
     const { correo } = req.body;
     if (!correo) {
-      return res.render("olvido", { error: "Introduce un correo válido." });
+      return res.render("nuevaclave", { error: "Introduce un correo válido." });
     }
 
     // Usar el servicio de Supabase para enviar correo de recuperación
@@ -114,16 +114,16 @@ export const forgotPassword = async (req, res) => {
 
     if (error) {
       console.error("Error enviando correo de recuperación:", error.message);
-      return res.render("olvido", { error: "No pudimos enviar el correo: " + error.message });
+      return res.render("nuevaclave", { error: "No pudimos enviar el correo: " + error.message });
     }
 
     // Éxito: Informamos al usuario
-    return res.render("olvido", { 
+    return res.render("nuevaclave", { 
       error: "Te hemos enviado un correo. Por favor, revisa tu bandeja de entrada." 
     });
   } catch (err) {
     console.error("Error in forgotPassword:", err);
-    return res.render("olvido", { error: "Ocurrió un error inesperado." });
+    return res.render("nuevaclave", { error: "Ocurrió un error inesperado." });
   }
 };
 
