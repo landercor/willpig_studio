@@ -30,21 +30,22 @@
           <% if (typeof loggerUser !=='undefined' && loggerUser) { %>
             <!-- ESCRIBIR (Logged In) -->
             <% if (typeof hideEscribir==='undefined' || !hideEscribir) { %>
-              <!--Se muestra una regla donde se especifica el elemento que se muestra-->
-              <div class="dropdown">
-                <div class="dropdown-trigger">
-                  <button class="dropbtn">Escribir</button>
-                  <svg class="dropdown-arrow-svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
+                <!--Se muestra una regla donde se especifica el elemento que se muestra-->
+                <div class="dropdown">
+                  <div class="dropdown-trigger">
+                    <button class="dropbtn">Escribir</button>
+                    <svg class="dropdown-arrow-svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                  <div class="dropdown-content glass-effect">
+                    <a href="/historias/crear">Crea tu historia</a>
+                    <a href="/historias/mis">Mis historias</a>
+                  </div>
                 </div>
-                <div class="dropdown-content glass-effect">
-                  <a href="/historias/crear">Crea tu historia</a>
-                  <a href="/historias/mis">Mis historias</a>
-                </div>
-              </div>
-              <% } %> <!--Se muestra una regla donde se especifica el elemento que se muestra-->
+                <!--Se muestra una regla donde se especifica el elemento que se muestra-->
+            <% } %> 
 
                 <!-- PERFIL -->
                 <div class="dropdown profile">
