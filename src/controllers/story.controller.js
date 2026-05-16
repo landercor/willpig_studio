@@ -27,7 +27,7 @@ export const getStories = async (req, res) => {
 export const getStoryById = async (req, res) => {
   const { id } = req.params
 
-  const { data, error } = await supabase
+  const { data, error } = await supabase /*modificaciones en el query original de redireccionamiento entre el usuario y el cuento, añadiendo el titulo de los capitulos y el nombre del usuario, (cuenta_usuario_id, visibilidad) */
     .from('cuentos')
     .select(`
       id_cuento,
