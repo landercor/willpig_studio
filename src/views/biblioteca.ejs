@@ -42,27 +42,27 @@
               </p>
 
               <div class="author">
-                <img src="/img/img.ico/user-icon.png" alt="autor">
+                <img src="/img/default-avatar.svg" alt="autor">
                 <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'autor' %></span>
               </div>
 
               <div class="meta">
-                <img src="/img/img.ico/eye.png" alt="vistas" class="icon-eye">
+                <img src="/img/img.ico/vistas-icon.svg" alt="vistas" class="icon-eye">
                 <%= libro.cantidad_me_gusta || 0 %>
               </div>
 
             </div>
-            <% }) %>
+          <% }) %>
+        </div> <!-- library-grid -->
+      </div> <!-- current-reads -->
 
-        </div>
 
-
-        <!-- === Listas de lectura === -->
-        <div id="reading-lists" class="tab-content">
-          <div class="section-title">Tus listas de lectura</div>
-          <p>Aquí aparecerán tus listas personalizadas.</p>
-        </div>
+      <!-- === Listas de lectura === -->
+      <div id="reading-lists" class="tab-content">
+        <div class="section-title">Tus listas de lectura</div>
+        <p>Aquí aparecerán tus listas personalizadas.</p>
       </div>
+    </div> <!-- library-content -->
   </section>
   <%- include('partials/footer') %>
 

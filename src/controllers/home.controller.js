@@ -16,14 +16,16 @@ export const verBiblioteca = async (req, res) => {
 
         res.render('biblioteca', {
             tituloPagina: 'Biblioteca | Willpig Studio',
-            libros: cuentos || []
+            libros: cuentos || [],
+            loggerUser: req.session.user
         });
 
     } catch (error) {
         console.error('Error cargando cuentos:', error);
         res.render('biblioteca', {
             tituloPagina: 'Biblioteca | Willpig Studio',
-            libros: []
+            libros: [],
+            loggerUser: req.session.user
         });
     }
 };

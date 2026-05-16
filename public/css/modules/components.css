@@ -74,6 +74,62 @@
 
 .btn-block { width: 100%; }
 
+.btn-primary-pastel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: none;
+  font-size: 15px;
+  text-decoration: none;
+  background: var(--primary-salmon);
+  color: white;
+  box-shadow: 0 4px 15px rgba(250, 173, 150, 0.3);
+  font-family: var(--main-font);
+}
+
+.btn-primary-pastel:hover {
+  background: var(--primary-salmon-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(230, 139, 113, 0.4);
+}
+
+.btn-primary-pastel:active {
+  transform: translateY(0);
+}
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  font-family: var(--main-font);
+}
+
+.btn-outline-white:hover {
+  background: white;
+  color: var(--ink-black);
+  transform: translateY(-2px);
+}
+
+.btn-outline-white:active {
+  transform: translateY(0);
+}
+
+
 /* === Unified Card System === */
 .card, .story-card, .library-item {
   background: var(--bg-card);

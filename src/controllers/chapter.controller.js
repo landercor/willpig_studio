@@ -82,7 +82,8 @@ export const readChapter = async (req, res) => {
       capitulo,
       cuento: capitulo.cuentos,
       prevId,
-      nextId
+      nextId,
+      loggerUser: req.session.user
     });
 
   } catch (error) {
