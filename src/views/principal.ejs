@@ -176,7 +176,11 @@
                         <img
                           src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
                           alt="autor" class="author-avatar-xs">
-                        <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                        <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
+                          <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                        <% } else { %>
+                          <span>@Anónimo</span>
+                        <% } %>
                       </div>
                       <div class="meta">
                         <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
@@ -225,7 +229,11 @@
                         <img
                           src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
                           alt="autor" class="author-avatar-xs">
-                        <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                        <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
+                          <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                        <% } else { %>
+                          <span>@Anónimo</span>
+                        <% } %>
                       </div>
                       <div class="meta">
                         <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">

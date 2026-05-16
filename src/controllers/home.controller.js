@@ -7,7 +7,7 @@ export const verBiblioteca = async (req, res) => {
             .from('cuentos')
             .select(`
         *,
-        cuenta_usuario ( username, avatar_url )
+        cuenta_usuario ( id_cuenta_usuario, username, avatar_url )
       `)
             .eq('estado', 'publicado') // Agrega un filtro para que los libro publicados se muestren
             .order('created_at', { ascending: false });
@@ -37,7 +37,7 @@ export const verPrincipal = async (req, res) => {
             .from('cuentos')
             .select(`
                 *,
-                cuenta_usuario ( username, avatar_url ),
+                cuenta_usuario ( id_cuenta_usuario, username, avatar_url ),
                 categorias ( nombre )
             `)
             .eq('estado', 'publicado') // Agrega un filtro para que los libro publicados nunca se muestren la pantalla principal siendo un borrador  
@@ -58,7 +58,7 @@ export const verPrincipal = async (req, res) => {
         // Obtener Tendencias (Top 10 más vistos global)
         const { data: tendenciasData } = await supabase
             .from('cuentos')
-            .select(`*, cuenta_usuario ( username, avatar_url )`)
+            .select(`*, cuenta_usuario ( id_cuenta_usuario, username, avatar_url )`)
             .eq('estado', 'publicado')
             .order('vistas', { ascending: false })
             .limit(10);
@@ -130,7 +130,7 @@ export const verBusqueda = async (req, res) => {
             .from('cuentos')
             .select(`
                 *,
-                cuenta_usuario ( username, avatar_url )
+                cuenta_usuario ( id_cuenta_usuario, username, avatar_url )
             `)
             .eq('estado', 'publicado')
             .eq('visibilidad', 'publica')

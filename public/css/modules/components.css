@@ -129,6 +129,21 @@
   transform: translateY(0);
 }
 
+/* Clickable Author Profile Link */
+.author-link {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition-fast);
+  font-size: 0.9rem;
+}
+
+.author-link:hover {
+  color: var(--primary-salmon);
+  text-decoration: underline;
+}
+
+
 
 /* === Unified Card System === */
 .card, .story-card, .library-item {

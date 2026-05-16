@@ -43,7 +43,11 @@
 
               <div class="author">
                 <img src="/img/default-avatar.svg" alt="autor">
-                <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'autor' %></span>
+                <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
+                  <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                <% } else { %>
+                  <span>@autor</span>
+                <% } %>
               </div>
 
               <div class="meta">
