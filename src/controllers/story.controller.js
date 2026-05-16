@@ -31,10 +31,12 @@ export const getStoryById = async (req, res) => {
     .from('cuentos')
     .select(`
       id_cuento,
+      cuenta_usuario_id,
       titulo,
       descripcion,
       portada_url,
       estado,
+      visibilidad,
       vistas,
       cuenta_usuario ( username, avatar_url ),
       categorias ( nombre ),
