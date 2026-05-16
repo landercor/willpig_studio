@@ -63,7 +63,9 @@
                   </div>
                 </div>
                 <% } else { %>
-                  <a href="/historias/crear" class="nav-link">Escribir</a>
+                  <% if (typeof hideEscribir === 'undefined' || !hideEscribir) { %>
+                    <a href="/historias/crear" class="nav-link">Escribir</a>
+                  <% } %>
                   <a href="/auth/login" class="nav-link">Iniciar sesión</a>
                   <a href="/auth/register" class="btn-primary-pastel">Registrarse</a>
                   <% } %>
