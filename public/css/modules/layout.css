@@ -111,6 +111,12 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  z-index: 1;
+}
+
+/* Active dropdown rises above siblings so its menu doesn't get blocked */
+.dropdown:hover {
+  z-index: 1100;
 }
 
 .dropdown-trigger {
@@ -119,6 +125,7 @@
   gap: 8px;
   cursor: pointer;
   user-select: none;
+  padding: 8px 0;
 }
 
 .dropbtn {
@@ -150,7 +157,6 @@
   position: absolute;
   right: 0;
   top: 100%;
-  margin-top: 12px;
   min-width: 180px;
   border-radius: var(--radius-md);
   padding: 8px 0;
@@ -163,10 +169,10 @@
 .dropdown-content::before {
   content: '';
   position: absolute;
-  top: -12px;
+  top: -8px;
   left: 0;
   right: 0;
-  height: 12px;
+  height: 8px;
   background: transparent;
 }
 
@@ -183,6 +189,7 @@
   font-weight: 500;
   transition: var(--transition-fast);
   display: block;
+  white-space: nowrap;
 }
 
 .dropdown-content a:hover {
