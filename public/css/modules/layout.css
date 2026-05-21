@@ -160,6 +160,16 @@
   z-index: 1100;
 }
 
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: transparent;
+}
+
 .dropdown:hover .dropdown-content {
   display: flex;
   animation: fadeIn 0.2s ease forwards;
