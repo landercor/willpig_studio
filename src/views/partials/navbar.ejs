@@ -81,6 +81,9 @@
                     </svg>
                   </div>
                   <div class="dropdown-content glass-effect">
+                    <% if (loggerUser.rol === 'admin') { %>
+                      <a href="/admin" style="color: #e53935; font-weight: bold;">⚙ Panel Admin</a>
+                    <% } %>
                     <a href="/usuario/perfil">Mi perfil</a>
                     <a href="/principal/biblioteca">Biblioteca</a>
                     <a href="/auth/logout" class="logout-link">Cerrar sesión</a>
@@ -92,29 +95,7 @@
                     <a href="/historias/crear" class="nav-link">Escribir</a>
                     <% } %>
 
-                    <!-- DROPDOWN DE CATEGORÍAS (Explorar) -->
-                    <div class="dropdown categories-dropdown">
-                      <div class="dropdown-trigger">
-                        <button class="dropbtn">Explorar</button>
-                        <svg class="dropdown-arrow-svg" viewBox="0 0 24 24" width="16" height="16" fill="none"
-                          stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                      </div>
-                      <div class="dropdown-content glass-effect">
-                        <% if (typeof categorias !== 'undefined' && categorias && categorias.length > 0) { %>
-                          <% categorias.forEach(cat => { %>
-                            <% const norm = cat.nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); %>
-                            <a href="/categoria/<%= norm %>"><%= cat.nombre %></a>
-                          <% }) %>
-                        <% } else { %>
-                          <a href="/categoria/ciencia-ficcion">Ciencia Ficción</a>
-                          <a href="/categoria/utopia">Utopía</a>
-                          <a href="/categoria/aventura">Aventura</a>
-                          <a href="/categoria/fantasia">Fantasía</a>
-                        <% } %>
-                      </div>
-                    </div>
+                    <!-- El botón de "Explorar" ha sido ocultado para usuarios no logueados -->
 
                       <a href="/auth/login" class="nav-link">Iniciar sesión</a>
                       <a href="/auth/register" class="btn-primary-pastel">Registrarse</a>

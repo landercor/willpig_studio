@@ -1,222 +1,285 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title> Willpig Studio | Administrador</title>
-  <link rel="stylesheet" href="/css/style1.2.css?v=2" />
+  <title>Willpig Studio | Panel de Administrador</title>
+  <link rel="stylesheet" href="/css/modules/views/admin.css" />
   <link rel="icon" href="/img/img.ico/GABALI baloo.ico">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
+<body>
 
-<%- include('partials/navbar', { loggerUser }) %>
+<div class="admin-layout">
 
-  <body>
+  <!-- ── SIDEBAR ─────────────────────────────────── -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo">⚙ Admin</span>
+      <small><%= loggerUser ? loggerUser.username : 'Admin' %></small>
+    </div>
 
-    <!-- main panel-data -->
-    <section class="panel-izquierdo-data">
-      <div class="panel-data">
-        <span class="msg-main"><%= panel administrador %>
-        </span>
-          <% panel-data.forEach((item, index)=> { %>
-            <section class="slaider-btn-grup">
-              <aside>
-                <div class="Dashboard">
-                  <span id="Dashboard-text">Dashboard</span>
-                </div>
-                  <svgi id="main-menu" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="5" cy="12" r="1.5"></circle>
-                      <circle cx="12" cy="12" r="1.5"></circle>
-                      <circle cx="19" cy="12" r="1.5"></circle>
-                  </svg>
+    <nav class="sidebar-nav">
+      <a href="/admin"           class="nav-link <%= seccion === 'dashboard'  ? 'active' : '' %>">📊 Dashboard</a>
+      <a href="/admin/usuarios"  class="nav-link <%= seccion === 'usuarios'   ? 'active' : '' %>">👤 Usuarios</a>
+      <a href="/admin/historias" class="nav-link <%= seccion === 'historias'  ? 'active' : '' %>">📚 Historias</a>
+      <a href="/admin/categorias"class="nav-link <%= seccion === 'categorias' ? 'active' : '' %>">🏷 Categorías</a>
+    </nav>
 
-                  <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#contenidoAnimado">
-                    Desplegar
-                  </button>
-                  <div>
-                    <div class="collapse mt-2" id="contenidoAnimado">
-                      <div class="card card-body">
-                        Contenido con animación usando Bootstrap.
-                      </div>
-                    </div>
-                    
-                    <li class="bot-descrip">
-                      <a href="/ui">
-                        <i class="fa-solid fa-table-columns"></i>
-                        <span>All funtion</span>
-                      </a>
-                    </li>
-                    </aside>
-                    <div>
-                      <aside>
+    <div class="sidebar-footer">
+      <a href="/" class="nav-link">← Volver al sitio</a>
+    </div>
+  </aside>
 
-                      <li class="bot-descrip">
-                        <a href="/">
-                          <i class="fa-regular fa-file"></i>
-                          <span>email</span>
-                        </a>
-                      </li>
+  <!-- ── CONTENIDO PRINCIPAL ──────────────────────── -->
+  <main class="admin-main">
 
-                      <li class="bot-descrip">
-                        <a href="/">
-                          <i class="fa-solid fa-chart-cube"></i>
-                          <span>eliminar</span>
-                        </a>
-                      </li>
+    <!-- Mensajes de éxito / error -->
+    <% if (mensaje) { %>
+      <div class="alert alert-ok"><%= mensaje %></div>
+    <% } %>
+    <% if (error) { %>
+      <div class="alert alert-err"><%= error %></div>
+    <% } %>
 
-                      <li>
-                        <a href="/option">
-                          <i class="fa-regular fa-envelope"></i>
-                          <span>option</span>
-                          <i class="fa-solid fa-angle-right arrow"></i>
-                        </a>
-                      </li>
+    <!-- ====================================================
+         DASHBOARD
+    ==================================================== -->
+    <% if (seccion === 'dashboard') { %>
+      <h1 class="page-title">Dashboard</h1>
 
-                      <div class="slide <%= index === 0 ? 'active': '' %>">
-                        <div class="panel-data-adm">
-                    </aside>
-                  </section>
-                </div>
-                
-                <section>
-              <div>
-                  <aside class="component-oder">
-                    <ul class="menu-option-order"></ul>
-                    <li>
-                      <a href="/ui"></a>
-                        <i class="fa-solid fa-layer-group"></i>
-                          <span> interface</span>
-                        <i class="fa-solid fa-angle-right arrow"></i>
-                      </a>
-                    </li>
-                  </aside>
-                    <aside class="component-oder">
-                    <ul class="menu-option-order"></ul>
-                    <li>
-                      <a href="/ui"></a>
-                        <i class="fa-solid fa-layer-group"></i>
-                          <span> charts</span>
-                        <i class="fa-solid fa-angle-right arrow"></i>
-                      </a>
-                    </li>
-                  </aside>
-                  <aside class="component-oder">
-                    <ul class="menu-option-order"></ul>
-                    <li>
-                      <a href="/ui"></a>
-                        <i class="fa-solid fa-layer-group"></i>
-                          <span> forms</span>
-                        <i class="fa-solid fa-angle-right arrow"></i>
-                      </a>
-                    </li>
-                  </aside>
-                </section>
-              </div>
-
-            </aside>
-
-            <%# modelo principal del administrador views/admin%>
-            <main class="content-mol-main">
-              <%- body %>
-
-            </main>
-          <section>
-              <div>
-                <p class="found-admin">Descubre historias que te transportarán a nuevos mundos, tú puedes.</p>
-                <div class="dta-caption-adm">
-                    <button class="btn-emotion-rection">Aqui pon una funcion para salgo confeti cada ves que se presione
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="grup-content-separator">
-              <div class="contenidoAnimado-card">
-                <img src="<%- user.avatar || '/image/default-avatar.png' %> " alt="img-reference"> <%# imagen de referrencia al lado derecho del bloque %>
-                  <span class="sp-md-radio">Total </span> <%# la imgen tiene que hacer ilusion a una imagen referente al contenido que se requiere mostrar %>
-                  <i class="sp-md-radio"><%= de datos %></i>
-              </div>
-            </div>
-            <div class="grup-content-separator">
-              <div class="contenidoAnimado-card">
-                <img src="<%- user.avatar || '/image/default-avatar.png' %> " alt="img-reference">
-                  <span class="sp-md-radio">new libros </span> 
-                  <i class="sp-md-radio"><%= porcentaje %></i>
-              </div>
-            </div>
-            <div class="grup-content-separator">
-              <div class="contenidoAnimado-card">
-                <img src="<%- user.avatar || '/image/default-avatar.png' %> " alt="img-reference">
-                  <span class="sp-md-radio">new user </span> 
-                  <i class="sp-md-radio"><%= more views %></i>
-              </div>
-            </div>
-          </section>
-      </div>
-    </section>
-
-    <section class="escale-page-grafic"> <%# grafica redonda donde se evidencie los datos totales del proyecto %>
-      <div class="anilys-system">
-        <div class="anilys-text">
-          <span class="text-decoration p-1 mt-1 mb-1">Desktop</span>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-num"><%= stats.totalUsuarios || 0 %></span>
+          <span class="stat-label">Usuarios</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num"><%= stats.totalHistorias || 0 %></span>
+          <span class="stat-label">Historias</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num"><%= stats.totalCapitulos || 0 %></span>
+          <span class="stat-label">Capítulos</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num"><%= stats.totalCategorias || 0 %></span>
+          <span class="stat-label">Categorías</span>
         </div>
       </div>
 
-      <div class="library-content">
-        <!-- === INICIO (Filas Netflix & Destacada) === -->
-        <div id="home-tab" class="tab-content active">
+      <div class="quick-links">
+        <h2>Accesos rápidos</h2>
+        <div class="link-grid">
+          <a href="/admin/usuarios"   class="quick-btn">👤 Gestionar Usuarios</a>
+          <a href="/admin/historias"  class="quick-btn">📚 Gestionar Historias</a>
+          <a href="/admin/categorias" class="quick-btn">🏷 Gestionar Categorías</a>
+        </div>
+      </div>
 
-          <!-- Historia destacada -->
-          <% if (typeof PanelRender !=='undefined' && PanelRender) { %>
-            <%# %>
-            <section class="featured-panel mb-3 adm-items-">
-              <div class="featured-adm-pnt">
-                <img
-                  src="<%= PanelRender.portada_url || PanelRender.portada || '/img/default-portada.jpg' %>"
-                  alt="<%= PanelRender.titulo %>">
-                <div class="featured-badge">Destacada</div>
-              </div>
-              <div class="info">
-                <h2>Recomendación del día</h2>
-                <h3 class="mb-05">
-                  <%= PanelRender.titulo %>
-                </h3>
-                <p>
-                  <%= PanelRender.sinopsis
-                    || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %>
-                </p>
-                <div class="featured-meta">
-                  <div class="meta-item"><img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span>
-                      <%= (PanelRender.vistas || 0).toLocaleString() %> lecturas
-                    </span></div>
-                </div>
-                <a href="/historias/<%= PanelRender.id_cuento %>">
-                  <button class="btn-primary-pastel mt-1">Comenzar lectura</button>
-                </a>
-              </div>
-            </section>
-            <% } %>
+    <!-- ====================================================
+         USUARIOS
+    ==================================================== -->
+    <% } else if (seccion === 'usuarios') { %>
+      <h1 class="page-title">Gestión de Usuarios</h1>
 
+      <% if (usuarios.length === 0) { %>
+        <p>No hay usuarios registrados.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Registrado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% usuarios.forEach(u => { %>
+              <tr>
+                <td><%= u.id_cuenta_usuario %></td>
+                <td><strong><%= u.username %></strong></td>
+                <td><%= u.email %></td>
 
-    <%- include('partials/footer') %>
+                <!-- Editar rol -->
+                <td>
+                  <form method="POST" action="/admin/usuarios/<%= u.id_cuenta_usuario %>/edit" class="inline-form">
+                    <input type="hidden" name="estado" value="<%= u.estado %>">
+                    <select name="rol" class="sel-small" onchange="this.form.submit()">
+                      <option value="lector"     <%= u.rol === 'lector'     ? 'selected' : '' %>>lector</option>
+                      <option value="escritor"   <%= u.rol === 'escritor'   ? 'selected' : '' %>>escritor</option>
+                      <option value="moderador"  <%= u.rol === 'moderador'  ? 'selected' : '' %>>moderador</option>
+                      <option value="admin"      <%= u.rol === 'admin'      ? 'selected' : '' %>>admin</option>
+                    </select>
+                  </form>
+                </td>
 
-      <script>
-        // Tabs logic for principal page
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
+                <!-- Editar estado -->
+                <td>
+                  <form method="POST" action="/admin/usuarios/<%= u.id_cuenta_usuario %>/edit" class="inline-form">
+                    <input type="hidden" name="rol" value="<%= u.rol %>">
+                    <select name="estado" class="sel-small" onchange="this.form.submit()">
+                      <option value="activa"        <%= u.estado === 'activa'        ? 'selected' : '' %>>activa</option>
+                      <option value="suspendida"    <%= u.estado === 'suspendida'    ? 'selected' : '' %>>suspendida</option>
+                      <option value="deshabilitada" <%= u.estado === 'deshabilitada' ? 'selected' : '' %>>deshabilitada</option>
+                    </select>
+                  </form>
+                </td>
 
-        tabs.forEach(tab => {
-          tab.addEventListener('click', () => {
-            tabs.forEach(btn => btn.classList.remove('active'));
-            contents.forEach(content => content.classList.remove('active'));
+                <td><%= u.fecha_registro ? new Date(u.fecha_registro).toLocaleDateString('es') : '—' %></td>
 
-            tab.classList.add('active');
-            document.getElementById(tab.dataset.target).classList.add('active');
-          });
-        });
-      </script>
-      <!-- script removed, now in footer.ejs -->
-  </body>
+                <!-- Eliminar -->
+                <td>
+                  <form method="POST" action="/admin/usuarios/<%= u.id_cuenta_usuario %>/delete"
+                        onsubmit="return confirm('¿Eliminar usuario <%= u.username %>?')">
+                    <button type="submit" class="btn btn-del">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
 
+    <!-- ====================================================
+         HISTORIAS
+    ==================================================== -->
+    <% } else if (seccion === 'historias') { %>
+      <h1 class="page-title">Gestión de Historias</h1>
+
+      <% if (historias.length === 0) { %>
+        <p>No hay historias registradas.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Estado</th>
+                <th>Visibilidad</th>
+                <th>Vistas</th>
+                <th>Fecha</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% historias.forEach(h => { %>
+              <tr>
+                <td><%= h.id_cuento %></td>
+                <td>
+                  <a href="/historias/<%= h.id_cuento %>" target="_blank" class="link-title">
+                    <%= h.titulo %>
+                  </a>
+                </td>
+                <td><%= h.cuenta_usuario ? h.cuenta_usuario.username : '—' %></td>
+
+                <!-- Editar estado -->
+                <td>
+                  <form method="POST" action="/admin/historias/<%= h.id_cuento %>/edit" class="inline-form">
+                    <input type="hidden" name="visibilidad" value="<%= h.visibilidad %>">
+                    <select name="estado" class="sel-small" onchange="this.form.submit()">
+                      <option value="borrador"   <%= h.estado === 'borrador'   ? 'selected' : '' %>>borrador</option>
+                      <option value="progreso"   <%= h.estado === 'progreso'   ? 'selected' : '' %>>progreso</option>
+                      <option value="publicado"  <%= h.estado === 'publicado'  ? 'selected' : '' %>>publicado</option>
+                    </select>
+                  </form>
+                </td>
+
+                <!-- Editar visibilidad -->
+                <td>
+                  <form method="POST" action="/admin/historias/<%= h.id_cuento %>/edit" class="inline-form">
+                    <input type="hidden" name="estado" value="<%= h.estado %>">
+                    <select name="visibilidad" class="sel-small" onchange="this.form.submit()">
+                      <option value="publica"  <%= h.visibilidad === 'publica'  ? 'selected' : '' %>>pública</option>
+                      <option value="privada"  <%= h.visibilidad === 'privada'  ? 'selected' : '' %>>privada</option>
+                    </select>
+                  </form>
+                </td>
+
+                <td><%= (h.vistas || 0).toLocaleString() %></td>
+                <td><%= h.created_at ? new Date(h.created_at).toLocaleDateString('es') : '—' %></td>
+
+                <!-- Eliminar -->
+                <td>
+                  <form method="POST" action="/admin/historias/<%= h.id_cuento %>/delete"
+                        onsubmit="return confirm('¿Eliminar historia: <%= h.titulo %>?')">
+                    <button type="submit" class="btn btn-del">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+    <!-- ====================================================
+         CATEGORÍAS
+    ==================================================== -->
+    <% } else if (seccion === 'categorias') { %>
+      <h1 class="page-title">Gestión de Categorías</h1>
+
+      <!-- Formulario crear categoría -->
+      <div class="form-card">
+        <h2>Nueva categoría</h2>
+        <form method="POST" action="/admin/categorias/new" class="row-form">
+          <input type="text" name="nombre" placeholder="Nombre de la categoría" required class="inp">
+          <button type="submit" class="btn btn-ok">Crear</button>
+        </form>
+      </div>
+
+      <% if (categorias.length === 0) { %>
+        <p>No hay categorías registradas.</p>
+      <% } else { %>
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Editar</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% categorias.forEach(c => { %>
+              <tr>
+                <td><%= c.id_categoria %></td>
+                <td>
+
+                  <!-- Editar nombre inline -->
+                  <form method="POST" action="/admin/categorias/<%= c.id_categoria %>/edit" class="row-form">
+                    <input type="text" name="nombre" value="<%= c.nombre %>" required class="inp inp-sm">
+                    <button type="submit" class="btn btn-edit">Guardar</button>
+                  </form>
+
+                </td>
+                <td>—</td>
+
+                <!-- Eliminar -->
+                <td>
+                  <form method="POST" action="/admin/categorias/<%= c.id_categoria %>/delete"
+                        onsubmit="return confirm('¿Eliminar categoría <%= c.nombre %>?')">
+                    <button type="submit" class="btn btn-del">Eliminar</button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+
+    <% } %>
+
+  </main>
+</div>
+
+</body>
 </html>

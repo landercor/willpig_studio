@@ -30,6 +30,7 @@ app.use(passport.initialize());
 
 import storyRoutes from "./routes/story.routes.js"; // Importar rutas de historias
 import userRoutes from "./routes/user.routes.js"; // Importar rutas de usuario
+import adminRoutes from "./routes/admin.routes.js"; // Importar rutas de administrador
 
 app.get("/", (req, res) => {
   if (req.session && req.session.user) {
@@ -87,6 +88,7 @@ app.use("/principal", homeRoutes);
 app.use("/capitulos", chapterRoutes);
 app.use("/historias", storyRoutes);
 app.use("/usuario", userRoutes); // Montar rutas de usuario
+app.use("/admin", adminRoutes); // Montar rutas de administrador
 app.use("/uploads", express.static("uploads"));
 app.use("/", homeRoutes);
 
