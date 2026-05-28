@@ -53,7 +53,7 @@
           mantener un ambiente seguro, respetuoso y constructivo, y facilitar la participación de todos los involucrados.
         </p>
       </div>
-      <div class="container-box d-flex justify-content-center align-items-center">
+      <div class="container-box grid-col-4 d-flex justify-content-center align-items-center">
         <div class="stats-grid align-items-center">
           <div class="stat-card">
             <span class="stat-num"><%= stats.totalUsuarios || 0 %></span>
@@ -70,6 +70,10 @@
           <div class="stat-card">
             <span class="stat-num"><%= stats.totalCategorias || 0 %></span>
             <span class="stat-label">Categorías</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num"><%= stats.total || 0 %></span>
+            <span class="stat-label"></span>
           </div>
         </div>
       </div>

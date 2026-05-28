@@ -17,7 +17,7 @@ body {
 
 /* ── Sidebar ── */
 .admin-sidebar {
-  width: 220px;
+  width: 200px;
   min-height: 100vh;
   background: #1e2a38;
   color: #cfd8dc;
@@ -26,11 +26,11 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 10;
 }
 
 .sidebar-header {
-  padding: 20px 16px 16px;
+  padding: 28px;
   border-bottom: 1px solid #2e3e4e;
 }
 
