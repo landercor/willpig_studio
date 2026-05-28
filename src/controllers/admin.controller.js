@@ -504,16 +504,10 @@ export const getNotificaciones = async (req, res) => {
     if (error) throw error;
 
     res.render('admin', {
+      ...BASE_RENDER,
       loggerUser: req.session.user,
       seccion: 'notificaciones',
-      stats: {},
-      usuarios: [],
-      historias: [],
-      categorias: [],
-      capitulos: [],
-      etiquetas: [],
       notificaciones: notificaciones || [],
-      miniaturas: [],
       mensaje: req.query.msg || null,
       error: req.query.error || null
     });
