@@ -34,7 +34,8 @@
                       <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
                         alt="<%= libro.titulo %>">
                       <div class="card-overlay">
-                        <span class="btn-play-mini">▶</span>
+                        <span class="btn-play-mini"><img src="/img/img.ico/svg/arrow-right-short.svg"
+                            alt="arrow-right-short"></span>
                       </div>
                     </a>
                     <div class="card-info">
@@ -47,7 +48,8 @@
                           alt="autor" class="author-avatar-xs">
                         <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
                           <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@
-                            <%= libro.cuenta_usuario.username %></a>
+                            <%= libro.cuenta_usuario.username %>
+                          </a>
                           <% } else { %>
                             <span>@Anónimo</span>
                             <% } %>
