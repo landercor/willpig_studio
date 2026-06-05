@@ -37,17 +37,136 @@
   transition: var(--transition-fast);
 }
 
+/* === Featured Story === */
+/* 1. Make the container a horizontal row */
+.featured-story {
+  display: flex;
+  gap: 30px;
+  padding: 24px;
+  border-radius: 16px;
+}
+
+/* 2. Lock down the cover photo size */
+.featured-story .featured-image {
+  flex: 0 0 240px;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Force the raw image tag to fill its frame correctly */
+.featured-story img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 3. Make the text column fill the remaining space */
+.featured-story .info {
+  flex: 1;
+}
+
+/* 4. Fix inline spacing for the views/icon area */
+.featured-story .featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+/* Make sure the tiny eye icon stays small */
+.featured-story .featured-meta img {
+  width: 16px;
+  height: 16px;
+}
+
 /* === Carousel & Sections === */
 .hero-carousel {
   position: relative;
   height: 550px;
-  overflow: hidden;
+  overflow: none;
 }
 
 .carousel {
   height: 100%;
   position: relative;
   width: 100%;
+}
+
+
+/* 2. Lock down the item sizes */
+.carousel-item {
+  flex: 0 0 200px; /* Lock width to 200px */
+  width: 200px;
+  height: 300px;   /* Lock height to 300px */
+}
+
+/* 3. Force the inner wrapper to clip everything safely */
+.carousel-item .card-inner {
+  position: relative; /* Anchor for absolute positioning */
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;   /* Stops text/images from bleeding out */
+  background-color: #1a1a1a; /* Dark background fallback */
+  display: block;
+}
+
+/* 4. Force the image link container to take up full space */
+.carousel-item .card-image-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* 5. Handle the image sizing */
+.carousel-item img.cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Crops image neatly without squishing */
+  transition: transform 0.3s ease;
+}
+
+/* Optional hover effect matching Netflix style */
+.carousel-item:hover img.cover {
+  transform: scale(1.05);
+}
+
+/* 6. Fix the broken text & layout overlap */
+.carousel-item .card-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box; /* Crucial: includes padding in width calculation */
+  z-index: 3; /* Places text cleanly on top of the image */
+  
+  /* Adds a smooth dark gradient backdrop behind text for readability */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 60%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Typography safeguards inside the card */
+.carousel-item .card-info .title {
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.carousel-item .card-info .meta {
+  color: #bbbbbb;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Ensure the eye icon sits cleanly inline with text */
+.carousel-item .card-info .icon-eye {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
 }
 
 .slide {
@@ -189,12 +308,12 @@
   margin-bottom: 20px;
 }
 
+/* 1. Ensure the parent track works like a clean row */
 .scroll-container {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   overflow-x: auto;
-  padding: 10px;
-  scrollbar-width: none;
+  padding: 10px 0;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -208,7 +327,7 @@
 
 .scroll-container .library-item .cover {
   width: 100%;
-  height: 220px;
+  height: 100px;
   object-fit: cover;
 }
 
@@ -605,4 +724,4 @@
   .category-name {
     font-size: 1rem;
   }
-}
+}
