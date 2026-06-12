@@ -54,7 +54,7 @@
                   </div>
                 </div>
                 <% if (loggerUser && loggerUser.id && String(user._id)===String(loggerUser.id)) { %>
-                  <a href="/profile/edit" class="edit-btn">Editar perfil</a>
+                  <a href="#" class="edit-btn">Editar perfil (Próximamente)</a>
                   <% } %>
     </div>
 
@@ -79,7 +79,7 @@
           <% if (user.readingLists && user.readingLists.length> 0) { %>
             <% user.readingLists.forEach(list=> { %>
               <div class="library-item">
-                <a href="/reading-list/<%= list.id || list._id %>">
+                <a href="#">
                   <img src="<%= list.thumbnail || '/img/default-portada.jpg' %>" class="cover" alt="Lista">
                 </a>
                 <p class="title mt-05">

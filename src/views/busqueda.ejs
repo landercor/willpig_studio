@@ -16,7 +16,51 @@
   <section class="library-page search-page">
     <div class="library-header">
       <h1 class="text-primary">Resultados de búsqueda</h1>
-      <p class="text-muted mt-05">Buscando por: "<%= query %>"</p>
+      <p class="text-muted mt-05">
+        <% if (query.q) { %>Buscando por: "<%= query.q %>"<% } %>
+        <% if (query.autor) { %> - Autor: @<%= query.autor %><% } %>
+      </p>
+    </div>
+
+    <!-- Filtros de búsqueda -->
+    <div class="search-filters" style="margin: 1.5rem auto; padding: 1.5rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color); max-width: 1200px;">
+      <form action="/buscar" method="GET" style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end;">
+        <input type="hidden" name="q" value="<%= query.q || '' %>">
+        <input type="hidden" name="autor" value="<%= query.autor || '' %>">
+        
+        <div class="form-group mb-0" style="flex: 1; min-width: 150px;">
+          <label class="form-label" style="font-size: 0.85rem; color: var(--text-muted);">Categoría</label>
+          <select name="categoria_id" class="form-input">
+            <option value="">Todas</option>
+            <% if (categorias && categorias.length > 0) { %>
+              <% categorias.forEach(cat => { %>
+                <option value="<%= cat.id_categoria %>" <%= query.categoria_id == cat.id_categoria ? 'selected' : '' %>><%= cat.nombre %></option>
+              <% }) %>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="form-group mb-0" style="flex: 1; min-width: 150px;">
+          <label class="form-label" style="font-size: 0.85rem; color: var(--text-muted);">Audiencia</label>
+          <select name="audiencia" class="form-input">
+            <option value="">Todas</option>
+            <option value="infantil" <%= query.audiencia === 'infantil' ? 'selected' : '' %>>Infantil</option>
+            <option value="juvenil" <%= query.audiencia === 'juvenil' ? 'selected' : '' %>>Juvenil</option>
+            <option value="jovenes_adultos" <%= query.audiencia === 'jovenes_adultos' ? 'selected' : '' %>>Jóvenes Adultos</option>
+            <option value="adultos" <%= query.audiencia === 'adultos' ? 'selected' : '' %>>Adultos (+18)</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-0" style="flex: 1; min-width: 150px;">
+          <label class="form-label" style="font-size: 0.85rem; color: var(--text-muted);">Ordenar por</label>
+          <select name="sort" class="form-input">
+            <option value="fecha" <%= query.sort === 'fecha' ? 'selected' : '' %>>Más recientes</option>
+            <option value="vistas" <%= query.sort === 'vistas' ? 'selected' : '' %>>Más vistas</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="height: 42px; padding: 0 1.5rem;">Aplicar Filtros</button>
+      </form>
     </div>
 
     <div class="library-content">
@@ -24,31 +68,49 @@
         
         <div class="library-grid">
           <% if (resultados && resultados.length > 0) { %>
-            <% resultados.forEach(libro=> { %>
+            <% resultados.forEach(historia=> { %>
               <div class="library-item">
-                <a href="/historias/<%= libro.id_cuento || '#' %>">
-                  <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover" alt="<%= libro.titulo %>">
+                <a href="/historias/<%= historia.id_cuento || '#' %>">
+                  <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>" class="cover" alt="<%= historia.titulo %>">
                 </a>
-                <p class="title"><%= libro.titulo %></p>
+                <p class="title"><%= historia.titulo %></p>
                 <div class="author">
-                  <img src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
-                  <span>@<%= (libro.cuenta_usuario && libro.cuenta_usuario.username) || 'Anónimo' %></span>
+                  <img src="<%= (historia.cuenta_usuario && historia.cuenta_usuario.avatar_url) || '/img/img.ico/user-icon.png' %>" alt="autor">
+                  <span>@<%= (historia.cuenta_usuario && historia.cuenta_usuario.username) || 'Anónimo' %></span>
                 </div>
                 <div class="meta">
-                  <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= libro.vistas || 0 %>
+                  <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <%= historia.vistas || 0 %>
                 </div>
               </div>
             <% }) %>
           <% } else { %>
             <div class="empty-state empty-card text-center text-muted p-3 col-full">
-              <h3 class="mb-05">No encontramos historias que coincidan con "<%= query %>"</h3>
-              <p>Intenta buscar con otras palabras o explora la página principal.</p>
+              <h3 class="mb-05">No encontramos historias.</h3>
+              <p>Intenta buscar con otras palabras o cambiar los filtros.</p>
               <a href="/"><button class="btn btn-primary mt-1-5">Volver al Inicio</button></a>
             </div>
           <% } %>
         </div>
 
       </div>
+
+      <!-- Paginación -->
+      <% if (totalPages > 1) { %>
+        <div class="pagination mt-3" style="display: flex; justify-content: center; gap: 0.5rem;">
+          <% 
+            let queryString = '';
+            if(query.q) queryString += '&q=' + encodeURIComponent(query.q);
+            if(query.autor) queryString += '&autor=' + encodeURIComponent(query.autor);
+            if(query.categoria_id) queryString += '&categoria_id=' + query.categoria_id;
+            if(query.audiencia) queryString += '&audiencia=' + query.audiencia;
+            if(query.sort) queryString += '&sort=' + query.sort;
+          %>
+          <% for(let i = 1; i <= totalPages; i++) { %>
+            <a href="/buscar?page=<%= i %><%= queryString %>" class="btn <%= page == i ? 'btn-primary' : 'btn-outline' %>"><%= i %></a>
+          <% } %>
+        </div>
+      <% } %>
+
     </div>
   </section>
 

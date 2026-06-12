@@ -22,10 +22,8 @@
       </header>
 
       <div class="library-tabs">
-        <button class="tab-btn active" data-target="published-tab">Publicadas (<%= stories.filter(s=> s.estado ===
-            'publicado').length %>)</button>
-        <button class="tab-btn" data-target="drafts-tab">Borradores (<%= stories.filter(s=> s.estado ===
-            'borrador').length %>)</button>
+        <button class="tab-btn active" data-target="published-tab">Publicadas (<%= stories.filter(s=> s.estado === 'publicado').length %>)</button>
+        <button class="tab-btn" data-target="drafts-tab">Borradores (<%= stories.filter(s=> s.estado === 'borrador').length %>)</button>
       </div>
 
       <div class="library-content">

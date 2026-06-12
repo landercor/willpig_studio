@@ -24,6 +24,7 @@
             <p>Por favor, asegúrate de que tu contraseña contenga al menos una mayúscula, minúscula y un número.</p>
 
             <form action="/auth/nuevaclave" method="POST" class="form-login" id="resetForm">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-group">
                     <label for="nuevaClave">Nueva contraseña</label>
                     <input type="password" id="nuevaClave" name="nuevaClave" required placeholder="Introduce tu nueva contraseña">

@@ -106,7 +106,7 @@ export const getProfile = async (req, res) => {
     res.render('profile', {
       profile: { title: `Perfil de ${userData.username}` },
       user: userProfile,
-      loggedUser: req.session.user || { _id: 'guest' }, // Manejar visitante no logueado
+      loggerUser: req.session.user || { _id: 'guest' }, // Manejar visitante no logueado
       loggerUser: req.session.user
     });
 

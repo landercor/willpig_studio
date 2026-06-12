@@ -5,6 +5,7 @@ import homeRoutes from "./routes/home.routes.js"; // Importar rutas de home
 import chapterRoutes from "./routes/chapter.routes.js"; // Importar rutas de capítulos
 import sesion from "express-session"; // Importar express-session
 import { supabaseAdmin } from "./config/db.js";
+import { generateCsrfToken } from "./middlewares/csrf.js";
 
 const app = express();
 
@@ -16,7 +17,7 @@ app.use(express.static(path.join(process.cwd(), "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(process.cwd(), "src/views"));
 
-// Configuración de la sesión
+// Configuración de la sesión (MemoryStore por defecto)
 app.use(
   sesion({
     secret: process.env.SESSION_SECRET || "willpig_studio_secret_key", // Usa env var si esta disponible.
@@ -24,6 +25,10 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+// Middleware CSRF — genera token de sesión y lo expone en res.locals.csrfToken
+// Debe ir DESPUÉS de la sesión y ANTES de las rutas
+app.use(generateCsrfToken);
 
 import passport from "./config/passport.js";
 app.use(passport.initialize());
@@ -73,12 +78,7 @@ app.use(async (req, res, next) => {
     res.locals.categorias = uniqueCategorias;
   } catch (err) {
     console.error('Error al cargar categorías en middleware:', err);
-    res.locals.categorias = [
-      { id_categoria: 8, nombre: 'Ciencia Ficción' },
-      { id_categoria: 9, nombre: 'Utopía' },
-      { id_categoria: 3, nombre: 'Aventura' },
-      { id_categoria: 1, nombre: 'Fantasía' }
-    ];
+    res.locals.categorias = [];
   }
   next();
 });

@@ -1,32 +1,37 @@
 import express from "express";
 import { register, login, forgotPassword, resetPassword, authCallback, logout } from "../controllers/auth.controller.js";
+import { validateCsrfToken } from "../middlewares/csrf.js";
+import { authLimiter } from "../middlewares/rateLimiter.js";
 
 const router = express.Router();
 
 router.get("/register", (req, res) => {
-  res.render("register");
+  res.render("register", { error: undefined });
 });
-router.post("/register", register);
+// Rate limiting + validación CSRF en registro
+router.post("/register", authLimiter, validateCsrfToken, register);
 
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { error: undefined });
 });
-router.post("/login", login);
+// Rate limiting + validación CSRF en login
+router.post("/login", authLimiter, validateCsrfToken, login);
+
 router.get("/logout", logout);
 
 // Password recovery routes
 router.get("/olvido", (req, res) => {
-  res.render("olvido");
+  res.render("olvido", { error: undefined });
 });
-router.post("/olvido", forgotPassword);
+router.post("/olvido", validateCsrfToken, forgotPassword);
 
 // Callback route for recovery links
 router.get("/callback", authCallback);
 
 router.get("/nuevaclave", (req, res) => {
-  res.render("nuevaclave");
+  res.render("nuevaclave", { error: undefined });
 });
-router.post("/nuevaclave", resetPassword);
+router.post("/nuevaclave", validateCsrfToken, resetPassword);
 
 //Inicio de sesión por medio de Google
 import passport from "../config/passport.js";

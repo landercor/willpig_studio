@@ -11,15 +11,16 @@
   <header class="ws-topbar">
     <div class="container">
       <div class="brand">Willpig Studio</div>
-      <div class="top-actions">
-        <% if (loggedUser) { %>
-          <a class="btn btn-create" href="/works/new">＋</a>
+      <div class="user-actions">
+        <a href="javascript:history.back()" class="btn btn-outline" style="border:none; color:inherit; font-weight:bold; margin-right: 15px;">← Volver</a>
+        <% if (loggerUser) { %>
+          <a class="btn btn-create" href="/historias/crear">＋</a>
         <% } %>
       </div>
     </div>
   </header>
   
-  <%- include('partials/navbar', { loggedUser }) %>
+  <%- include('partials/navbar', { loggerUser }) %>
 
   <main class="profile-page container">
     <!-- COVER -->
@@ -31,14 +32,14 @@
           <h1 class="name"><%= user.name %></h1>
           <p class="username">@<%= user.username %></p>
           <div class="actions">
-            <% if (loggedUser && loggedUser.username !== user.username) { %>
+            <% if (loggerUser && loggerUser.username !== user.username) { %>
               <form action="/users/<%= user.username %>/follow" method="POST" class="inline-form">
                 <button class="btn btn-follow" type="submit">Seguir</button>
               </form>
               <a class="btn btn-message" href="/messages/compose?to=<%= user.username %>">Mensaje</a>
-            <% } else if (!loggedUser) { %>
-              <a class="btn btn-follow" href="/login">Seguir</a>
-              <a class="btn btn-message" href="/login">Mensaje</a>
+            <% } else if (!loggerUser) { %>
+              <a class="btn btn-follow" href="/auth/login">Seguir</a>
+              <a class="btn btn-message" href="/auth/login">Mensaje</a>
             <% } %>
           </div>
         </div>
@@ -63,11 +64,11 @@
         <% if (user.works && user.works.length) { %>
           <% user.works.forEach(function(w){ %>
             <article class="card">
-              <a href="/works/<%= w.id %>" class="cover-link">
-                <div class="cover-thumb" style="background-image:url('<%= w.cover || '/img/default-book.jpg' %>')"></div>
+              <a href="/historias/<%= w.id_cuento || w.id %>" class="cover-link">
+                <div class="cover-thumb" style="background-image:url('<%= w.portada_url || w.cover || '/img/default-book.jpg' %>')"></div>
               </a>
               <div class="card-body">
-                <a class="work-title" href="/works/<%= w.id %>"><%= w.title %></a>
+                <a class="work-title" href="/historias/<%= w.id_cuento || w.id %>"><%= w.titulo || w.title %></a>
                 <% if (w.shortDesc) { %>
                   <p class="short"><%= w.shortDesc %></p>
                 <% } %>
@@ -89,7 +90,7 @@
         <% if (user.readingLists && user.readingLists.length) { %>
           <% user.readingLists.forEach(function(l){ %>
             <div class="list-card">
-              <a href="/lists/<%= l.id %>">
+              <a href="/principal/biblioteca">
                 <div class="list-thumb" style="background-image:url('<%= l.thumbnail || '/img/default-list.jpg' %>')"></div>
                 <div class="list-title"><%= l.title %></div>
               </a>

@@ -1,6 +1,6 @@
-<%- include('partials/navbar', { loggedUser: loggedUser }) %>
+<%- include('partials/navbar', { loggerUser }) %>
 
-<form action="/profile/edit" method="POST" enctype="multipart/form-data" class="edit-profile-form">
+<form action="/usuario/perfil/edit" method="POST" enctype="multipart/form-data" class="edit-profile-form">
 
     <label>Cambiar imagen de portada</label>
         <input type="file" name="coverImage">
@@ -20,7 +20,7 @@
 
     <div class="actions">
     <button type="submit" class="save-btn">Guardar cambios</button>
-    <a href="/profile" class="cancel-btn">Cancelar</a>
+    <a href="/usuario/perfil" class="cancel-btn">Cancelar</a>
     </div>
 </form>
 <%- include('partials/footer') %>

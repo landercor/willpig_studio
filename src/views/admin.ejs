@@ -56,7 +56,8 @@
       </nav>
 
       <div class="sidebar-footer">
-        <a href="/principal" class="nav-link"><span class="icon"><img src="/img/img.ico/svg/arrow-bar-left.svg" alt=""></span>
+        <a href="/principal" class="nav-link"><span class="icon"><img src="/img/img.ico/svg/arrow-bar-left.svg"
+              alt=""></span>
           Volver al sitio</a>
       </div>
     </aside>
@@ -181,6 +182,7 @@
                 <button type="button" class="close-modal" onclick="closeModal('modal-new-usuario')">&times;</button>
               </div>
               <form method="POST" action="/admin/usuarios/new">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-grid">
                   <div class="form-group">
                     <label>Username *</label>
@@ -215,10 +217,46 @@
           </div>
 
           <% if (usuarios.length===0) { %>
-            <p>No hay usuarios registrados.</p>
+            <div class="empty-state-admin">
+              <span class="empty-icon">👤</span>
+              <h3>No se encontraron usuarios</h3>
+              <p>Intenta cambiar los filtros de búsqueda o crea un nuevo usuario.</p>
+            </div>
             <% } else { %>
-              <div style="margin-bottom:1rem; display:flex; justify-content:flex-end;">
-                <input type="text" id="search-users" class="form-control" placeholder="Buscar usuario..." style="max-width:300px;">
+              <div class="filters-toolbar"
+                style="margin-bottom:1rem; display:flex; gap: 10px; justify-content:space-between; flex-wrap: nowrap; align-items:center;">
+                <div class="search-box-admin" style="flex:1;">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <input type="text" id="search-users" class="form-control" placeholder="Buscar por usuario o email..."
+                    style="width:100%; min-width:200px; max-width:300px;">
+                </div>
+                <form method="GET" action="/admin/usuarios" class="filters-bar"
+                  style="display:flex; gap:10px; flex-wrap:nowrap; align-items:center;">
+                  <select name="rol" class="form-control" style="max-width:160px;">
+                    <option value="">Todos los roles</option>
+                    <option value="lector" <%=typeof query !=='undefined' && query.rol==='lector' ? 'selected' : '' %>
+                      >Lector</option>
+                    <option value="escritor" <%=typeof query !=='undefined' && query.rol==='escritor' ? 'selected' : ''
+                      %>>Escritor</option>
+                    <option value="moderador" <%=typeof query !=='undefined' && query.rol==='moderador' ? 'selected'
+                      : '' %>>Moderador</option>
+                    <option value="admin" <%=typeof query !=='undefined' && query.rol==='admin' ? 'selected' : '' %>
+                      >Admin</option>
+                  </select>
+                  <select name="estado" class="form-control" style="max-width:170px;">
+                    <option value="">Todos los estados</option>
+                    <option value="activa" <%=typeof query !=='undefined' && query.estado==='activa' ? 'selected' : ''
+                      %>>Activa</option>
+                    <option value="suspendida" <%=typeof query !=='undefined' && query.estado==='suspendida'
+                      ? 'selected' : '' %>>Suspendida</option>
+                    <option value="deshabilitada" <%=typeof query !=='undefined' && query.estado==='deshabilitada'
+                      ? 'selected' : '' %>>Deshabilitada</option>
+                  </select>
+                  <button type="submit" class="btn btn-outline">Filtrar</button>
+                </form>
               </div>
               <div class="table-wrap">
                 <table class="admin-table">
@@ -234,10 +272,10 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% usuarios.forEach(u=> { %>
+                    <% usuarios.forEach((u, index)=> { %>
                       <tr>
                         <td>
-                          <%= u.id_cuenta_usuario %>
+                          <%= index + 1 %>
                         </td>
                         <td><strong>
                             <%= u.username %>
@@ -264,7 +302,8 @@
                           <button type="button" class="btn btn-edit btn-sm"
                             onclick="openModal('modal-edit-usuario-<%= u.id_cuenta_usuario %>')">Editar</button>
                           <form method="POST" action="/admin/usuarios/<%= u.id_cuenta_usuario %>/delete"
-                            onsubmit="return confirm('¿Eliminar usuario <%= u.username %>?')">
+                            onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar usuario <%= u.username %>?');">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
                           </form>
                         </td>
@@ -280,6 +319,7 @@
                               onclick="closeModal('modal-edit-usuario-<%= u.id_cuenta_usuario %>')">&times;</button>
                           </div>
                           <form method="POST" action="/admin/usuarios/<%= u.id_cuenta_usuario %>/edit">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <div class="form-grid">
                               <div class="form-group">
                                 <label>Username</label>
@@ -314,7 +354,9 @@
                             <div class="modal-footer">
                               <button type="button" class="btn btn-outline"
                                 onclick="closeModal('modal-edit-usuario-<%= u.id_cuenta_usuario %>')">Cancelar</button>
-                              <button type="submit" class="btn btn-ok">Guardar</button>
+                              <button type="button" class="btn btn-ok"
+                                onclick="openConfirmModal(this.closest('form'), '¿Confirmar cambios en @<%= u.username %>? Esto actualizará su rol y estado.')">Guardar
+                                cambios</button>
                             </div>
                           </form>
                         </div>
@@ -323,533 +365,686 @@
                   </tbody>
                 </table>
               </div>
-              <% } %>
+              <% if (typeof totalPages !=='undefined' && totalPages> 1) { %>
+                <div class="pagination-controls"
+                  style="margin-top: 1rem; display: flex; gap: 5px; justify-content: center;">
+                  <% for(let i=1; i<=totalPages; i++) { %>
+                    <a href="?page=<%= i %><%- typeof query !== 'undefined' && query.rol ? '&rol=' + query.rol : '' %><%- typeof query !== 'undefined' && query.estado ? '&estado=' + query.estado : '' %>"
+                      class="btn btn-outline btn-sm"
+                      style="<%= i === page ? 'background:var(--primary);color:#fff;' : '' %>">
+                      <%= i %>
+                    </a>
+                    <% } %>
+                </div>
+                <% } %>
+                  <% } %>
 
-                <!-- ====================================================
+                    <!-- ====================================================
          HISTORIAS
     ==================================================== -->
-                <% } else if (seccion==='historias' ) { %>
-                  <div class="page-header">
-                    <div>
-                      <h1 class="page-title">Gestión de Historias</h1>
-                      <p class="page-subtitle">Crea y administra todas las historias de la plataforma</p>
-                    </div>
-                    <button type="button" class="btn btn-primary" onclick="openModal('modal-new-historia')">
-                      + Nueva Historia
-                    </button>
-                  </div>
-
-                  <!-- Modal: Crear Historia -->
-                  <div id="modal-new-historia" class="modal-overlay">
-                    <div class="modal-content" style="max-width:640px">
-                      <div class="modal-header">
-                        <h2>Nueva Historia</h2>
-                        <button type="button" class="close-modal"
-                          onclick="closeModal('modal-new-historia')">&times;</button>
-                      </div>
-                      <form method="POST" action="/admin/historias/new">
-                        <input type="hidden" name="cuenta_usuario_id" value="<%= loggerUser?.id || loggerUser?.id_cuenta_usuario || '' %>">
-                        <div class="form-grid">
-                          <div class="form-group span-full">
-                            <label>Título *</label>
-                            <input type="text" name="titulo" class="form-control" placeholder="Título de la historia"
-                              required>
-                          </div>
-                          <div class="form-group span-full">
-                            <label>Descripción / Sinopsis</label>
-                            <textarea name="descripcion" class="form-control"
-                              placeholder="Escribe una breve descripción..."></textarea>
-                          </div>
-                          <div class="form-group span-full">
-                            <label>URL de Portada</label>
-                            <input type="url" name="portada_url" id="newPortadaUrl" class="form-control"
-                              placeholder="https://..." oninput="previewPortada('newPortadaUrl','newPortadaPreview')">
-                            <img id="newPortadaPreview" class="portada-preview" alt="Vista previa portada">
-                          </div>
-                          <div class="form-group">
-                            <label>Categoría</label>
-                            <select name="categoria_id" class="form-control">
-                              <option value="">Sin categoría</option>
-                              <% (categorias || []).forEach(cat=> { %>
-                                <option value="<%= cat.id_categoria %>">
-                                  <%= cat.nombre %>
-                                </option>
-                                <% }) %>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Estado</label>
-                            <select name="estado" class="form-control">
-                              <option value="borrador">Borrador</option>
-                              <option value="progreso">En progreso</option>
-                              <option value="publicado">Publicado</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Visibilidad</label>
-                            <select name="visibilidad" class="form-control">
-                              <option value="publica">Pública</option>
-                              <option value="privada">Privada</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Audiencia</label>
-                            <select name="audiencia" class="form-control">
-                              <option value="general">General</option>
-                              <option value="adolescentes">Adolescentes</option>
-                              <option value="adultos">Adultos</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Idioma</label>
-                            <select name="idioma" class="form-control">
-                              <option value="es">Español</option>
-                              <option value="en">Inglés</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Derechos</label>
-                            <select name="derechos" class="form-control">
-                              <option value="todos">Todos los derechos</option>
-                              <option value="compartido">Compartido</option>
-                              <option value="libre">Libre</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label>Clasificación</label>
-                            <select name="clasificacion" class="form-control">
-                              <option value="todo">Todo público</option>
-                              <option value="maduro">Contenido maduro</option>
-                            </select>
-                          </div>
+                    <% } else if (seccion==='historias' ) { %>
+                      <div class="page-header">
+                        <div>
+                          <h1 class="page-title">Gestión de Historias</h1>
+                          <p class="page-subtitle">Crea y administra todas las historias de la plataforma</p>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-outline"
-                            onclick="closeModal('modal-new-historia')">Cancelar</button>
-                          <button type="submit" class="btn btn-ok">✓ Crear Historia</button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-
-                  <% if (historias.length===0) { %>
-                    <p>No hay historias registradas. ¡Crea la primera!</p>
-                    <% } else { %>
-                      <div style="margin-bottom:1rem; display:flex; justify-content:flex-end;">
-                        <input type="text" id="search-historias" class="form-control" placeholder="Buscar historia..." style="max-width:300px;">
-                      </div>
-                      <div class="table-wrap">
-                        <table class="admin-table">
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Título</th>
-                              <th>Autor</th>
-                              <th>Estado</th>
-                              <th>Visibilidad</th>
-                              <th>Vistas</th>
-                              <th>Fecha</th>
-                              <th>Acciones</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <% historias.forEach(h=> { %>
-                              <tr>
-                                <td>
-                                  <%= h.id_cuento %>
-                                </td>
-                                <td>
-                                  <a href="/historias/<%= h.id_cuento %>" target="_blank" class="link-title">
-                                    <%= h.titulo %>
-                                  </a>
-                                </td>
-                                <td>
-                                  <%= h.cuenta_usuario ? h.cuenta_usuario.username : '—' %>
-                                </td>
-                                <td>
-                                  <span
-                                    class="badge <%= h.estado === 'publicado' ? 'badge-green' : h.estado === 'progreso' ? 'badge-yellow' : 'badge-gray' %>">
-                                    <%= h.estado %>
-                                  </span>
-                                </td>
-                                <td>
-                                  <span class="badge <%= h.visibilidad === 'publica' ? 'badge-blue' : 'badge-gray' %>">
-                                    <%= h.visibilidad %>
-                                  </span>
-                                </td>
-                                <td>
-                                  <%= (h.vistas || 0).toLocaleString() %>
-                                </td>
-                                <td>
-                                  <%= h.created_at ? new Date(h.created_at).toLocaleDateString('es') : '—' %>
-                                </td>
-                                <td style="display:flex;gap:6px;flex-wrap:wrap">
-                                  <button type="button" class="btn btn-primary btn-sm"
-                                    onclick="openModal('modal-capitulos-<%= h.id_cuento %>')">Capítulos</button>
-                                  <button type="button" class="btn btn-edit btn-sm"
-                                    onclick="openModal('modal-edit-historia-<%= h.id_cuento %>')">Editar</button>
-                                  <form method="POST" action="/admin/historias/<%= h.id_cuento %>/delete"
-                                    onsubmit="return confirm('¿Eliminar historia: <%= h.titulo %>?')">
-                                    <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
-                                  </form>
-                                </td>
-                              </tr>
-                              <% }); %>
-                          </tbody>
-                        </table>
+                        <button type="button" class="btn btn-primary" onclick="openModal('modal-new-historia')">
+                          + Nueva Historia
+                        </button>
                       </div>
 
-                      <!-- Modales de Historias (Fuera de la tabla para HTML válido) -->
-                      <% historias.forEach(h=> { %>
-                        <!-- Modal Editar Historia -->
-                        <div id="modal-edit-historia-<%= h.id_cuento %>" class="modal-overlay">
-                          <div class="modal-content" style="max-width:640px">
-                            <div class="modal-header">
-                              <h2>Editar: <%= h.titulo %></h2>
-                              <button type="button" class="close-modal" onclick="closeModal('modal-edit-historia-<%= h.id_cuento %>')">&times;</button>
+                      <!-- Modal: Crear Historia -->
+                      <div id="modal-new-historia" class="modal-overlay">
+                        <div class="modal-content" style="max-width:640px">
+                          <div class="modal-header">
+                            <h2>Nueva Historia</h2>
+                            <button type="button" class="close-modal"
+                              onclick="closeModal('modal-new-historia')">&times;</button>
+                          </div>
+                          <form method="POST" action="/admin/historias/new">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <input type="hidden" name="cuenta_usuario_id"
+                              value="<%= loggerUser?.id || loggerUser?.id_cuenta_usuario || '' %>">
+                            <div class="form-grid">
+                              <div class="form-group span-full">
+                                <label>Título *</label>
+                                <input type="text" name="titulo" class="form-control"
+                                  placeholder="Título de la historia" required>
+                              </div>
+                              <div class="form-group span-full">
+                                <label>Descripción / Sinopsis</label>
+                                <textarea name="descripcion" class="form-control"
+                                  placeholder="Escribe una breve descripción..."></textarea>
+                              </div>
+                              <div class="form-group span-full">
+                                <label>URL de Portada</label>
+                                <input type="url" name="portada_url" id="newPortadaUrl" class="form-control"
+                                  placeholder="https://..."
+                                  oninput="previewPortada('newPortadaUrl','newPortadaPreview')">
+                                <img id="newPortadaPreview" class="portada-preview" alt="Vista previa portada">
+                              </div>
+                              <div class="form-group">
+                                <label>Categoría</label>
+                                <select name="categoria_id" class="form-control">
+                                  <option value="">Sin categoría</option>
+                                  <% (categorias || []).forEach(cat=> { %>
+                                    <option value="<%= cat.id_categoria %>">
+                                      <%= cat.nombre %>
+                                    </option>
+                                    <% }) %>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Estado</label>
+                                <select name="estado" class="form-control">
+                                  <option value="borrador">Borrador</option>
+                                  <option value="progreso">En progreso</option>
+                                  <option value="publicado">Publicado</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Visibilidad</label>
+                                <select name="visibilidad" class="form-control">
+                                  <option value="publica">Pública</option>
+                                  <option value="privada">Privada</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Audiencia</label>
+                                <select name="audiencia" class="form-control">
+                                  <option value="general">General</option>
+                                  <option value="adolescentes">Adolescentes</option>
+                                  <option value="adultos">Adultos</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Idioma</label>
+                                <select name="idioma" class="form-control">
+                                  <option value="es">Español</option>
+                                  <option value="en">Inglés</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Derechos</label>
+                                <select name="derechos" class="form-control">
+                                  <option value="todos">Todos los derechos</option>
+                                  <option value="compartido">Compartido</option>
+                                  <option value="libre">Libre</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Clasificación</label>
+                                <select name="clasificacion" class="form-control">
+                                  <option value="todo">Todo público</option>
+                                  <option value="maduro">Contenido maduro</option>
+                                </select>
+                              </div>
                             </div>
-                            <form method="POST" action="/admin/historias/<%= h.id_cuento %>/edit">
-                              <div class="form-grid">
-                                <div class="form-group span-full">
-                                  <label>Título</label>
-                                  <input type="text" name="titulo" class="form-control" value="<%= h.titulo %>" required>
-                                </div>
-                                <div class="form-group span-full">
-                                  <label>Descripción</label>
-                                  <textarea name="descripcion" class="form-control"><%= h.descripcion || '' %></textarea>
-                                </div>
-                                <div class="form-group span-full">
-                                  <label>URL Portada</label>
-                                  <input type="url" name="portada_url" id="portada_<%= h.id_cuento %>" class="form-control" value="<%= h.portada_url || '' %>" oninput="previewPortada('portada_<%= h.id_cuento %>','prev_<%= h.id_cuento %>')">
-                                  <% if (h.portada_url) { %>
-                                    <img id="prev_<%= h.id_cuento %>" class="portada-preview" src="<%= h.portada_url %>" alt="portada" style="display:block">
-                                  <% } else { %>
-                                    <img id="prev_<%= h.id_cuento %>" class="portada-preview" alt="portada">
-                                  <% } %>
-                                </div>
-                                <div class="form-group">
-                                  <label>Estado</label>
-                                  <select name="estado" class="form-control">
-                                    <option value="borrador" <%= h.estado === 'borrador' ? 'selected' : '' %>>Borrador</option>
-                                    <option value="progreso" <%= h.estado === 'progreso' ? 'selected' : '' %>>En progreso</option>
-                                    <option value="publicado" <%= h.estado === 'publicado' ? 'selected' : '' %>>Publicado</option>
-                                    <option value="pausado" <%= h.estado === 'pausado' ? 'selected' : '' %>>Pausado</option>
-                                    <option value="cancelado" <%= h.estado === 'cancelado' ? 'selected' : '' %>>Cancelado</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <label>Visibilidad</label>
-                                  <select name="visibilidad" class="form-control">
-                                    <option value="publica" <%= h.visibilidad === 'publica' ? 'selected' : '' %>>Pública</option>
-                                    <option value="privada" <%= h.visibilidad === 'privada' ? 'selected' : '' %>>Privada</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <label>Audiencia</label>
-                                  <select name="audiencia" class="form-control">
-                                    <option value="general" <%= h.audiencia === 'general' ? 'selected' : '' %>>General</option>
-                                    <option value="adolescentes" <%= h.audiencia === 'adolescentes' ? 'selected' : '' %>>Adolescentes</option>
-                                    <option value="adultos" <%= h.audiencia === 'adultos' ? 'selected' : '' %>>Adultos</option>
-                                  </select>
-                                </div>
-                                <div class="form-group">
-                                  <label>Derechos</label>
-                                  <select name="derechos" class="form-control">
-                                    <option value="todos" <%= h.derechos === 'todos' ? 'selected' : '' %>>Todos los derechos</option>
-                                    <option value="cc_by" <%= h.derechos === 'cc_by' ? 'selected' : '' %>>CC BY</option>
-                                    <option value="cc_by_sa" <%= h.derechos === 'cc_by_sa' ? 'selected' : '' %>>CC BY-SA</option>
-                                    <option value="dominio_publico" <%= h.derechos === 'dominio_publico' ? 'selected' : '' %>>Dominio Público</option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-outline" onclick="closeModal('modal-edit-historia-<%= h.id_cuento %>')">Cancelar</button>
-                                <button type="submit" class="btn btn-ok">Guardar</button>
-                              </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-outline"
+                                onclick="closeModal('modal-new-historia')">Cancelar</button>
+                              <button type="submit" class="btn btn-ok">✓ Crear Historia</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
+                      <% if (historias.length===0) { %>
+                        <div class="empty-state-admin">
+                          <span class="empty-icon">📚</span>
+                          <h3>No se encontraron historias</h3>
+                          <p>Intenta cambiar los filtros o crea la primera historia.</p>
+                        </div>
+                        <% } else { %>
+                          <div class="filters-toolbar"
+                            style="margin-bottom:1rem; display:flex; gap:10px; justify-content:space-between; flex-wrap: nowrap; align-items:center;">
+                            <div class="search-box-admin" style="flex:1;">
+                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                                viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" />
+                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                              </svg>
+                              <input type="text" id="search-historias" class="form-control"
+                                placeholder="Buscar por título o autor..." style="width:100%; min-width:200px; max-width:300px;">
+                            </div>
+                            <form method="GET" action="/admin/historias" class="filters-bar"
+                              style="display:flex; gap:10px; flex-wrap: nowrap; align-items:center;">
+                              <select name="categoria_id" class="form-control" style="max-width:150px;">
+                                <option value="">Todas las categorías</option>
+                                <% (categorias || []).forEach(cat=> { %>
+                                  <option value="<%= cat.id_categoria %>" <%=typeof query !=='undefined' &&
+                                    query.categoria_id==cat.id_categoria ? 'selected' : '' %>><%= cat.nombre %>
+                                  </option>
+                                  <% }) %>
+                              </select>
+                              <select name="estado" class="form-control" style="max-width:150px;">
+                                <option value="">Todos los estados</option>
+                                <option value="borrador" <%=typeof query !=='undefined' && query.estado==='borrador'
+                                  ? 'selected' : '' %>>Borrador</option>
+                                <option value="progreso" <%=typeof query !=='undefined' && query.estado==='progreso'
+                                  ? 'selected' : '' %>>En progreso</option>
+                                <option value="publicado" <%=typeof query !=='undefined' && query.estado==='publicado'
+                                  ? 'selected' : '' %>>Publicado</option>
+                              </select>
+                              <button type="submit" class="btn btn-outline">Filtrar</button>
                             </form>
                           </div>
-                        </div>
-
-                        <!-- Modal Capítulos -->
-                        <div id="modal-capitulos-<%= h.id_cuento %>" class="modal-overlay">
-                          <div class="modal-content" style="max-width:800px">
-                            <div class="modal-header">
-                              <h2>Capítulos: <%= h.titulo %></h2>
-                              <button type="button" class="close-modal" onclick="closeModal('modal-capitulos-<%= h.id_cuento %>')">&times;</button>
-                            </div>
-                            <div style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-alt); border-radius: var(--radius-md);">
-                              <form method="POST" action="/admin/capitulos/new" style="display:flex; gap:10px; align-items:center; flex-wrap: wrap;">
-                                <input type="hidden" name="cuento_id" value="<%= h.id_cuento %>">
-                                <input type="text" name="titulo" class="form-control" placeholder="Título del nuevo capítulo" required style="flex:1; min-width: 200px;">
-                                <button type="submit" class="btn btn-ok">+ Añadir Capítulo</button>
-                              </form>
-                            </div>
-                            <div class="table-wrap">
-                              <table class="admin-table">
-                                <thead><tr><th>ID</th><th>Título</th><th>Fecha</th><th>Acciones</th></tr></thead>
-                                <tbody>
-                                  <% 
-                                    const caps = capitulos.filter(c => c.cuento_id === h.id_cuento);
-                                    if (caps.length === 0) {
-                                  %>
-                                    <tr><td colspan="4">No hay capítulos para esta historia.</td></tr>
-                                  <% } else { caps.forEach(c => { %>
-                                    <tr>
-                                      <td><%= c.id_capitulo %></td>
-                                      <td>
-                                        <form method="POST" action="/admin/capitulos/<%= c.id_capitulo %>/edit" style="display:flex;gap:5px;">
-                                          <input type="hidden" name="cuento_id" value="<%= h.id_cuento %>">
-                                          <input type="text" name="titulo" value="<%= c.titulo %>" class="form-control" style="width:200px;padding:4px;font-size:0.9rem;" required>
-                                          <button type="submit" class="btn btn-edit btn-sm">Guardar</button>
-                                        </form>
-                                      </td>
-                                      <td><%= c.created_at ? new Date(c.created_at).toLocaleDateString() : '' %></td>
-                                      <td>
-                                        <form method="POST" action="/admin/capitulos/<%= c.id_capitulo %>/delete" onsubmit="return confirm('¿Eliminar capítulo?')">
-                                          <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
-                                        </form>
-                                      </td>
-                                    </tr>
-                                  <% }); } %>
-                                </tbody>
-                              </table>
-                            </div>
+                          <div class="table-wrap">
+                            <table class="admin-table">
+                              <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Título</th>
+                                  <th>Autor</th>
+                                  <th>Estado</th>
+                                  <th>Visibilidad</th>
+                                  <th>Capítulos</th>
+                                  <th>Vistas</th>
+                                  <th>Fecha</th>
+                                  <th>Acciones</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% historias.forEach((h, index)=> { %>
+                                  <tr>
+                                    <td>
+                                      <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                      <a href="/historias/<%= h.id_cuento %>" target="_blank" class="link-title">
+                                        <%= h.titulo %>
+                                      </a>
+                                    </td>
+                                    <td>
+                                      <%= h.cuenta_usuario ? h.cuenta_usuario.username : '—' %>
+                                    </td>
+                                    <td>
+                                      <span
+                                        class="badge <%= h.estado === 'publicado' ? 'badge-green' : h.estado === 'progreso' ? 'badge-yellow' : 'badge-gray' %>">
+                                        <%= h.estado %>
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <span
+                                        class="badge <%= h.visibilidad === 'publica' ? 'badge-blue' : 'badge-gray' %>">
+                                        <%= h.visibilidad %>
+                                      </span>
+                                    </td>
+                                    <td>
+                                      <%= (h.capitulos && h.capitulos[0]) ? h.capitulos[0].count : 0 %>
+                                    </td>
+                                    <td>
+                                      <%= (h.vistas || 0).toLocaleString() %>
+                                    </td>
+                                    <td>
+                                      <%= h.created_at ? new Date(h.created_at).toLocaleDateString('es') : '—' %>
+                                    </td>
+                                    <td style="display:flex;gap:6px;flex-wrap:wrap">
+                                      <button type="button" class="btn btn-primary btn-sm"
+                                        onclick="openModal('modal-capitulos-<%= h.id_cuento %>')">Capítulos</button>
+                                      <button type="button" class="btn btn-edit btn-sm"
+                                        onclick="openModal('modal-edit-historia-<%= h.id_cuento %>')">Editar</button>
+                                      <form method="POST" action="/admin/historias/<%= h.id_cuento %>/delete"
+                                        onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar historia: <%= h.titulo %>?');">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
+                                      </form>
+                                    </td>
+                                  </tr>
+                                  <% }); %>
+                              </tbody>
+                            </table>
                           </div>
-                        </div>
-                      <% }); %>
-                      <% } %>
+                          <% if (typeof totalPages !=='undefined' && totalPages> 1) { %>
+                            <div class="pagination-controls"
+                              style="margin-top: 1rem; display: flex; gap: 5px; justify-content: center;">
+                              <% for(let i=1; i<=totalPages; i++) { %>
+                                <a href="?page=<%= i %><%- typeof query !== 'undefined' && query.estado ? '&estado=' + query.estado : '' %><%- typeof query !== 'undefined' && query.categoria_id ? '&categoria_id=' + query.categoria_id : '' %>"
+                                  class="btn btn-outline btn-sm"
+                                  style="<%= i === page ? 'background:var(--primary);color:#fff;' : '' %>">
+                                  <%= i %>
+                                </a>
+                                <% } %>
+                            </div>
+                            <% } %>
 
-                        <!-- ====================================================
+                              <!-- Modales de Historias (Fuera de la tabla para HTML válido) -->
+                              <% historias.forEach(h=> { %>
+                                <!-- Modal Editar Historia -->
+                                <div id="modal-edit-historia-<%= h.id_cuento %>" class="modal-overlay">
+                                  <div class="modal-content" style="max-width:640px">
+                                    <div class="modal-header">
+                                      <h2>Editar: <%= h.titulo %>
+                                      </h2>
+                                      <button type="button" class="close-modal"
+                                        onclick="closeModal('modal-edit-historia-<%= h.id_cuento %>')">&times;</button>
+                                    </div>
+                                    <form method="POST" action="/admin/historias/<%= h.id_cuento %>/edit">
+                                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                      <div class="form-grid">
+                                        <div class="form-group span-full">
+                                          <label>Título</label>
+                                          <input type="text" name="titulo" class="form-control" value="<%= h.titulo %>"
+                                            required>
+                                        </div>
+                                        <div class="form-group span-full">
+                                          <label>Descripción</label>
+                                          <textarea name="descripcion"
+                                            class="form-control"><%= h.descripcion || '' %></textarea>
+                                        </div>
+                                        <div class="form-group span-full">
+                                          <label>URL Portada</label>
+                                          <input type="url" name="portada_url" id="portada_<%= h.id_cuento %>"
+                                            class="form-control" value="<%= h.portada_url || '' %>"
+                                            oninput="previewPortada('portada_<%= h.id_cuento %>','prev_<%= h.id_cuento %>')">
+                                          <% if (h.portada_url) { %>
+                                            <img id="prev_<%= h.id_cuento %>" class="portada-preview"
+                                              src="<%= h.portada_url %>" alt="portada" style="display:block">
+                                            <% } else { %>
+                                              <img id="prev_<%= h.id_cuento %>" class="portada-preview" alt="portada">
+                                              <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Estado</label>
+                                          <select name="estado" class="form-control">
+                                            <option value="borrador" <%=h.estado==='borrador' ? 'selected' : '' %>
+                                              >Borrador</option>
+                                            <option value="progreso" <%=h.estado==='progreso' ? 'selected' : '' %>>En
+                                              progreso</option>
+                                            <option value="publicado" <%=h.estado==='publicado' ? 'selected' : '' %>
+                                              >Publicado</option>
+                                            <option value="pausado" <%=h.estado==='pausado' ? 'selected' : '' %>>Pausado
+                                            </option>
+                                            <option value="cancelado" <%=h.estado==='cancelado' ? 'selected' : '' %>
+                                              >Cancelado</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Visibilidad</label>
+                                          <select name="visibilidad" class="form-control">
+                                            <option value="publica" <%=h.visibilidad==='publica' ? 'selected' : '' %>
+                                              >Pública</option>
+                                            <option value="privada" <%=h.visibilidad==='privada' ? 'selected' : '' %>
+                                              >Privada</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Audiencia</label>
+                                          <select name="audiencia" class="form-control">
+                                            <option value="general" <%=h.audiencia==='general' ? 'selected' : '' %>
+                                              >General</option>
+                                            <option value="adolescentes" <%=h.audiencia==='adolescentes' ? 'selected'
+                                              : '' %>>Adolescentes</option>
+                                            <option value="adultos" <%=h.audiencia==='adultos' ? 'selected' : '' %>
+                                              >Adultos</option>
+                                          </select>
+                                        </div>
+                                        <div class="form-group">
+                                          <label>Derechos</label>
+                                          <select name="derechos" class="form-control">
+                                            <option value="todos" <%=h.derechos==='todos' ? 'selected' : '' %>>Todos los
+                                              derechos</option>
+                                            <option value="cc_by" <%=h.derechos==='cc_by' ? 'selected' : '' %>>CC BY
+                                            </option>
+                                            <option value="cc_by_sa" <%=h.derechos==='cc_by_sa' ? 'selected' : '' %>>CC
+                                              BY-SA</option>
+                                            <option value="dominio_publico" <%=h.derechos==='dominio_publico'
+                                              ? 'selected' : '' %>>Dominio Público</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline"
+                                          onclick="closeModal('modal-edit-historia-<%= h.id_cuento %>')">Cancelar</button>
+                                        <button type="submit" class="btn btn-ok">Guardar</button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <!-- Modal Capítulos -->
+                                <div id="modal-capitulos-<%= h.id_cuento %>" class="modal-overlay">
+                                  <div class="modal-content" style="max-width:800px">
+                                    <div class="modal-header">
+                                      <h2>Capítulos: <%= h.titulo %>
+                                      </h2>
+                                      <button type="button" class="close-modal"
+                                        onclick="closeModal('modal-capitulos-<%= h.id_cuento %>')">&times;</button>
+                                    </div>
+                                    <div style="padding: 1rem 1rem 0;">
+                                      <p class="text-muted">Esta historia ya tiene <%= (h.capitulos && h.capitulos[0]) ?
+                                          h.capitulos[0].count : 0 %> capítulos.</p>
+                                    </div>
+                                    <div
+                                      style="margin-bottom: 1rem; padding: 1rem; background: var(--bg-alt); border-radius: var(--radius-md);">
+                                      <form method="POST" action="/admin/capitulos/new"
+                                        style="display:flex; gap:10px; align-items:center; flex-wrap: wrap;">
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <input type="hidden" name="cuento_id" value="<%= h.id_cuento %>">
+                                        <input type="text" name="titulo" class="form-control"
+                                          placeholder="Título del nuevo capítulo" required
+                                          style="flex:1; min-width: 200px;">
+                                        <button type="submit" class="btn btn-ok">+ Añadir Capítulo</button>
+                                      </form>
+                                    </div>
+                                    <div class="table-wrap">
+                                      <table class="admin-table">
+                                        <thead>
+                                          <tr>
+                                            <th>ID</th>
+                                            <th>Título</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <% const caps=capitulos.filter(c=> c.cuento_id === h.id_cuento);
+                                            if (caps.length === 0) {
+                                            %>
+                                            <tr>
+                                              <td colspan="4">No hay capítulos para esta historia.</td>
+                                            </tr>
+                                            <% } else { caps.forEach(c=> { %>
+                                              <tr>
+                                                <td>
+                                                  <%= c.id_capitulo %>
+                                                </td>
+                                                <td>
+                                                  <form method="POST"
+                                                    action="/admin/capitulos/<%= c.id_capitulo %>/edit"
+                                                    style="display:flex;gap:5px;">
+                                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                    <input type="hidden" name="cuento_id" value="<%= h.id_cuento %>">
+                                                    <input type="text" name="titulo" value="<%= c.titulo %>"
+                                                      class="form-control"
+                                                      style="width:200px;padding:4px;font-size:0.9rem;" required>
+                                                    <button type="submit" class="btn btn-edit btn-sm">Guardar</button>
+                                                  </form>
+                                                </td>
+                                                <td>
+                                                  <%= c.created_at ? new Date(c.created_at).toLocaleDateString() : '' %>
+                                                </td>
+                                                <td>
+                                                  <form method="POST"
+                                                    action="/admin/capitulos/<%= c.id_capitulo %>/delete"
+                                                    onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar capítulo?');">
+                                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                    <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
+                                                  </form>
+                                                </td>
+                                              </tr>
+                                              <% }); } %>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                                <% }); %>
+                                  <% } %>
+
+                                    <!-- ====================================================
          CATEGORÍAS
     ==================================================== -->
-                        <% } else if (seccion==='categorias' ) { %>
-                          <div class="page-header">
-                            <div>
-                              <h1 class="page-title">Gestión de Categorías</h1>
-                              <p class="page-subtitle">Organiza las historias por categoría</p>
-                            </div>
-                          </div>
+                                    <% } else if (seccion==='categorias' ) { %>
+                                      <div class="page-header">
+                                        <div>
+                                          <h1 class="page-title">Gestión de Categorías</h1>
+                                          <p class="page-subtitle">Organiza las historias por categoría</p>
+                                        </div>
+                                      </div>
 
-                          <div class="form-card">
-                            <h2>Nueva categoría</h2>
-                            <form method="POST" action="/admin/categorias/new" class="row-form">
-                              <input type="text" name="nombre" placeholder="Nombre de la categoría" required
-                                class="inp">
-                              <button type="submit" class="btn btn-ok">+ Crear</button>
-                            </form>
-                          </div>
+                                      <div class="form-card">
+                                        <h2>Nueva categoría</h2>
+                                        <form method="POST" action="/admin/categorias/new" class="row-form">
+                                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                          <input type="text" name="nombre" placeholder="Nombre de la categoría" required
+                                            class="inp">
+                                          <button type="submit" class="btn btn-ok">+ Crear</button>
+                                        </form>
+                                      </div>
 
-                          <% if (categorias.length===0) { %>
-                            <p>No hay categorías registradas.</p>
-                            <% } else { %>
-                              <div class="table-wrap">
-                                <table class="admin-table">
-                                  <thead>
-                                    <tr>
-                                      <th>#</th>
-                                      <th>Nombre</th>
-                                      <th>Editar</th>
-                                      <th>Eliminar</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <% categorias.forEach(c=> { %>
-                                      <tr>
-                                        <td>
-                                          <%= c.id_categoria %>
-                                        </td>
-                                        <td>
-                                          <form method="POST" action="/admin/categorias/<%= c.id_categoria %>/edit"
-                                            class="row-form">
-                                            <input type="text" name="nombre" value="<%= c.nombre %>" required
-                                              class="inp inp-sm">
-                                            <button type="submit" class="btn btn-edit btn-sm">Guardar</button>
-                                          </form>
-                                        </td>
-                                        <td>—</td>
-                                        <td>
-                                          <form method="POST" action="/admin/categorias/<%= c.id_categoria %>/delete"
-                                            onsubmit="return confirm('¿Eliminar categoría <%= c.nombre %>?')">
-                                            <button type="submit" class="btn btn-del btn-sm">Eliminar</button>
-                                          </form>
-                                        </td>
-                                      </tr>
-                                      <% }) %>
-                                  </tbody>
-                                </table>
-                              </div>
-                              <% } %>
+                                      <% if (categorias.length===0) { %>
+                                        <p>No hay categorías registradas.</p>
+                                        <% } else { %>
+                                          <div class="table-wrap">
+                                            <table class="admin-table">
+                                              <thead>
+                                                <tr>
+                                                  <th>#</th>
+                                                  <th>Nombre</th>
+                                                  <th>Editar</th>
+                                                  <th>Eliminar</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <% categorias.forEach(c=> { %>
+                                                  <tr>
+                                                    <td>
+                                                      <%= c.id_categoria %>
+                                                    </td>
+                                                    <td>
+                                                      <form method="POST"
+                                                        action="/admin/categorias/<%= c.id_categoria %>/edit"
+                                                        class="row-form">
+                                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                        <input type="text" name="nombre" value="<%= c.nombre %>"
+                                                          required class="inp inp-sm">
+                                                        <button type="submit"
+                                                          class="btn btn-edit btn-sm">Guardar</button>
+                                                      </form>
+                                                    </td>
+                                                    <td>—</td>
+                                                    <td>
+                                                      <form method="POST"
+                                                        action="/admin/categorias/<%= c.id_categoria %>/delete"
+                                                        onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar categoría <%= c.nombre %>?');">
+                                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                        <button type="submit"
+                                                          class="btn btn-del btn-sm">Eliminar</button>
+                                                      </form>
+                                                    </td>
+                                                  </tr>
+                                                  <% }) %>
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                          <% } %>
 
-                                        <!-- ====================================================
+                                            <!-- ====================================================
          ETIQUETAS
     ==================================================== -->
-                                        <% } else if (seccion==='etiquetas' ) { %>
-                                          <div class="page-header">
-                                            <div>
-                                              <h1 class="page-title">Gestión de Etiquetas</h1>
-                                              <p class="page-subtitle">Etiquetas para clasificar el contenido</p>
-                                            </div>
-                                          </div>
-
-                                          <div class="form-card">
-                                            <h2>Nueva etiqueta</h2>
-                                            <form method="POST" action="/admin/etiquetas/new" class="row-form">
-                                              <input type="text" name="nombre" placeholder="Nombre de la etiqueta"
-                                                required class="inp">
-                                              <button type="submit" class="btn btn-ok">+ Crear</button>
-                                            </form>
-                                          </div>
-
-                                          <% if (etiquetas.length===0) { %>
-                                            <p>No hay etiquetas registradas.</p>
-                                            <% } else { %>
-                                              <div class="table-wrap">
-                                                <table class="admin-table">
-                                                  <thead>
-                                                    <tr>
-                                                      <th>#</th>
-                                                      <th>Nombre</th>
-                                                      <th>Editar</th>
-                                                      <th>Eliminar</th>
-                                                    </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                    <% etiquetas.forEach(e=> { %>
-                                                      <tr>
-                                                        <td>
-                                                          <%= e.id_etiqueta %>
-                                                        </td>
-                                                        <td>
-                                                          <form method="POST"
-                                                            action="/admin/etiquetas/<%= e.id_etiqueta %>/edit"
-                                                            class="row-form">
-                                                            <input type="text" name="nombre" value="<%= e.nombre %>"
-                                                              required class="inp inp-sm">
-                                                            <button type="submit"
-                                                              class="btn btn-edit btn-sm">Guardar</button>
-                                                          </form>
-                                                        </td>
-                                                        <td>—</td>
-                                                        <td>
-                                                          <form method="POST"
-                                                            action="/admin/etiquetas/<%= e.id_etiqueta %>/delete"
-                                                            onsubmit="return confirm('¿Eliminar etiqueta?')">
-                                                            <button type="submit"
-                                                              class="btn btn-del btn-sm">Eliminar</button>
-                                                          </form>
-                                                        </td>
-                                                      </tr>
-                                                      <% }) %>
-                                                  </tbody>
-                                                </table>
+                                            <% } else if (seccion==='etiquetas' ) { %>
+                                              <div class="page-header">
+                                                <div>
+                                                  <h1 class="page-title">Gestión de Etiquetas</h1>
+                                                  <p class="page-subtitle">Etiquetas para clasificar el contenido</p>
+                                                </div>
                                               </div>
-                                              <% } %>
 
-                                                <!-- ====================================================
+                                              <div class="form-card">
+                                                <h2>Nueva etiqueta</h2>
+                                                <form method="POST" action="/admin/etiquetas/new" class="row-form">
+                                                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                                  <input type="text" name="nombre" placeholder="Nombre de la etiqueta"
+                                                    required class="inp">
+                                                  <button type="submit" class="btn btn-ok">+ Crear</button>
+                                                </form>
+                                              </div>
+
+                                              <% if (etiquetas.length===0) { %>
+                                                <p>No hay etiquetas registradas.</p>
+                                                <% } else { %>
+                                                  <div class="table-wrap">
+                                                    <table class="admin-table">
+                                                      <thead>
+                                                        <tr>
+                                                          <th>#</th>
+                                                          <th>Nombre</th>
+                                                          <th>Editar</th>
+                                                          <th>Eliminar</th>
+                                                        </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                        <% etiquetas.forEach(e=> { %>
+                                                          <tr>
+                                                            <td>
+                                                              <%= e.id_etiqueta %>
+                                                            </td>
+                                                            <td>
+                                                              <form method="POST"
+                                                                action="/admin/etiquetas/<%= e.id_etiqueta %>/edit"
+                                                                class="row-form">
+                                                                <input type="hidden" name="_csrf"
+                                                                  value="<%= csrfToken %>">
+                                                                <input type="text" name="nombre" value="<%= e.nombre %>"
+                                                                  required class="inp inp-sm">
+                                                                <button type="submit"
+                                                                  class="btn btn-edit btn-sm">Guardar</button>
+                                                              </form>
+                                                            </td>
+                                                            <td>
+                                                              <form method="POST"
+                                                                action="/admin/etiquetas/<%= e.id_etiqueta %>/delete"
+                                                                onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar etiqueta?');">
+                                                                <input type="hidden" name="_csrf"
+                                                                  value="<%= csrfToken %>">
+                                                                <button type="submit"
+                                                                  class="btn btn-del btn-sm">Eliminar</button>
+                                                              </form>
+                                                            </td>
+                                                          </tr>
+                                                          <% }) %>
+                                                      </tbody>
+                                                    </table>
+                                                  </div>
+                                                  <% } %>
+
+                                                    <!-- ====================================================
          NOTIFICACIONES
     ==================================================== -->
-                                                <% } else if (seccion==='notificaciones' ) { %>
-                                                  <div class="page-header">
-                                                    <div>
-                                                      <h1 class="page-title">Gestión de Notificaciones</h1>
-                                                      <p class="page-subtitle">Envía y revisa notificaciones del sistema
-                                                      </p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-primary"
-                                                      onclick="openModal('modal-new-notif')">+ Nueva
-                                                      Notificación</button>
-                                                  </div>
-
-                                                  <!-- Modal: Nueva Notificación -->
-                                                  <div id="modal-new-notif" class="modal-overlay">
-                                                    <div class="modal-content">
-                                                      <div class="modal-header">
-                                                        <h2>Nueva Notificación</h2>
-                                                        <button type="button" class="close-modal"
-                                                          onclick="closeModal('modal-new-notif')">&times;</button>
-                                                      </div>
-                                                      <form method="POST" action="/admin/notificaciones/new">
-                                                        <div class="form-grid">
-                                                          <div class="form-group span-full">
-                                                            <label>ID de Usuario Destinatario *</label>
-                                                            <input type="number" name="cuenta_usuario_id"
-                                                              class="form-control" placeholder="ID del usuario"
-                                                              required>
-                                                          </div>
-                                                          <div class="form-group">
-                                                            <label>Tipo *</label>
-                                                            <input type="text" name="tipo" class="form-control"
-                                                              placeholder="ej. bienvenida, alerta" required>
-                                                          </div>
-                                                          <div class="form-group span-full">
-                                                            <label>Mensaje *</label>
-                                                            <textarea name="mensaje" class="form-control"
-                                                              placeholder="Texto de la notificación..."
-                                                              required></textarea>
-                                                          </div>
+                                                    <% } else if (seccion==='notificaciones' ) { %>
+                                                      <div class="page-header">
+                                                        <div>
+                                                          <h1 class="page-title">Gestión de Notificaciones</h1>
+                                                          <p class="page-subtitle">Envía y revisa notificaciones del
+                                                            sistema
+                                                          </p>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                          <button type="button" class="btn btn-outline"
-                                                            onclick="closeModal('modal-new-notif')">Cancelar</button>
-                                                          <button type="submit" class="btn btn-ok">✓ Enviar
-                                                            Notificación</button>
-                                                        </div>
-                                                      </form>
-                                                    </div>
-                                                  </div>
-
-                                                  <% if (notificaciones.length===0) { %>
-                                                    <p>No hay notificaciones registradas.</p>
-                                                    <% } else { %>
-                                                      <div class="table-wrap">
-                                                        <table class="admin-table">
-                                                          <thead>
-                                                            <tr>
-                                                              <th>#</th>
-                                                              <th>Usuario</th>
-                                                              <th>Tipo</th>
-                                                              <th>Mensaje</th>
-                                                              <th>Leída</th>
-                                                              <th>Eliminar</th>
-                                                            </tr>
-                                                          </thead>
-                                                          <tbody>
-                                                            <% notificaciones.forEach(n=> { %>
-                                                              <tr>
-                                                                <td>
-                                                                  <%= n.id_notificacion %>
-                                                                </td>
-                                                                <td>
-                                                                  <%= n.cuenta_usuario_id %>
-                                                                </td>
-                                                                <td><span class="badge badge-blue">
-                                                                    <%= n.tipo %>
-                                                                  </span></td>
-                                                                <td>
-                                                                  <%= n.mensaje %>
-                                                                </td>
-                                                                <td><span
-                                                                    class="badge <%= n.leida ? 'badge-green' : 'badge-gray' %>">
-                                                                    <%= n.leida ? 'Sí' : 'No' %>
-                                                                  </span></td>
-                                                                <td>
-                                                                  <form method="POST"
-                                                                    action="/admin/notificaciones/<%= n.id_notificacion %>/delete"
-                                                                    onsubmit="return confirm('¿Eliminar notificación?')">
-                                                                    <button type="submit"
-                                                                      class="btn btn-del btn-sm">Eliminar</button>
-                                                                  </form>
-                                                                </td>
-                                                              </tr>
-                                                              <% }) %>
-                                                          </tbody>
-                                                        </table>
+                                                        <button type="button" class="btn btn-primary"
+                                                          onclick="openModal('modal-new-notif')">+ Nueva
+                                                          Notificación</button>
                                                       </div>
-                                                      <% } %>
 
-                                                        <% } %>
+                                                      <!-- Modal: Nueva Notificación -->
+                                                      <div id="modal-new-notif" class="modal-overlay">
+                                                        <div class="modal-content">
+                                                          <div class="modal-header">
+                                                            <h2>Nueva Notificación</h2>
+                                                            <button type="button" class="close-modal"
+                                                              onclick="closeModal('modal-new-notif')">&times;</button>
+                                                          </div>
+                                                          <form method="POST" action="/admin/notificaciones/new">
+                                                            <div class="form-grid">
+                                                              <div class="form-group span-full">
+                                                                <label>ID de Usuario Destinatario *</label>
+                                                                <input type="number" name="cuenta_usuario_id"
+                                                                  class="form-control" placeholder="ID del usuario"
+                                                                  required>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label>Tipo *</label>
+                                                                <input type="text" name="tipo" class="form-control"
+                                                                  placeholder="ej. bienvenida, alerta" required>
+                                                              </div>
+                                                              <div class="form-group span-full">
+                                                                <label>Mensaje *</label>
+                                                                <textarea name="mensaje" class="form-control"
+                                                                  placeholder="Texto de la notificación..."
+                                                                  required></textarea>
+                                                              </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                              <button type="button" class="btn btn-outline"
+                                                                onclick="closeModal('modal-new-notif')">Cancelar</button>
+                                                              <button type="submit" class="btn btn-ok">✓ Enviar
+                                                                Notificación</button>
+                                                            </div>
+                                                          </form>
+                                                        </div>
+                                                      </div>
+
+                                                      <% if (notificaciones.length===0) { %>
+                                                        <p>No hay notificaciones registradas.</p>
+                                                        <% } else { %>
+                                                          <div class="table-wrap">
+                                                            <table class="admin-table">
+                                                              <thead>
+                                                                <tr>
+                                                                  <th>#</th>
+                                                                  <th>Usuario</th>
+                                                                  <th>Tipo</th>
+                                                                  <th>Mensaje</th>
+                                                                  <th>Leída</th>
+                                                                  <th>Eliminar</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                                <% notificaciones.forEach(n=> { %>
+                                                                  <tr>
+                                                                    <td>
+                                                                      <%= n.id_notificacion %>
+                                                                    </td>
+                                                                    <td>
+                                                                      <%= n.cuenta_usuario_id %>
+                                                                    </td>
+                                                                    <td><span class="badge badge-blue">
+                                                                        <%= n.tipo %>
+                                                                      </span></td>
+                                                                    <td>
+                                                                      <%= n.mensaje %>
+                                                                    </td>
+                                                                    <td><span
+                                                                        class="badge <%= n.leida ? 'badge-green' : 'badge-gray' %>">
+                                                                        <%= n.leida ? 'Sí' : 'No' %>
+                                                                      </span></td>
+                                                                    <td>
+                                                                      <form method="POST"
+                                                                        action="/admin/notificaciones/<%= n.id_notificacion %>/delete"
+                                                                        onsubmit="event.preventDefault(); openConfirmModal(this, '¿Eliminar notificación?');">
+                                                                        <input type="hidden" name="_csrf"
+                                                                          value="<%= csrfToken %>">
+                                                                        <button type="submit"
+                                                                          class="btn btn-del btn-sm">Eliminar</button>
+                                                                      </form>
+                                                                    </td>
+                                                                  </tr>
+                                                                  <% }) %>
+                                                              </tbody>
+                                                            </table>
+                                                          </div>
+                                                          <% } %>
+
+                                                            <% } %>
 
     </main>
+  </div>
+
+  <!-- Modal Confirmación Genérico -->
+  <div id="ws-confirm-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width:400px; text-align:center;">
+      <div class="modal-header" style="justify-content:center; border:none; padding-bottom:0;">
+        <h2 style="font-size: 1.5rem;">Confirmar Acción</h2>
+      </div>
+      <div style="padding: 20px;">
+        <p id="ws-confirm-msg" style="margin-bottom: 30px; font-size: 1.1rem; color: var(--text);">¿Estás seguro de
+          realizar esta acción?</p>
+        <div style="display:flex; justify-content:center; gap: 15px;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('ws-confirm-modal')"
+            style="min-width: 100px;">Cancelar</button>
+          <button type="button" class="btn btn-del" id="ws-confirm-btn" style="min-width: 100px;">Confirmar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -867,6 +1062,17 @@
       overlay.addEventListener('click', function (e) {
         if (e.target === this) { this.classList.remove('active'); document.body.style.overflow = ''; }
       });
+    });
+
+    // ── Confirm Modal ────────────────────────────────────────────
+    let formToSubmit = null;
+    function openConfirmModal(formElement, message) {
+      formToSubmit = formElement;
+      document.getElementById('ws-confirm-msg').textContent = message;
+      openModal('ws-confirm-modal');
+    }
+    document.getElementById('ws-confirm-btn')?.addEventListener('click', () => {
+      if (formToSubmit) formToSubmit.submit();
     });
 
     // ── Sidebar Mobile ───────────────────────────────────────────
@@ -938,23 +1144,62 @@
     // ── Búsqueda de Usuarios e Historias ────────────────────────
     function bindSearch(inputId, tableSelector, cellIndexes) {
       const searchInput = document.getElementById(inputId);
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          const query = this.value.toLowerCase();
-          const rows = document.querySelectorAll(`${tableSelector} tbody tr`);
-          rows.forEach(row => {
-            if (row.closest('.modal-overlay')) return; 
-            
-            let match = false;
-            cellIndexes.forEach(index => {
-               const text = row.cells[index]?.textContent.toLowerCase() || '';
-               if (text.includes(query)) match = true;
-            });
+      if (!searchInput) return;
 
-            row.style.display = match ? '' : 'none';
-          });
+      // Crear fila de "sin resultados" si no existe
+      const table = searchInput.closest('.filters-toolbar')?.nextElementSibling?.querySelector(tableSelector)
+        || document.querySelector(tableSelector);
+
+      searchInput.addEventListener('input', function () {
+        const query = this.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        // Buscar la tabla correspondiente al input activo
+        const section = this.closest('.filters-toolbar') || this.closest('section') || document.querySelector('.admin-main');
+        const rows = section ? section.querySelectorAll(`${tableSelector} tbody tr`)
+          : document.querySelectorAll(`${tableSelector} tbody tr`);
+
+        rows.forEach(row => {
+          if (row.closest('.modal-overlay')) return;
+          if (row.id === 'empty-search-row') return;
+
+          let match = !query;
+          if (query) {
+            cellIndexes.forEach(index => {
+              const text = row.cells[index]?.textContent.toLowerCase() || '';
+              if (text.includes(query)) match = true;
+            });
+          }
+          row.style.display = match ? '' : 'none';
+          if (match) visibleCount++;
         });
-      }
+
+        // Mostrar/ocultar fila de estado vacío
+        const tbody = rows.length > 0 ? rows[0].closest('tbody') : null;
+        if (tbody) {
+          let emptyRow = tbody.querySelector('#empty-search-row');
+          if (visibleCount === 0 && query) {
+            if (!emptyRow) {
+              emptyRow = document.createElement('tr');
+              emptyRow.id = 'empty-search-row';
+              const colCount = tbody.closest('table')?.querySelectorAll('thead th').length || 5;
+              emptyRow.innerHTML = `<td colspan="${colCount}" style="text-align:center; padding:2rem; color:var(--text-muted,#888);">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+                  <span style="font-size:2rem;">🔍</span>
+                  <strong>Sin resultados</strong>
+                  <span>No se encontró ningún elemento que coincida con "${query}".</span>
+                </div>
+              </td>`;
+              tbody.appendChild(emptyRow);
+            } else {
+              emptyRow.style.display = '';
+              emptyRow.querySelector('td span:last-child').textContent = `No se encontró ningún elemento que coincida con "${query}".`;
+            }
+          } else if (emptyRow) {
+            emptyRow.style.display = 'none';
+          }
+        }
+      });
     }
 
     // Bind para usuarios: Búsqueda por Username (index 1) y Email (index 2)
@@ -963,76 +1208,22 @@
     // Bind para historias: Búsqueda por Título (index 1) y Autor (index 2)
     bindSearch('search-historias', '.admin-table', [1, 2]);
 
-    // ── Paginación de Tablas ─────────────────────────────────────
-    function paginateTables(limit = 10) {
-      const tables = document.querySelectorAll('.admin-table');
-      tables.forEach(table => {
-        // Ignorar tablas dentro de modales
-        if (table.closest('.modal-overlay')) return;
-        
-        const tbody = table.querySelector('tbody');
-        if (!tbody) return;
-        
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        if (rows.length <= limit) return;
-
-        let currentPage = 1;
-        const totalPages = Math.ceil(rows.length / limit);
-
-        const renderPage = (page) => {
-          rows.forEach((row, index) => {
-            row.style.display = (index >= (page - 1) * limit && index < page * limit) ? '' : 'none';
-          });
-        };
-
-        const renderControls = () => {
-          let controls = table.nextElementSibling;
-          if (controls && controls.classList.contains('pagination-controls')) {
-            controls.remove();
-          }
-          controls = document.createElement('div');
-          controls.className = 'pagination-controls';
-          controls.style = 'margin-top: 1rem; display: flex; gap: 5px; justify-content: center;';
-          
-          for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-outline btn-sm';
-            btn.textContent = i;
-            if (i === currentPage) {
-              btn.style.background = 'var(--primary)';
-              btn.style.color = '#fff';
-            }
-            btn.onclick = () => {
-              currentPage = i;
-              renderPage(currentPage);
-              renderControls();
-            };
-            controls.appendChild(btn);
-          }
-          table.parentNode.insertBefore(controls, table.nextSibling);
-        };
-
-        renderPage(currentPage);
-        renderControls();
-      });
-    }
-
     // ── Navegación SPA (Fetch e inserción del <main>) ────────────
     function initSPA() {
       const links = document.querySelectorAll('.sidebar-nav a.nav-link');
       links.forEach(link => {
         if (link.closest('.sidebar-footer')) return; // ignorar botón volver al sitio
-        
+
         link.addEventListener('click', async (e) => {
           e.preventDefault();
           const url = link.href;
-          
+
           links.forEach(l => l.classList.remove('active'));
           link.classList.add('active');
 
           if (window.innerWidth <= 768) {
-             adminSidebar.classList.remove('open');
-             backdrop.classList.remove('active');
+            adminSidebar.classList.remove('open');
+            backdrop.classList.remove('active');
           }
 
           try {
@@ -1043,19 +1234,19 @@
               const doc = parser.parseFromString(html, 'text/html');
               const newMain = doc.querySelector('.admin-main');
               const currentMain = document.querySelector('.admin-main');
-              
+
               if (newMain && currentMain) {
                 currentMain.style.opacity = '0';
                 setTimeout(() => {
                   currentMain.innerHTML = newMain.innerHTML;
                   currentMain.style.opacity = '1';
-                  
+
                   // Re-inicializar eventos
                   paginateTables();
                   bindSearch('search-users', '.admin-table', [1, 2]);
                   bindSearch('search-historias', '.admin-table', [1, 2]);
                 }, 200);
-                
+
                 window.history.pushState({}, '', url);
               }
             } else {
@@ -1069,7 +1260,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      paginateTables();
       initSPA();
       document.querySelector('.admin-main').style.transition = 'opacity 0.2s ease-in-out';
     });

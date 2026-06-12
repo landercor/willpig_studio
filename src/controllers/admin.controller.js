@@ -1,5 +1,8 @@
 // src/controllers/admin.controller.js
 import { supabaseAdmin as supabase } from '../config/db.js';
+import { usuarioService } from '../services/usuario.service.js';
+import { historiaService } from '../services/historia.service.js';
+import { capituloService } from '../services/capitulo.service.js';
 
 // ─────────────────────────────────────────────
 // DASHBOARD
@@ -22,17 +25,17 @@ const BASE_RENDER = {
 export const getDashboard = async (req, res) => {
   try {
     const [
-      { count: totalUsuarios },
-      { count: totalHistorias },
+      totalUsuarios,
+      totalHistorias,
       { count: totalCategorias },
-      { count: totalCapitulos },
+      totalCapitulos,
       { count: totalEtiquetas },
       { count: totalNotificaciones }
     ] = await Promise.all([
-      supabase.from('cuenta_usuario').select('*', { count: 'exact', head: true }),
-      supabase.from('cuentos').select('*', { count: 'exact', head: true }),
+      usuarioService.getDashboardTotal(),
+      historiaService.getDashboardTotal(),
       supabase.from('categorias').select('*', { count: 'exact', head: true }),
-      supabase.from('capitulos').select('*', { count: 'exact', head: true }),
+      capituloService.getDashboardTotal(),
       supabase.from('etiquetas').select('*', { count: 'exact', head: true }),
       supabase.from('notificaciones').select('*', { count: 'exact', head: true })
     ]);
@@ -57,12 +60,10 @@ export const getDashboard = async (req, res) => {
 
 export const getUsuarios = async (req, res) => {
   try {
-    const { data: usuarios, error } = await supabase
-      .from('cuenta_usuario')
-      .select('id_cuenta_usuario, username, email, rol, estado, fecha_registro')
-      .order('fecha_registro', { ascending: false });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
 
-    if (error) throw error;
+    const { usuarios, count, totalPages } = await usuarioService.getUsuariosPaginated(page, limit, req.query);
 
     res.render('admin', {
       ...BASE_RENDER,
@@ -70,7 +71,10 @@ export const getUsuarios = async (req, res) => {
       seccion: 'usuarios',
       usuarios: usuarios || [],
       mensaje: req.query.msg || null,
-      error: req.query.error || null
+      error: req.query.error || null,
+      page,
+      totalPages,
+      query: req.query
     });
   } catch (err) {
     console.error('Error listar usuarios:', err);
@@ -84,26 +88,7 @@ export const createUsuario = async (req, res) => {
     return res.redirect('/admin/usuarios?error=Faltan+datos+requeridos');
   }
   try {
-    // 1. Crear el usuario en Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true,
-      user_metadata: { username, rol }
-    });
-    if (authError) throw authError;
-
-    // 2. Actualizar el perfil en cuenta_usuario (supabase trigger puede ya haberlo creado)
-    // Intentamos actualizar el registro creado por el trigger, si falla insertamos manualmente
-    const { error: updateError } = await supabase
-      .from('cuenta_usuario')
-      .update({ username, rol, estado: 'activa' })
-      .eq('email', email);
-
-    if (updateError) {
-      // Si no existe todavía, insertar manualmente
-      await supabase.from('cuenta_usuario').insert([{ username, email, rol, estado: 'activa' }]);
-    }
+    await usuarioService.createUser({ username, email, password, rol });
 
     res.redirect(`/admin/usuarios?msg=Usuario+${encodeURIComponent(username)}+creado+exitosamente`);
   } catch (err) {
@@ -116,12 +101,7 @@ export const editUsuario = async (req, res) => {
   const { id } = req.params;
   const { username, email, rol, estado } = req.body;
   try {
-    const { error } = await supabase
-      .from('cuenta_usuario')
-      .update({ username, email, rol, estado })
-      .eq('id_cuenta_usuario', id);
-
-    if (error) throw error;
+    await usuarioService.updateUser(id, { username, email, rol, estado });
     res.redirect('/admin/usuarios?msg=Usuario+actualizado');
   } catch (err) {
     console.error('Error editar usuario:', err);
@@ -132,12 +112,7 @@ export const editUsuario = async (req, res) => {
 export const deleteUsuario = async (req, res) => {
   const { id } = req.params;
   try {
-    const { error } = await supabase
-      .from('cuenta_usuario')
-      .delete()
-      .eq('id_cuenta_usuario', id);
-
-    if (error) throw error;
+    await usuarioService.deleteUser(id);
     res.redirect('/admin/usuarios?msg=Usuario+eliminado');
   } catch (err) {
     console.error('Error eliminar usuario:', err);
@@ -151,16 +126,14 @@ export const deleteUsuario = async (req, res) => {
 
 export const getHistorias = async (req, res) => {
   try {
-    const [{ data: historias, error }, { data: categorias }, { data: capitulos }] = await Promise.all([
-      supabase
-        .from('cuentos')
-        .select(`id_cuento, titulo, descripcion, portada_url, estado, visibilidad, audiencia, idioma, vistas, created_at, categoria_id, cuenta_usuario ( username )`)
-        .order('created_at', { ascending: false }),
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
+
+    const [{ historias, count, totalPages }, { data: categorias }, { data: capitulos }] = await Promise.all([
+      historiaService.getHistoriasPaginated(page, limit, req.query),
       supabase.from('categorias').select('id_categoria, nombre').order('nombre', { ascending: true }),
       supabase.from('capitulos').select('id_capitulo, titulo, cuento_id, created_at, contenido').order('created_at', { ascending: true })
     ]);
-
-    if (error) throw error;
 
     res.render('admin', {
       ...BASE_RENDER,
@@ -170,7 +143,10 @@ export const getHistorias = async (req, res) => {
       categorias: categorias || [],
       capitulos: capitulos || [],
       mensaje: req.query.msg || null,
-      error: req.query.error || null
+      error: req.query.error || null,
+      page,
+      totalPages,
+      query: req.query
     });
   } catch (err) {
     console.error('Error listar historias:', err);
@@ -222,8 +198,7 @@ export const createHistoria = async (req, res) => {
       estado, visibilidad, audiencia, idioma, derechos, clasificacion
     };
 
-    const { error } = await supabase.from('cuentos').insert([insertData]);
-    if (error) throw error;
+    await historiaService.createStory(insertData);
 
     res.redirect(`/admin/historias?msg=Historia+"${encodeURIComponent(titulo.trim())}"+creada+exitosamente`);
   } catch (err) {
@@ -248,12 +223,7 @@ export const editHistoria = async (req, res) => {
     if (derechos) updates.derechos = derechos;
     if (clasificacion) updates.clasificacion = clasificacion;
 
-    const { error } = await supabase
-      .from('cuentos')
-      .update(updates)
-      .eq('id_cuento', id);
-
-    if (error) throw error;
+    await historiaService.updateStory(id, updates);
     res.redirect('/admin/historias?msg=Historia+actualizada+correctamente');
   } catch (err) {
     console.error('Error editar historia:', err);
@@ -264,15 +234,7 @@ export const editHistoria = async (req, res) => {
 export const deleteHistoria = async (req, res) => {
   const { id } = req.params;
   try {
-    // Eliminar capítulos primero para respetar FK
-    await supabase.from('capitulos').delete().eq('cuento_id', id);
-
-    const { error } = await supabase
-      .from('cuentos')
-      .delete()
-      .eq('id_cuento', id);
-
-    if (error) throw error;
+    await historiaService.deleteStory(id);
     res.redirect('/admin/historias?msg=Historia+eliminada');
   } catch (err) {
     console.error('Error eliminar historia:', err);
@@ -364,12 +326,10 @@ export const deleteCategoria = async (req, res) => {
 
 export const getCapitulos = async (req, res) => {
   try {
-    const { data: capitulos, error } = await supabase
-      .from('capitulos')
-      .select('id_capitulo, titulo, cuento_id, created_at, cuentos(titulo)')
-      .order('created_at', { ascending: false });
+    const page = parseInt(req.query.page) || 1;
+    const limit = 20;
 
-    if (error) throw error;
+    const { capitulos, count, totalPages } = await capituloService.getCapitulosPaginated(page, limit);
 
     res.render('admin', {
       ...BASE_RENDER,
@@ -377,7 +337,10 @@ export const getCapitulos = async (req, res) => {
       seccion: 'capitulos',
       capitulos: capitulos || [],
       mensaje: req.query.msg || null,
-      error: req.query.error || null
+      error: req.query.error || null,
+      page,
+      totalPages,
+      query: req.query
     });
   } catch (err) {
     console.error('Error listar capitulos:', err);
@@ -388,11 +351,7 @@ export const getCapitulos = async (req, res) => {
 export const createCapitulo = async (req, res) => {
   const { titulo, cuento_id, contenido } = req.body;
   try {
-    const { error } = await supabase
-      .from('capitulos')
-      .insert([{ titulo, cuento_id, contenido }]);
-
-    if (error) throw error;
+    await capituloService.createCapitulo({ titulo, cuento_id, contenido });
     res.redirect('/admin/historias?msg=Capitulo+creado');
   } catch (err) {
     console.error('Error crear capitulo:', err);
@@ -404,12 +363,7 @@ export const editCapitulo = async (req, res) => {
   const { id } = req.params;
   const { titulo, cuento_id, contenido } = req.body;
   try {
-    const { error } = await supabase
-      .from('capitulos')
-      .update({ titulo, cuento_id, contenido })
-      .eq('id_capitulo', id);
-
-    if (error) throw error;
+    await capituloService.updateCapitulo(id, { titulo, cuento_id, contenido });
     res.redirect('/admin/historias?msg=Capitulo+actualizado');
   } catch (err) {
     console.error('Error editar capitulo:', err);
@@ -420,12 +374,7 @@ export const editCapitulo = async (req, res) => {
 export const deleteCapitulo = async (req, res) => {
   const { id } = req.params;
   try {
-    const { error } = await supabase
-      .from('capitulos')
-      .delete()
-      .eq('id_capitulo', id);
-
-    if (error) throw error;
+    await capituloService.deleteCapitulo(id);
     res.redirect('/admin/historias?msg=Capitulo+eliminado');
   } catch (err) {
     console.error('Error eliminar capitulo:', err);

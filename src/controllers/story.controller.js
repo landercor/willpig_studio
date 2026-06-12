@@ -1,5 +1,6 @@
 // controllers/story.controller.js
-import { supabaseAdmin as supabase } from '../config/db.js'
+import { supabaseAdmin as supabase } from '../config/db.js';
+import { historiaService } from '../services/historia.service.js';
 
 // GET /api/cuentos — traer todos los cuentos públicos y publicados
 export const getStories = async (req, res) => {
@@ -27,53 +28,39 @@ export const getStories = async (req, res) => {
 export const getStoryById = async (req, res) => {
   const { id } = req.params
 
-  const { data, error } = await supabase /*modificaciones en el query original de redireccionamiento entre el usuario y el cuento, añadiendo el titulo de los capitulos y el nombre del usuario, (cuenta_usuario_id, visibilidad) */
-    .from('cuentos')
-    .select(`
-      id_cuento,
-      cuenta_usuario_id,
-      titulo,
-      descripcion,
-      portada_url,
-      estado,
-      visibilidad,
-      vistas,
-      cuenta_usuario ( username, avatar_url ),
-      categorias ( nombre ),
-      capitulos ( id_capitulo, titulo, created_at )
-    `)
-    .eq('id_cuento', id)
-    .single()
+  try {
+    const data = await historiaService.getStoryByIdForRead(id);
 
-  if (error) {
-    if (error.code === 'PGRST116') { // Error code for 'The result contains 0 rows'
+    if (!data) {
       return res.status(404).render('404', { message: "Cuento no encontrado" });
     }
+
+    // --- VALIDACIÓN DE PRIVACIDAD ---
+    const isAuthor = req.session && req.session.user && (String(data.cuenta_usuario_id) === String(req.session.user.id));
+    const isPublic = data.estado === 'publicado' && data.visibilidad === 'publica';
+
+    if (!isPublic && !isAuthor) {
+      return res.status(403).render('404', {
+        message: "Esta historia es privada o se encuentra en estado de borrador.",
+        loggerUser: req.session.user
+      });
+    }
+    // --------------------------------
+
+    // Increment views for public stories loaded by someone else
+    if (isPublic && !isAuthor) {
+      await historiaService.incrementViews(id);
+    }
+
+    res.render('story', {
+      cuento: data,
+      user: req.session.user, // user del contexto de la historia
+      loggerUser: req.session.user // usuario logueado para el navbar
+    })
+  } catch (error) {
+    console.error('Error in getStoryById:', error);
     return res.status(500).json({ error: error.message })
   }
-
-  // --- VALIDACIÓN DE PRIVACIDAD ---
-  const isAuthor = req.session && req.session.user && (String(data.cuenta_usuario_id) === String(req.session.user.id));
-  const isPublic = data.estado === 'publicado' && data.visibilidad === 'publica';
-
-  if (!isPublic && !isAuthor) {
-    return res.status(403).render('404', {
-      message: "Esta historia es privada o se encuentra en estado de borrador.",
-      loggerUser: req.session.user
-    });
-  }
-  // --------------------------------
-
-  // Sort chapters by date (if not already sorted by DB)
-  if (data.capitulos) {
-    data.capitulos.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-  }
-
-  res.render('story', {
-    cuento: data,
-    user: req.session.user, // user del contexto de la historia
-    loggerUser: req.session.user // usuario logueado para el navbar
-  })
 }
 
 // GET /api/cuentos/category/:id — cuentos por categoría

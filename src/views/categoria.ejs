@@ -26,13 +26,13 @@
         <div id="category-results" class="tab-content active mt-2">
 
           <div class="library-grid reveal-item">
-            <% if (libros && libros.length> 0) { %>
-              <% libros.forEach(libro=> { %>
+            <% if (historias && historias.length> 0) { %>
+              <% historias.forEach(historia=> { %>
                 <div class="library-item">
                   <div class="card-inner">
-                    <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
-                      <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
-                        alt="<%= libro.titulo %>">
+                    <a href="/historias/<%= historia.id_cuento || '#' %>" class="card-image-link">
+                      <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= historia.titulo %>">
                       <div class="card-overlay">
                         <span class="btn-play-mini"><img src="/img/img.ico/svg/arrow-right-short.svg"
                             alt="arrow-right-short"></span>
@@ -40,15 +40,15 @@
                     </a>
                     <div class="card-info">
                       <p class="title text-truncate">
-                        <%= libro.titulo %>
+                        <%= historia.titulo %>
                       </p>
                       <div class="author">
                         <img
-                          src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
+                          src="<%= (historia.cuenta_usuario && historia.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
                           alt="autor" class="author-avatar-xs">
-                        <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
-                          <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@
-                            <%= libro.cuenta_usuario.username %>
+                        <% if (historia.cuenta_usuario && historia.cuenta_usuario.id_cuenta_usuario) { %>
+                          <a href="/usuario/profile/<%= historia.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@
+                            <%= historia.cuenta_usuario.username %>
                           </a>
                           <% } else { %>
                             <span>@Anónimo</span>
@@ -56,7 +56,7 @@
                       </div>
                       <div class="meta text-start">
                         <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
-                        <%= (libro.vistas || 0).toLocaleString() %>
+                        <%= (historia.vistas || 0).toLocaleString() %>
                       </div>
                     </div>
                   </div>

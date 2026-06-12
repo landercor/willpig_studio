@@ -151,7 +151,7 @@
             <section class="featured-story mb-3 reveal-item">
               <div class="featured-image">
                 <img
-                  src="<%= historiaDestacada.portada_url || historiaDestacada.portada || '/img/default-portada.jpg' %>"
+                  src="<%= historiaDestacada.portada_url || '/img/default-portada.jpg' %>"
                   alt="<%= historiaDestacada.titulo %>">
                 <div class="featured-badge">Destacada</div>
               </div>
@@ -161,8 +161,7 @@
                   <%= historiaDestacada.titulo %>
                 </h3>
                 <p>
-                  <%= historiaDestacada.sinopsis
-                    || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %>
+                  <%= historiaDestacada.sinopsis || 'Una aventura increíble y popular elegida por los lectores de Willpig Studio.' %>
                 </p>
                 <div class="featured-meta">
                   <div class="meta-item"><img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span>
@@ -177,8 +176,8 @@
             <% } %>
 
               <!-- Categorías (Netflix Style) -->
-              <% if (typeof librosPorCategoria !=='undefined' && Object.keys(librosPorCategoria).length> 0) { %>
-                <% Object.keys(librosPorCategoria).forEach(cat=> { %>
+              <% if (typeof historiasPorCategoria !=='undefined' && Object.keys(historiasPorCategoria).length> 0) { %>
+                <% Object.keys(historiasPorCategoria).forEach(cat=> { %>
                   <div class="category-section mb-3 reveal-item">
                     <div class="section-flex">
                       <h3 class="category-title">
@@ -188,23 +187,23 @@
                     </div>
                     <div class="scroll-wrapper">
                       <div class="scroll-container">
-                        <% librosPorCategoria[cat].forEach(libro=> { %>
+                        <% historiasPorCategoria[cat].forEach(historia=> { %>
                           <div class="carousel-item">
                             <div class="card-inner">
-                              <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
-                                <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>"
-                                  class="cover" alt="<%= libro.titulo %>">
+                              <a href="/historias/<%= historia.id_cuento || '#' %>" class="card-image-link">
+                                <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>"
+                                  class="cover" alt="<%= historia.titulo %>">
                                 <div class="card-overlay">
                                   <span class="btn-play-mini">▶</span>
                                 </div>
                               </a>
                               <div class="card-info">
                                 <p class="title text-truncate">
-                                  <%= libro.titulo %>
+                                  <%= historia.titulo %>
                                 </p>
                                 <div class="meta text-start">
                                   <img src="/img/img.ico/vistas-icon.svg" class="icon-eye"> <span>
-                                    <%= (libro.vistas || 0).toLocaleString() %>
+                                    <%= (historia.vistas || 0).toLocaleString() %>
                                   </span>
                                 </div>
                               </div>
@@ -230,34 +229,34 @@
           <div class="section-title reveal-item"> Recién publicadas </div>
 
           <div class="grid-container reveal-item">
-            <% if (libros && libros.length> 0) { %>
-              <% libros.forEach(libro=> { %>
+            <% if (historias && historias.length> 0) { %>
+              <% historias.forEach(historia=> { %>
                 <div class="library-item">
                   <div class="card-inner">
-                    <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
-                      <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
-                        alt="<%= libro.titulo %>">
+                    <a href="/historias/<%= historia.id_cuento || '#' %>" class="card-image-link">
+                      <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= historia.titulo %>">
                       <div class="card-overlay">
                         <span class="btn-play-mini">▶</span>
                       </div>
                     </a>
                     <div class="card-info">
                       <p class="title text-truncate">
-                        <%= libro.titulo %>
+                        <%= historia.titulo %>
                       </p>
                       <div class="author">
                         <img
-                          src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
+                          src="<%= (historia.cuenta_usuario && historia.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
                           alt="autor" class="author-avatar-xs">
-                        <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
-                          <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                        <% if (historia.cuenta_usuario && historia.cuenta_usuario.id_cuenta_usuario) { %>
+                          <a href="/usuario/profile/<%= historia.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= historia.cuenta_usuario.username %></a>
                         <% } else { %>
                           <span>@Anónimo</span>
                         <% } %>
                       </div>
                       <div class="meta">
                         <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
-                        <%= (libro.vistas || 0).toLocaleString() %>
+                        <%= (historia.vistas || 0).toLocaleString() %>
                       </div>
                     </div>
                   </div>
@@ -271,7 +270,7 @@
                     <% } %>
           </div>
 
-          <% if (libros && libros.length>= 10) { %>
+          <% if (historias && historias.length>= 10) { %>
             <div class="text-center my-3 reveal-item">
               <a href="/principal/biblioteca"><button class="btn-outline-primary">Ver más historias</button></a>
             </div>
@@ -284,33 +283,33 @@
 
           <div class="grid-container reveal-item">
             <% if (typeof tendencias !=='undefined' && tendencias.length> 0) { %>
-              <% tendencias.forEach(libro=> { %>
+              <% tendencias.forEach(historia=> { %>
                 <div class="library-item">
                   <div class="card-inner">
-                    <a href="/historias/<%= libro.id_cuento || '#' %>" class="card-image-link">
-                      <img src="<%= libro.portada_url || libro.portada || '/img/default-portada.jpg' %>" class="cover"
-                        alt="<%= libro.titulo %>">
+                    <a href="/historias/<%= historia.id_cuento || '#' %>" class="card-image-link">
+                      <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                        alt="<%= historia.titulo %>">
                       <div class="card-overlay">
                         <span class="btn-play-mini">▶</span>
                       </div>
                     </a>
                     <div class="card-info">
                       <p class="title text-truncate">
-                        <%= libro.titulo %>
+                        <%= historia.titulo %>
                       </p>
                       <div class="author">
                         <img
-                          src="<%= (libro.cuenta_usuario && libro.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
+                          src="<%= (historia.cuenta_usuario && historia.cuenta_usuario.avatar_url) || '/img/default-avatar.svg' %>"
                           alt="autor" class="author-avatar-xs">
-                        <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
-                          <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                        <% if (historia.cuenta_usuario && historia.cuenta_usuario.id_cuenta_usuario) { %>
+                          <a href="/usuario/profile/<%= historia.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= historia.cuenta_usuario.username %></a>
                         <% } else { %>
                           <span>@Anónimo</span>
                         <% } %>
                       </div>
                       <div class="meta">
                         <img src="/img/img.ico/vistas-icon.svg" class="icon-eye">
-                        <%= (libro.vistas || 0).toLocaleString() %>
+                        <%= (historia.vistas || 0).toLocaleString() %>
                       </div>
                     </div>
                   </div>

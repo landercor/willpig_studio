@@ -29,22 +29,22 @@
 
         <div class="library-grid">
 
-          <% libros.forEach(libro=> { %>
+          <% historias.forEach(historia=> { %>
             <div class="library-item">
 
-              <a href="/historias/<%= libro.id_cuento || '#' %>">
-                <img src="<%= libro.url_portada || '/img/default-portada.jpg' %>" class="cover"
-                  alt="<%= libro.titulo %>">
+              <a href="/historias/<%= historia.id_cuento || '#' %>">
+                <img src="<%= historia.portada_url || '/img/default-portada.jpg' %>" class="cover"
+                  alt="<%= historia.titulo %>">
               </a>
 
               <p class="title">
-                <%= libro.titulo %>
+                <%= historia.titulo %>
               </p>
 
               <div class="author">
                 <img src="/img/default-avatar.svg" alt="autor">
-                <% if (libro.cuenta_usuario && libro.cuenta_usuario.id_cuenta_usuario) { %>
-                  <a href="/usuario/profile/<%= libro.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= libro.cuenta_usuario.username %></a>
+                <% if (historia.cuenta_usuario && historia.cuenta_usuario.id_cuenta_usuario) { %>
+                  <a href="/usuario/profile/<%= historia.cuenta_usuario.id_cuenta_usuario %>" class="author-link">@<%= historia.cuenta_usuario.username %></a>
                 <% } else { %>
                   <span>@autor</span>
                 <% } %>
@@ -52,7 +52,7 @@
 
               <div class="meta">
                 <img src="/img/img.ico/vistas-icon.svg" alt="vistas" class="icon-eye">
-                <%= libro.cantidad_me_gusta || 0 %>
+                <%= historia.cantidad_me_gusta || 0 %>
               </div>
 
             </div>

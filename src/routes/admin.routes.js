@@ -1,6 +1,7 @@
 // src/routes/admin.routes.js
 import { Router } from 'express';
 import { isAdmin } from '../middlewares/isAdmin.js';
+import { validateCsrfToken } from '../middlewares/csrf.js';
 import {
   getDashboard,
   getUsuarios,
@@ -39,38 +40,38 @@ router.get('/', getDashboard);
 
 // Usuarios
 router.get('/usuarios', getUsuarios);
-router.post('/usuarios/new', createUsuario);
-router.post('/usuarios/:id/edit', editUsuario);
-router.post('/usuarios/:id/delete', deleteUsuario);
+router.post('/usuarios/new', validateCsrfToken, createUsuario);
+router.post('/usuarios/:id/edit', validateCsrfToken, editUsuario);
+router.post('/usuarios/:id/delete', validateCsrfToken, deleteUsuario);
 
 // Historias — /new ANTES de /:id para evitar que Express capture 'new' como ID
 router.get('/historias', getHistorias);
-router.post('/historias/new', createHistoria);
-router.post('/historias/:id/edit', editHistoria);
-router.post('/historias/:id/delete', deleteHistoria);
+router.post('/historias/new', validateCsrfToken, createHistoria);
+router.post('/historias/:id/edit', validateCsrfToken, editHistoria);
+router.post('/historias/:id/delete', validateCsrfToken, deleteHistoria);
 
 // Categorías
 router.get('/categorias', getCategorias);
-router.post('/categorias/new', createCategoria);
-router.post('/categorias/:id/edit', editCategoria);
-router.post('/categorias/:id/delete', deleteCategoria);
+router.post('/categorias/new', validateCsrfToken, createCategoria);
+router.post('/categorias/:id/edit', validateCsrfToken, editCategoria);
+router.post('/categorias/:id/delete', validateCsrfToken, deleteCategoria);
 
 // Capítulos
 router.get('/capitulos', getCapitulos);
-router.post('/capitulos/new', createCapitulo);
-router.post('/capitulos/:id/edit', editCapitulo);
-router.post('/capitulos/:id/delete', deleteCapitulo);
+router.post('/capitulos/new', validateCsrfToken, createCapitulo);
+router.post('/capitulos/:id/edit', validateCsrfToken, editCapitulo);
+router.post('/capitulos/:id/delete', validateCsrfToken, deleteCapitulo);
 
 // Etiquetas
 router.get('/etiquetas', getEtiquetas);
-router.post('/etiquetas/new', createEtiqueta);
-router.post('/etiquetas/:id/edit', editEtiqueta);
-router.post('/etiquetas/:id/delete', deleteEtiqueta);
+router.post('/etiquetas/new', validateCsrfToken, createEtiqueta);
+router.post('/etiquetas/:id/edit', validateCsrfToken, editEtiqueta);
+router.post('/etiquetas/:id/delete', validateCsrfToken, deleteEtiqueta);
 
 // Notificaciones
 router.get('/notificaciones', getNotificaciones);
-router.post('/notificaciones/new', createNotificacion);
-router.post('/notificaciones/:id/edit', editNotificacion);
-router.post('/notificaciones/:id/delete', deleteNotificacion);
+router.post('/notificaciones/new', validateCsrfToken, createNotificacion);
+router.post('/notificaciones/:id/edit', validateCsrfToken, editNotificacion);
+router.post('/notificaciones/:id/delete', validateCsrfToken, deleteNotificacion);
 
 export default router;
