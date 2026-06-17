@@ -164,6 +164,12 @@
          USUARIOS
     ==================================================== -->
         <% } else if (seccion==='usuarios' ) { %>
+          <div class="back-nav">
+            <a href="/admin" class="back-btn">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              Dashboard
+            </a>
+          </div>
           <div class="page-header">
             <div>
               <h1 class="page-title">Gestión de Usuarios</h1>
@@ -216,6 +222,44 @@
             </div>
           </div>
 
+          <form method="GET" action="/admin/usuarios" class="filters-toolbar"
+            style="margin-bottom:1rem; display:flex; gap: 10px; justify-content:space-between; flex-wrap: nowrap; align-items:center;">
+            <div class="search-box-admin" style="flex:1;">
+              <button type="submit" class="search-submit-btn" title="Buscar">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+              </button>
+              <input type="text" name="q" id="search-users" class="form-control"
+                placeholder="Buscar por usuario o email..."
+                value="<%= typeof query !== 'undefined' && query.q ? query.q : '' %>"
+                style="width:100%; min-width:200px; max-width:300px;">
+            </div>
+            <div class="filters-bar" style="display:flex; gap:10px; flex-wrap:nowrap; align-items:center;">
+              <select name="rol" class="form-control" style="max-width:160px;" onchange="this.form.submit()">
+                <option value="">Todos los roles</option>
+                <option value="lector" <%=typeof query !=='undefined' && query.rol==='lector' ? 'selected' : '' %>>
+                  Lector</option>
+                <option value="escritor" <%=typeof query !=='undefined' && query.rol==='escritor' ? 'selected' : ''
+                  %>>Escritor</option>
+                <option value="moderador" <%=typeof query !=='undefined' && query.rol==='moderador' ? 'selected'
+                  : '' %>>Moderador</option>
+                <option value="admin" <%=typeof query !=='undefined' && query.rol==='admin' ? 'selected' : '' %>>
+                  Admin</option>
+              </select>
+              <select name="estado" class="form-control" style="max-width:170px;" onchange="this.form.submit()">
+                <option value="">Todos los estados</option>
+                <option value="activa" <%=typeof query !=='undefined' && query.estado==='activa' ? 'selected' : ''
+                  %>>Activa</option>
+                <option value="suspendida" <%=typeof query !=='undefined' && query.estado==='suspendida'
+                  ? 'selected' : '' %>>Suspendida</option>
+                <option value="deshabilitada" <%=typeof query !=='undefined' && query.estado==='deshabilitada'
+                  ? 'selected' : '' %>>Deshabilitada</option>
+              </select>
+            </div>
+          </form>
+
           <% if (usuarios.length===0) { %>
             <div class="empty-state-admin">
               <span class="empty-icon">👤</span>
@@ -223,41 +267,6 @@
               <p>Intenta cambiar los filtros de búsqueda o crea un nuevo usuario.</p>
             </div>
             <% } else { %>
-              <div class="filters-toolbar"
-                style="margin-bottom:1rem; display:flex; gap: 10px; justify-content:space-between; flex-wrap: nowrap; align-items:center;">
-                <div class="search-box-admin" style="flex:1;">
-                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <circle cx="11" cy="11" r="8" />
-                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                  </svg>
-                  <input type="text" id="search-users" class="form-control" placeholder="Buscar por usuario o email..."
-                    style="width:100%; min-width:200px; max-width:300px;">
-                </div>
-                <form method="GET" action="/admin/usuarios" class="filters-bar"
-                  style="display:flex; gap:10px; flex-wrap:nowrap; align-items:center;">
-                  <select name="rol" class="form-control" style="max-width:160px;">
-                    <option value="">Todos los roles</option>
-                    <option value="lector" <%=typeof query !=='undefined' && query.rol==='lector' ? 'selected' : '' %>
-                      >Lector</option>
-                    <option value="escritor" <%=typeof query !=='undefined' && query.rol==='escritor' ? 'selected' : ''
-                      %>>Escritor</option>
-                    <option value="moderador" <%=typeof query !=='undefined' && query.rol==='moderador' ? 'selected'
-                      : '' %>>Moderador</option>
-                    <option value="admin" <%=typeof query !=='undefined' && query.rol==='admin' ? 'selected' : '' %>
-                      >Admin</option>
-                  </select>
-                  <select name="estado" class="form-control" style="max-width:170px;">
-                    <option value="">Todos los estados</option>
-                    <option value="activa" <%=typeof query !=='undefined' && query.estado==='activa' ? 'selected' : ''
-                      %>>Activa</option>
-                    <option value="suspendida" <%=typeof query !=='undefined' && query.estado==='suspendida'
-                      ? 'selected' : '' %>>Suspendida</option>
-                    <option value="deshabilitada" <%=typeof query !=='undefined' && query.estado==='deshabilitada'
-                      ? 'selected' : '' %>>Deshabilitada</option>
-                  </select>
-                  <button type="submit" class="btn btn-outline">Filtrar</button>
-                </form>
-              </div>
               <div class="table-wrap">
                 <table class="admin-table">
                   <thead>
@@ -383,6 +392,12 @@
          HISTORIAS
     ==================================================== -->
                     <% } else if (seccion==='historias' ) { %>
+                      <div class="back-nav">
+                        <a href="/admin" class="back-btn">
+                          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                          Dashboard
+                        </a>
+                      </div>
                       <div class="page-header">
                         <div>
                           <h1 class="page-title">Gestión de Historias</h1>
@@ -496,20 +511,23 @@
                           <p>Intenta cambiar los filtros o crea la primera historia.</p>
                         </div>
                         <% } else { %>
-                          <div class="filters-toolbar"
+                          <form method="GET" action="/admin/historias" class="filters-toolbar"
                             style="margin-bottom:1rem; display:flex; gap:10px; justify-content:space-between; flex-wrap: nowrap; align-items:center;">
                             <div class="search-box-admin" style="flex:1;">
-                              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-                                viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8" />
-                                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                              </svg>
-                              <input type="text" id="search-historias" class="form-control"
-                                placeholder="Buscar por título o autor..." style="width:100%; min-width:200px; max-width:300px;">
+                              <button type="submit" class="search-submit-btn" title="Buscar">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                                  viewBox="0 0 24 24">
+                                  <circle cx="11" cy="11" r="8" />
+                                  <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                              </button>
+                              <input type="text" name="q" id="search-historias" class="form-control"
+                                placeholder="Buscar por título..."
+                                value="<%= typeof query !== 'undefined' && query.q ? query.q : '' %>"
+                                style="width:100%; min-width:200px; max-width:300px;">
                             </div>
-                            <form method="GET" action="/admin/historias" class="filters-bar"
-                              style="display:flex; gap:10px; flex-wrap: nowrap; align-items:center;">
-                              <select name="categoria_id" class="form-control" style="max-width:150px;">
+                            <div class="filters-bar" style="display:flex; gap:10px; flex-wrap: nowrap; align-items:center;">
+                              <select name="categoria_id" class="form-control" style="max-width:150px;" onchange="this.form.submit()">
                                 <option value="">Todas las categorías</option>
                                 <% (categorias || []).forEach(cat=> { %>
                                   <option value="<%= cat.id_categoria %>" <%=typeof query !=='undefined' &&
@@ -517,7 +535,7 @@
                                   </option>
                                   <% }) %>
                               </select>
-                              <select name="estado" class="form-control" style="max-width:150px;">
+                              <select name="estado" class="form-control" style="max-width:150px;" onchange="this.form.submit()">
                                 <option value="">Todos los estados</option>
                                 <option value="borrador" <%=typeof query !=='undefined' && query.estado==='borrador'
                                   ? 'selected' : '' %>>Borrador</option>
@@ -526,9 +544,8 @@
                                 <option value="publicado" <%=typeof query !=='undefined' && query.estado==='publicado'
                                   ? 'selected' : '' %>>Publicado</option>
                               </select>
-                              <button type="submit" class="btn btn-outline">Filtrar</button>
-                            </form>
-                          </div>
+                            </div>
+                          </form>
                           <div class="table-wrap">
                             <table class="admin-table">
                               <thead>
@@ -786,6 +803,16 @@
          CATEGORÍAS
     ==================================================== -->
                                     <% } else if (seccion==='categorias' ) { %>
+                                      <div class="back-nav">
+                                        <a href="/admin/historias" class="back-btn">
+                                          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                                          Historias
+                                        </a>
+                                        <a href="/admin" class="back-btn back-btn-secondary">
+                                          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                                          Dashboard
+                                        </a>
+                                      </div>
                                       <div class="page-header">
                                         <div>
                                           <h1 class="page-title">Gestión de Categorías</h1>
@@ -854,6 +881,12 @@
          ETIQUETAS
     ==================================================== -->
                                             <% } else if (seccion==='etiquetas' ) { %>
+                                              <div class="back-nav">
+                                                <a href="/admin" class="back-btn">
+                                                  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                                                  Dashboard
+                                                </a>
+                                              </div>
                                               <div class="page-header">
                                                 <div>
                                                   <h1 class="page-title">Gestión de Etiquetas</h1>
@@ -923,6 +956,12 @@
          NOTIFICACIONES
     ==================================================== -->
                                                     <% } else if (seccion==='notificaciones' ) { %>
+                                                      <div class="back-nav">
+                                                        <a href="/admin" class="back-btn">
+                                                          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                                                          Dashboard
+                                                        </a>
+                                                      </div>
                                                       <div class="page-header">
                                                         <div>
                                                           <h1 class="page-title">Gestión de Notificaciones</h1>

@@ -12,6 +12,10 @@ export const historiaService = {
 
     if (filters.estado) query = query.eq('estado', filters.estado);
     if (filters.categoria_id) query = query.eq('categoria_id', filters.categoria_id);
+    // Búsqueda por texto (titulo)
+    if (filters.q && filters.q.trim()) {
+      query = query.ilike('titulo', `%${filters.q.trim()}%`);
+    }
 
     const { data, count, error } = await query
       .order('created_at', { ascending: false })

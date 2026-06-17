@@ -11,6 +11,10 @@ export const usuarioService = {
 
     if (filters.rol) query = query.eq('rol', filters.rol);
     if (filters.estado) query = query.eq('estado', filters.estado);
+    // Búsqueda por texto (username o email)
+    if (filters.q && filters.q.trim()) {
+      query = query.or(`username.ilike.%${filters.q.trim()}%,email.ilike.%${filters.q.trim()}%`);
+    }
 
     const { data, count, error } = await query
       .order('fecha_registro', { ascending: false })
