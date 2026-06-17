@@ -301,7 +301,7 @@ body.dark-mode .theme-icon.dark-icon {
 /* === Footer === */
 footer {
   background: var(--bg-light);
-  padding: 60px 40px;
+  padding: 40px 40px;
   text-align: center;
   border-top: 1px solid var(--glass-border);
 }
