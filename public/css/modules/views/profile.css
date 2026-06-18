@@ -315,7 +315,6 @@
     .book-badge.privado { background: #6b7280; color: #fff; }
     .book-title {
       font-size: 0.8rem;
-      color: var(--text-secondary, #aaa);
       line-height: 1.3;
       display: -webkit-box;
       -webkit-line-clamp: 2;
