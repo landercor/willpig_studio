@@ -1,0 +1,1 @@
+console.log("Archivo de configuración de prueba cargado");
