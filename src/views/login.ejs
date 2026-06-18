@@ -12,6 +12,7 @@
 
                 <form action="/auth/login" method="POST" class="form-login">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <input type="hidden" name="next" value="<%= typeof next !== 'undefined' ? next : '' %>">
                     <div class="form-group">
                         <label for="correo">Correo electrónico</label>
                         <input type="email" id="correo" name="correo" required placeholder="ejemplo@correo.com">

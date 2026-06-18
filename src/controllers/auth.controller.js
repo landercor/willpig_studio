@@ -2,6 +2,12 @@
 import { supabase, supabaseAdmin } from "../config/db.js";
 import bcrypt from "bcrypt";
 
+const getSafeRedirect = (nextUrl) => {
+  if (!nextUrl || typeof nextUrl !== "string") return "/principal";
+  if (!nextUrl.startsWith("/") || nextUrl.startsWith("//")) return "/principal";
+  return nextUrl;
+};
+
 // --- Vistas de Autenticación (EJS) ---
 
 export const register = async (req, res) => {
@@ -56,46 +62,48 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  const next = getSafeRedirect(req.body.next || req.query.next);
+
   try {
     const { correo, contrasena } = req.body;
-    console.log("Logging in user:", correo); // Log del correo recibido (sin contraseña)
+    console.log("Logging in user:", correo);
 
     if (!correo || !contrasena) {
-      return res.render("login", { error: "Completa los campos." });
+      return res.render("login", { error: "Completa los campos.", next });
     }
 
     const { data: user, error } = await supabaseAdmin
-      .from('cuenta_usuario')
-      .select('*')
-      .eq('email', correo)
+      .from("cuenta_usuario")
+      .select("*")
+      .eq("email", correo)
       .single();
 
     if (error) {
       console.error("Supabase login error (or user not found):", error);
     }
+
     if (error || !user) {
-      return res.render("login", { error: "Usuario o contraseña incorrectos." });
+      return res.render("login", { error: "Usuario o contrasena incorrectos.", next });
     }
 
     const ok = await bcrypt.compare(contrasena, user.clave);
     if (!ok) {
-      return res.render("login", { error: "Usuario o contraseña incorrectos." });
+      return res.render("login", { error: "Usuario o contrasena incorrectos.", next });
     }
 
-    // Establecer sesión personalizada
     req.session.userId = user.id_cuenta_usuario;
     req.session.user = {
       id: user.id_cuenta_usuario,
       username: user.username,
       email: user.email,
       rol: user.rol,
-      avatar: user.avatar_url
+      avatar: user.avatar_url,
     };
 
-    return res.redirect("/principal");
+    return res.redirect(next);
   } catch (err) {
     console.error("Error in login:", err);
-    return res.render("login", { error: "Error al iniciar sesión: " + err.message });
+    return res.render("login", { error: "Error al iniciar sesion: " + err.message, next });
   }
 };
 

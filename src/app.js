@@ -9,6 +9,11 @@ import { generateCsrfToken } from "./middlewares/csrf.js";
 
 const app = express();
 
+// La app suele correr detras de un proxy en produccion (Render/Railway/Nginx).
+// Confiar en un salto evita errores de express-rate-limit con X-Forwarded-For
+// y permite que Express detecte correctamente protocolo/IP reales.
+app.set("trust proxy", 1);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -23,6 +28,12 @@ app.use(
     secret: process.env.SESSION_SECRET || "willpig_studio_secret_key", // Usa env var si esta disponible.
     resave: false,
     saveUninitialized: true,
+    proxy: true,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+    },
   })
 );
 

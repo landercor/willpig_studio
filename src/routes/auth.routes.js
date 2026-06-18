@@ -12,7 +12,7 @@ router.get("/register", (req, res) => {
 router.post("/register", authLimiter, validateCsrfToken, register);
 
 router.get("/login", (req, res) => {
-  res.render("login", { error: undefined });
+  res.render("login", { error: undefined, next: req.query.next || "" });
 });
 // Rate limiting + validación CSRF en login
 router.post("/login", authLimiter, validateCsrfToken, login);
