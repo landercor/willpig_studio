@@ -34,4 +34,5 @@ insert_imagenes.js
 insert-story.js
 check.js
 
-
+# file temps Js
+db_setup.sql
