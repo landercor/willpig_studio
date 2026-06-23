@@ -14,8 +14,7 @@
   <%- include('partials/navbar', { loggerUser }) %>
 
     <div class="edit-page">
-      <img class="icon-edit-profile" src="/img/img.ico/svg/pencil-fill.svg" alt="edit">
-      <h1> Editar perfil</h1>
+      <img class="icon-edit-profile" src="/img/img.ico/svg/pencil-fill.svg" alt="edit"><span> Editar perfil</apan>
       <p class="subtitle">Personaliza cómo te ven los demás lectores.</p>
 
       <form action="/usuario/perfil/editar" method="POST" enctype="multipart/form-data">
@@ -23,7 +22,7 @@
 
         <!-- IMÁGENES -->
         <div class="edit-card">
-          <h2>📷 Foto de perfil</h2>
+          <img src="/img/img.ico/svg/pencil-fill.svg" alt=""><span>Foto de perfil</apan>
           <div class="img-preview-row">
             <img id="avatarPreview" class="preview-circle" src="<%= userData.avatar_url || '/img/default-avatar.svg' %>"
               alt="Avatar actual">

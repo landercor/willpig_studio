@@ -209,14 +209,18 @@
   gap: 6px;
   padding: 9px 20px;
   background: transparent;
-  border: 1.5px solid var(--border, rgba(122, 122, 122, 0.15));
+  border: 1.5px solid var(--border, rgba(54, 54, 54, 0.438));
   border-radius: 24px;
-  color: var(--text-primary, #777777);
+  color: var(--text-primary, #8b8b8b);
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.btn-edit-profile img {
+  color: #e6e6e6;
 }
 
 .btn-edit-profile:hover {
