@@ -200,6 +200,7 @@
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
+  border-color: #e2e2e2;
 }
 
 .btn-edit-profile {
@@ -208,7 +209,7 @@
   gap: 6px;
   padding: 9px 20px;
   background: transparent;
-  border: 1.5px solid var(--border, rgba(65, 64, 64, 0.15));
+  border: 1.5px solid var(--border, rgba(122, 122, 122, 0.15));
   border-radius: 24px;
   color: var(--text-primary, #777777);
   font-size: 0.875rem;
@@ -221,7 +222,7 @@
 .btn-edit-profile:hover {
   border-color: var(--accent, #a78bfa);
   color: var(--accent, #a78bfa);
-  background: rgba(167, 139, 250, 0.08);
+  background: rgba(119, 119, 119, 0.08);
   margin-left: 80px;
 }
 
@@ -314,7 +315,7 @@
 .section-title {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--text-primary, #696969);
+  color: var(--text-primary, #838383);
   margin: 0 0 14px;
   display: flex;
   align-items: center;
@@ -385,7 +386,8 @@
 
 .book-title {
   font-size: 0.8rem;
-  color: var(--text-secondary, #555555);
+  color: var(--text-secondary, #cecbcb);
+  color: var(--text-primary, #727272);
   line-height: 1.3;
   display: -webkit-box;
   -webkit-line-clamp: 2;
