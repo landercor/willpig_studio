@@ -8,6 +8,67 @@ const getSafeRedirect = (nextUrl) => {
   return nextUrl;
 };
 
+const findLocalUser = async (email) => {
+  const { data: user, error } = await supabaseAdmin
+    .from("cuenta_usuario")
+    .select(`
+      id_cuenta_usuario, username, email, avatar_url,
+      roles_usuario ( nombre ),
+      estados_usuario ( nombre )
+    `)
+    .eq("email", email)
+    .single();
+  return { user, error };
+};
+
+const createLocalProfile = async ({ username, email, password }) => {
+  const [{ data: rolRow }, { data: estadoRow }] = await Promise.all([
+    supabaseAdmin.from('roles_usuario').select('id').eq('nombre', 'lector').single(),
+    supabaseAdmin.from('estados_usuario').select('id').eq('nombre', 'activa').single(),
+  ]);
+
+  const { data: newUser, error: insertError } = await supabaseAdmin
+    .from('cuenta_usuario')
+    .insert([{
+      username,
+      email,
+      clave: '',
+      rol_id:    rolRow?.id    ?? 1,
+      estado_id: estadoRow?.id ?? 1,
+    }])
+    .select('id_cuenta_usuario')
+    .single();
+
+  if (insertError) throw insertError;
+
+  const clave_hash = await bcrypt.hash(password, 10);
+  const { error: credError } = await supabaseAdmin
+    .from('cuenta_credenciales')
+    .insert([{ cuenta_usuario_id: newUser.id_cuenta_usuario, clave_hash }]);
+
+  if (credError) throw credError;
+
+  return newUser;
+};
+
+const ensureLocalCredentials = async (userId, password) => {
+  const { data: credenciales, error } = await supabaseAdmin
+    .from('cuenta_credenciales')
+    .select('clave_hash')
+    .eq('cuenta_usuario_id', userId)
+    .single();
+
+  if (!error && credenciales) return true;
+
+  const clave_hash = await bcrypt.hash(password, 10);
+  const { error: insertError } = await supabaseAdmin
+    .from('cuenta_credenciales')
+    .insert([{ cuenta_usuario_id: userId, clave_hash }]);
+
+  if (insertError) throw insertError;
+  return true;
+};
+
 // ── Registro ────────────────────────────────────────────────────────────────
 
 export const register = async (req, res) => {
@@ -19,6 +80,18 @@ export const register = async (req, res) => {
       return res.render("register", { error: "Todos los campos son obligatorios." });
     }
 
+    const { data: existingUser } = await supabaseAdmin
+      .from('cuenta_usuario')
+      .select('id_cuenta_usuario')
+      .eq('email', correo)
+      .single();
+
+    if (existingUser) {
+      return res.render("register", {
+        error: "Este correo ya está registrado. Por favor inicia sesión o recupera tu contraseña."
+      });
+    }
+
     // 1. Registrar en Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: correo,
@@ -28,7 +101,10 @@ export const register = async (req, res) => {
 
     if (authError) {
       console.error("Supabase Auth Error:", authError);
-      return res.render("register", { error: "Error en el servicio de autenticación: " + authError.message });
+      const message = authError.code === 'user_already_exists'
+        ? "Este correo ya está registrado. Por favor inicia sesión o recupera tu contraseña."
+        : "Error en el servicio de autenticación: " + authError.message;
+      return res.render("register", { error: message });
     }
 
     // 2. Resolver IDs de catálogo
@@ -43,6 +119,7 @@ export const register = async (req, res) => {
       .insert([{
         username,
         email: correo,
+        clave: '',
         rol_id:    rolRow?.id    ?? 1,
         estado_id: estadoRow?.id ?? 1,
       }])
@@ -84,45 +161,68 @@ export const login = async (req, res) => {
       return res.render("login", { error: "Completa los campos.", next });
     }
 
-    // 1. Obtener perfil público (SIN campos de credenciales)
-    const { data: user, error } = await supabaseAdmin
-      .from("cuenta_usuario")
-      .select(`
-        id_cuenta_usuario, username, email, avatar_url,
-        roles_usuario ( nombre ),
-        estados_usuario ( nombre )
-      `)
-      .eq("email", correo)
-      .single();
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: correo,
+      password: contrasena,
+    });
 
-    if (error || !user) {
-      return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
+    let user = null;
+    let error = null;
+
+    if (!authError && authData?.session && authData?.user) {
+      ({ user, error } = await findLocalUser(correo));
+    } else {
+      console.error("Supabase Auth login error:", authError);
+      // Intentar login local si Supabase falla por credenciales inválidas
+      const localUserResult = await findLocalUser(correo);
+      user = localUserResult.user;
+      error = localUserResult.error;
+
+      if (!user || error) {
+        return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
+      }
+
+      const { data: credenciales, error: credError } = await supabaseAdmin
+        .from("cuenta_credenciales")
+        .select("clave_hash")
+        .eq("cuenta_usuario_id", user.id_cuenta_usuario)
+        .single();
+
+      if (credError || !credenciales) {
+        return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
+      }
+
+      const ok = await bcrypt.compare(contrasena, credenciales.clave_hash);
+      if (!ok) {
+        return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
+      }
     }
 
-    // 2. Obtener hash desde cuenta_credenciales (tabla separada)
-    const { data: credenciales, error: credError } = await supabaseAdmin
-      .from("cuenta_credenciales")
-      .select("clave_hash")
-      .eq("cuenta_usuario_id", user.id_cuenta_usuario)
-      .single();
+    if (!user || error) {
+      const username = authData.user.user_metadata?.username || correo.split("@")[0];
+      const newUser = await createLocalProfile({
+        username,
+        email: correo,
+        password: contrasena,
+      });
 
-    if (credError || !credenciales) {
-      return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
+      user = {
+        id_cuenta_usuario: newUser.id_cuenta_usuario,
+        username,
+        email: correo,
+        avatar_url: null,
+        roles_usuario: { nombre: 'lector' },
+        estados_usuario: { nombre: 'activa' },
+      };
+    } else {
+      await ensureLocalCredentials(user.id_cuenta_usuario, contrasena);
     }
 
-    // 3. Verificar hash
-    const ok = await bcrypt.compare(contrasena, credenciales.clave_hash);
-    if (!ok) {
-      return res.render("login", { error: "Usuario o contraseña incorrectos.", next });
-    }
-
-    // 4. Actualizar último login
     await supabaseAdmin
       .from("cuenta_credenciales")
       .update({ ultimo_login: new Date().toISOString(), intentos_fallidos: 0 })
       .eq("cuenta_usuario_id", user.id_cuenta_usuario);
 
-    // 5. Establecer sesión
     req.session.userId = user.id_cuenta_usuario;
     req.session.user = {
       id:       user.id_cuenta_usuario,
