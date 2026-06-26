@@ -1,6 +1,5 @@
 // routes/cuentos.js
 import { Router } from 'express'
-import { supabaseAdmin as supabase } from '../config/db.js'
 import {
   createStory,
   editStory,
@@ -9,7 +8,8 @@ import {
   getStoryById,
   getMyStories,
   getEditStory,
-  getEditMetadata
+  getEditMetadata,
+  getCreateStoryForm // <-- Añadir este import
 } from '../controllers/story.controller.js'
 
 import upload from '../middlewares/upload.js'
@@ -18,15 +18,7 @@ import { isAuth } from '../middlewares/isAuth.js'
 
 const router = Router()
 
-router.get('/crear', isAuth, async (req, res) => {
-  try {
-    const { data: categorias } = await supabase.from('categorias').select('id_categoria, nombre').order('nombre');
-    res.render('newstorys', { loggerUser: req.session.user, categorias: categorias || [] });
-  } catch (error) {
-    console.error('Error fetching categorias:', error);
-    res.render('newstorys', { loggerUser: req.session.user, categorias: [] });
-  }
-});
+router.get('/crear', isAuth, getCreateStoryForm);
 
 router.get('/mis', isAuth, getMyStories);
 router.get('/editar/:id', isAuth, getEditStory);
