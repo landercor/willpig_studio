@@ -6,7 +6,7 @@ import { authLimiter } from "../middlewares/rateLimiter.js";
 const router = express.Router();
 
 router.get("/register", (req, res) => {
-  res.render("register", { error: undefined });
+  res.render("register", { error: undefined, next: req.query.next || "" });
 });
 // Rate limiting + validación CSRF en registro
 router.post("/register", authLimiter, validateCsrfToken, register);

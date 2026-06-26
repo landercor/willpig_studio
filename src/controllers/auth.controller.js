@@ -73,11 +73,11 @@ const ensureLocalCredentials = async (userId, password) => {
 
 export const register = async (req, res) => {
   try {
-    const { username, correo, contrasena } = req.body;
-    console.log("Registering user:", { username, correo });
+    const { username, correo, contrasena, next } = req.body;
+    console.log("Registering user:", { username, correo, next });
 
     if (!username || !correo || !contrasena) {
-      return res.render("register", { error: "Todos los campos son obligatorios." });
+      return res.render("register", { error: "Todos los campos son obligatorios.", next });
     }
 
     const { data: existingUser } = await supabaseAdmin
@@ -143,10 +143,11 @@ export const register = async (req, res) => {
     }
 
     console.log("User registered successfully:", newUser.id_cuenta_usuario);
-    return res.redirect("/auth/login");
+    const redirectUrl = next && typeof next === 'string' ? `/auth/login?next=${encodeURIComponent(next)}` : "/auth/login";
+    return res.redirect(redirectUrl);
   } catch (err) {
     console.error("Error in register:", err);
-    return res.render("register", { error: "Hubo un error en el registro: " + err.message });
+    return res.render("register", { error: "Hubo un error en el registro: " + err.message, next: req.body.next || "" });
   }
 };
 
